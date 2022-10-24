@@ -85,7 +85,7 @@ paths:
         400:
           description: Credentials in request are not correct
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -109,7 +109,7 @@ paths:
             - any_user
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         404:
           description: No user found with this ID
         200:
@@ -133,7 +133,7 @@ paths:
         400:
           description: User in request is not correct
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -147,7 +147,7 @@ paths:
             - specific_user
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -155,7 +155,7 @@ paths:
         200:
           description: User is deleted
 
-  /user/{id}/driver:
+  /users/{id}/driver:
     get:
       summary: Get trips where user is the driver with a future departure date
       security:
@@ -171,7 +171,7 @@ paths:
           description: ID of the user
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -185,7 +185,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/trip"
 
-  /user/{id}/passenger:
+  /users/{id}/passenger:
     get:
       summary: Get trips where user is a passenger with a future departure date by status
       security:
@@ -201,7 +201,7 @@ paths:
           description: ID of the user
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -213,7 +213,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/passenger_trips"
 
-  /user/{id}/notifications:
+  /users/{id}/notifications:
     parameters:
       - name: id
         in: path
@@ -229,7 +229,7 @@ paths:
             - specific_user
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -249,7 +249,7 @@ paths:
             - specific_user
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -273,7 +273,7 @@ paths:
         400:
           description: Trip in request is not correct
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         201:
@@ -308,7 +308,6 @@ paths:
           description: Latitude of the origin position
         - name: originLon
           in: query
-          required: true
           schema:
             type: number
             example: 4.451009
@@ -367,7 +366,7 @@ paths:
             - driver
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -393,7 +392,7 @@ paths:
         400:
           description: Status not in accepted values
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -430,7 +429,7 @@ paths:
         400:
           description: User is already a passenger, or the ride has no available seating left
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -445,7 +444,7 @@ paths:
             - passenger
       responses:
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -479,7 +478,7 @@ paths:
         400:
           description: User is not a passenger, or is not in pending status, or status not in accepted value
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -495,7 +494,7 @@ paths:
         400:
           description: User is not a passenger
         401:
-          description: Missing authentification
+          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
@@ -656,6 +655,8 @@ components:
     notification:
       type: object
       properties:
+        user_id:
+          type: integer
         trip_id:
           type: integer
         date:
@@ -664,6 +665,7 @@ components:
         notification_text:
           type: string
       example:
-        trip_id: 45
+        user_id: 12
+        trip_id: 38
         date: 2022-10-24
         notification_text: Votre demande de voyage a été acceptée
