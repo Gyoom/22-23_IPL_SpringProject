@@ -1,0 +1,25 @@
+### Create user
+POST http://localhost:9002/users/Cat4Life
+Content-Type: application/json
+
+{
+  "pseudo": "Cat4Life",
+  "firstname": "Catherine",
+  "lastname": "Mireault"
+}
+
+### Read user
+GET http://localhost:9002/users/Cat4Life
+
+### Update user
+PUT http://localhost:9002/users/Cat4Life
+Content-Type: application/json
+
+{
+  "pseudo": "Cat4Life",
+  "firstname": "Cat",
+  "lastname": "Life"
+}
+
+### Delete user
+DELETE http://localhost:9002/users/Cat4Life
