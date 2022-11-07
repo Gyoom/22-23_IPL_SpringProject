@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Chatty Car Ride Sharing Service Authentication API
+  description: API for the authentication service of Chatty Car, the ride sharing app, implemented by Guillaume Piette.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:9004'
+    description: authentication server
+
+paths:
+
+  /auth:
+    post:
+      summary: Connect user and retrieve authentication JWT token
+      requestBody:
+        description: Credentials of the user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        400:
+          description: Credentials in request are not correct
+        401:
+          description: Wrong username or password
+        200:
+          description: User authenticated, sent JWT token
+          content:
+            'text/plain':
+              schema:
+                type: string
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
+
+components:
+  securitySchemes:
+    authentication:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    newUser:
+      type: object
+      properties:
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        password:
+          type: string
+      example:
+        email: gregory.seront@vinci.be
+        firstname: Gregory
+        lastname: Seront
+        password: password123
+
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+      example:
+        id: 1
+        email: gregory.seront@vinci.be
+        firstname: Gregory
+        lastname: Seront
+
+    credentials:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: gregory.seront@vinci.be
+        password: password123
