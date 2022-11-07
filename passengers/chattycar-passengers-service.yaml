@@ -4,407 +4,11 @@ info:
   description: API for the passengers service of Chatty Car, the ride sharing app.
   version: 1.0.0
 servers:
-  - url: 'http://localhost:8080'
+  - url: 'http://localhost:9003'
     description: dev server
 
 paths:
-
-  /auth:
-    post:
-      summary: Connect user and retrieve authentication JWT token
-      requestBody:
-        description: Credentials of the user
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/credentials'
-      responses:
-        400:
-          description: Credentials in request are not correct
-        401:
-          description: Wrong username or password
-        200:
-          description: User authenticated, sent JWT token
-          content:
-            'text/plain':
-              schema:
-                type: string
-                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
-
-  /users:
-    post:
-      summary: Create a new user
-      requestBody:
-        description: Information of the user
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/newUser'
-      responses:
-        400:
-          description: User in request is not correct
-        409:
-          description: A user already exists with this email
-        201:
-          description: User is created, sent user created with its assigned ID
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/user'
-    get:
-      summary: Find user from its email
-      parameters:
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
-            example: gregory.seront@vinci.be
-          description: Email of the user
-      responses:
-        404:
-          description: No user found with this email
-        200:
-          description: Sent user information
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/user'
-    put:
-      summary: Update user password
-      security:
-        - authentication:
-            - specific_user
-      requestBody:
-        description: New credentials of the user
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/credentials'
-      responses:
-        400:
-          description: Credentials in request are not correct
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this email
-        200:
-          description: Password is updated
-
-  /users/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          example: 1
-        description: ID of the user
-    get:
-      summary: Get user information
-      security:
-        - authentication:
-            - any_user
-      responses:
-        401:
-          description: Missing authentication
-        404:
-          description: No user found with this ID
-        200:
-          description: Sent user information
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/user'
-    put:
-      summary: Update user information
-      security:
-        - authentication:
-            - specific_user
-      requestBody:
-        description: New information of the user
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/user'
-      responses:
-        400:
-          description: User in request is not correct
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this ID
-        200:
-          description: User information is updated
-    delete:
-      summary: Delete user
-      security:
-        - authentication:
-            - specific_user
-      responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this ID
-        200:
-          description: User is deleted
-
-  /users/{id}/driver:
-    get:
-      summary: Get trips where user is the driver with a future departure date
-      security:
-        - authentication:
-            - specific_user
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
-          description: ID of the user
-      responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this ID
-        200:
-          description: Sent user driver trips
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/trip"
-
-  /users/{id}/passenger:
-    get:
-      summary: Get trips where user is a passenger with a future departure date by status
-      security:
-        - authentication:
-            - specific_user
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
-          description: ID of the user
-      responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this ID
-        200:
-          description: Sent user passenger trips
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/passenger_trips"
-
-  /users/{id}/notifications:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          example: 1
-        description: ID of the user
-    get:
-      summary: Get user notifications
-      security:
-        - authentication:
-            - specific_user
-      responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this ID
-        200:
-          description: Sent user notifications
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/notification'
-    delete:
-      summary: Delete all notifications of this user
-      security:
-        - authentication:
-            - specific_user
-      responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No user found with this ID
-        200:
-          description: All notifications are deleted
-
-  /trips:
-    post:
-      summary: Create a trip
-      security:
-        - authentication:
-            - any_user
-      requestBody:
-        description: Information of the trip
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/newTrip'
-      responses:
-        400:
-          description: Trip in request is not correct
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        201:
-          description: Trip is created, sent trip created with its assigned ID
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/trip'
-    get:
-      summary: Get list of trips with optional search queries
-      description:
-        Limits list to 20 trips, ordered by latest created if not otherwise specified.
-        Always filters out trips without any available seating left.
-        Departure date query will filter only trips departing on the same date.
-        Origin query (lat+lon) will order by distance with specified origin position.
-        Destination query (lat+lon) will order by distance with specified destination position.
-        Both origin and destination queries will order by sum of distances.
-      parameters:
-        - name: departure_date
-          in: query
-          required: false
-          schema:
-            type: string
-            example: 2022-10-24
-          description: Date of departure
-        - name: originLat
-          in: query
-          required: false
-          schema:
-            type: number
-            example: 50.849372
-          description: Latitude of the origin position
-        - name: originLon
-          in: query
-          schema:
-            type: number
-            example: 4.451009
-          description: Longitude of the starting position
-        - name: destinationLat
-          in: query
-          required: false
-          schema:
-            type: number
-            example: 50.849372
-          description: Latitude of the destination position
-        - name: destinationLon
-          in: query
-          required: false
-          schema:
-            type: number
-            example: 4.451009
-          description: Longitude of the destination position
-      responses:
-        400:
-          description: Both latitude and longitude should be specified for a position query
-        200:
-          description: Sent list of trips
-          content:
-            'application/json':
-              schema:
-                type: array
-                maxItems: 10
-                items:
-                  $ref: '#/components/schemas/trip'
-
-  /trips/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          example: 38
-        description: ID of the trip
-    get:
-      summary: Get trip information
-      responses:
-        404:
-          description: No trip found with this ID
-        200:
-          description: Sent trip information
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/trip'
-    delete:
-      summary: Delete trip
-      security:
-        - authentication:
-            - driver
-      responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No trip found with this ID
-        201:
-          description: Trip is deleted
-
-  /trips/{id}/passengers:
-    get:
-      summary: Get list of passengers of a trip, with pending, accepted and refused status
-      security:
-        - authentication:
-            - driver
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 38
-          description: ID of the trip
-      responses:
-        400:
-          description: Status not in accepted values
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
-        404:
-          description: No trip found with this ID
-        200:
-          description: Sent list of passengers
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/passengers'
-
-  /trips/{trip_id}/passengers/{user_id}:
+  /passengers/{trip_id}/{user_id}:
     parameters:
       - name: trip_id
         in: path
@@ -418,35 +22,20 @@ paths:
         required: true
         schema:
           type: integer
-          example: 12
-        description: ID of the user
+          example: 38
+        description: ID of a user
     post:
       summary: Add user as passenger to a trip with pending status
-      security:
-        - authentication:
-            - passenger
       responses:
         400:
           description: User is already a passenger, or the ride has no available seating left
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
         404:
-          description: Trip or user not found
+          description: User or trip not found
         201:
           description: User added as pending passenger
     get:
-      summary: Get passenger status
-      security:
-        - authentication:
-            - driver
-            - passenger
+      summary: Get passenger status in relation to a trip
       responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
         404:
           description: Trip or user not found
         200:
@@ -461,9 +50,6 @@ paths:
                   - refused
     put:
       summary: Update passenger status
-      security:
-        - authentication:
-            - driver
       parameters:
         - name: status
           in: query
@@ -477,40 +63,61 @@ paths:
       responses:
         400:
           description: User is not a passenger, or is not in pending status, or status not in accepted value
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
         404:
           description: Trip or user not found
         200:
           description: Status is updated
-    delete:
-      summary: Remove user from passengers of a trip
-      security:
-        - authentication:
-            - passenger
+
+  /passengers/{user_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of a user
+    get:
+      summary: Get trips where user is a passenger with a future departure date by status
       responses:
-        400:
-          description: User is not a passenger
-        401:
-          description: Missing authentication
         403:
           description: Not identified as the corresponding user
         404:
-          description: Trip or user not found
+          description: No user found with this ID
         200:
-          description: Used removed from passenger
+          description: Sent user passenger trips
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/passenger_trips"
+
+  /passengers/{trip_id} :
+    get:
+      summary: Get list of passengers of a trip, with pending, accepted and refused status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 38
+          description: ID of the trip
+      responses:
+        400:
+          description: Status not in accepted values
+        403:
+          description: Not identified as the corresponding user
+        404:
+          description: No trip found with this ID
+        200:
+          description: Sent list of passengers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passengers'
 
 components:
-  securitySchemes:
-    authentication:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
   schemas:
-
     position:
       type: object
       properties:
@@ -521,31 +128,6 @@ components:
       example:
         latitude: 50.849372
         longitude: 4.451009
-
-    newTrip:
-      type: object
-      properties:
-        origin:
-          $ref: '#/components/schemas/position'
-        destination:
-          $ref: '#/components/schemas/position'
-        departure_date:
-          type: string
-          description: Date in ISO 8601, YYYY-MM-DD
-        driver_id:
-          type: integer
-        available_seating:
-          type: integer
-      example:
-        origin:
-          latitude: 50.849372
-          longitude: 4.451009
-        destination:
-          latitude: 50.849372
-          longitude: 4.451009
-        departure: 2022-10-24
-        driver_id: 12
-        available_seating: 2
 
     trip:
       type: object
@@ -607,23 +189,6 @@ components:
           items:
             $ref: '#/components/schemas/trip'
 
-    newUser:
-      type: object
-      properties:
-        email:
-          type: string
-        firstname:
-          type: string
-        lastname:
-          type: string
-        password:
-          type: string
-      example:
-        email: gregory.seront@vinci.be
-        firstname: Gregory
-        lastname: Seront
-        password: password123
-
     user:
       type: object
       properties:
@@ -640,32 +205,3 @@ components:
         email: gregory.seront@vinci.be
         firstname: Gregory
         lastname: Seront
-
-    credentials:
-      type: object
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-      example:
-        email: gregory.seront@vinci.be
-        password: password123
-
-    notification:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        trip_id:
-          type: integer
-        date:
-          type: string
-          description: Date in ISO 8601, YYYY-MM-DD
-        notification_text:
-          type: string
-      example:
-        user_id: 12
-        trip_id: 38
-        date: 2022-10-24
-        notification_text: Votre demande de voyage a été acceptée
