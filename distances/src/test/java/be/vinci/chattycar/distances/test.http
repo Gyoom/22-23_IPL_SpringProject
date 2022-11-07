@@ -1,0 +1,3 @@
+
+### GET DISTANCE
+GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
