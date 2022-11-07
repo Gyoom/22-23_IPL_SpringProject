@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: Chatty Car Ride Sharing Service Passengers API
+  description: API for the notifications service of Chatty Car, the ride sharing app.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:9006/'
+    description: dev server
+
+paths:
+  /notifications :
+    post:
+      summary: Add a notification
+      requestBody:
+        description: A new notification
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/notification'
+      responses:
+        400:
+          description: The object is not a notification
+        200:
+          description: Notification correctly added
+
+  /notifications/{user_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: ID of the user
+    get:
+      summary: Get user notifications
+      responses:
+        200:
+          description: Sent user notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notification'
+    delete:
+      summary: Delete all notifications of this user
+      responses:
+        200:
+          description: All notifications are deleted
+
+components:
+  schemas:
+    notification:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        trip_id:
+          type: integer
+        date:
+          type: string
+          description: Date in ISO 8601, YYYY-MM-DD
+        notification_text:
+          type: string
+      example:
+        user_id: 12
+        trip_id: 38
+        date: 2022-10-24
+        notification_text: Votre demande de voyage a été acceptée
