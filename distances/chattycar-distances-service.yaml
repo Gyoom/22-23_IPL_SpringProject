@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: Chattycar distances service
+  description: Microservice handling the calculation of the distance in Chattycar project
+  version: 1.0.0
+servers:
+  - url: http://localhost:9005
+    description: Development server
+
+paths:
+  /distances:
+    get:
+      summary: Calculate distance between positions
+      parameters:
+        - name: lat1
+          in: query
+          required: true
+          schema:
+            type: number
+            example: 50.849372
+          description: Latitude of the first position
+        - name: lon1
+          in: query
+          required: true
+          schema:
+            type: number
+            example: 4.451009
+          description: Longitude of the first position
+        - name: lat2
+          in: query
+          required: true
+          schema:
+            type: number
+            example: 5.849372
+          description: Latitude of the second position
+        - name: lon2
+          in: query
+          required: true
+          schema:
+            type: number
+            example: 40.451009
+          description: Longitude of the second position
+      responses:
+        200:
+          description: Sent the distance between the two positions
+          content:
+            'application/json':
+              schema:
+                type: number
+                example: 47.55
