@@ -28,4 +28,11 @@ public class Notification {
   private LocalDate date;
   @Column(name = "notification_text")
   private String notificationText;
+
+  public Notification(int userId, int tripId, LocalDate date, String notificationText) {
+    this.userId = userId;
+    this.tripId = tripId;
+    this.date = date;
+    this.notificationText = notificationText;
+  }
 }
