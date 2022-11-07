@@ -1,0 +1,207 @@
+openapi: 3.0.3
+info:
+  title: Chatty Car Ride Sharing Service Passengers API
+  description: API for the passengers service of Chatty Car, the ride sharing app.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:9003'
+    description: dev server
+
+paths:
+  /passengers/{trip_id}/{user_id}:
+    parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of the trip
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of a user
+    post:
+      summary: Add user as passenger to a trip with pending status
+      responses:
+        400:
+          description: User is already a passenger, or the ride has no available seating left
+        404:
+          description: User or trip not found
+        201:
+          description: User added as pending passenger
+    get:
+      summary: Get passenger status in relation to a trip
+      responses:
+        404:
+          description: Trip or user not found
+        200:
+          description: Sent passenger status
+          content:
+            'text/plain':
+              schema:
+                type: string
+                enum:
+                  - pending
+                  - accepted
+                  - refused
+    put:
+      summary: Update passenger status
+      parameters:
+        - name: status
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - accepted
+              - refused
+          description: New status of the passenger
+      responses:
+        400:
+          description: User is not a passenger, or is not in pending status, or status not in accepted value
+        404:
+          description: Trip or user not found
+        200:
+          description: Status is updated
+
+  /passengers/{user_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of a user
+    get:
+      summary: Get trips where user is a passenger with a future departure date by status
+      responses:
+        403:
+          description: Not identified as the corresponding user
+        404:
+          description: No user found with this ID
+        200:
+          description: Sent user passenger trips
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/passenger_trips"
+
+  /passengers/{trip_id} :
+    get:
+      summary: Get list of passengers of a trip, with pending, accepted and refused status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 38
+          description: ID of the trip
+      responses:
+        400:
+          description: Status not in accepted values
+        403:
+          description: Not identified as the corresponding user
+        404:
+          description: No trip found with this ID
+        200:
+          description: Sent list of passengers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passengers'
+
+components:
+  schemas:
+    position:
+      type: object
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+      example:
+        latitude: 50.849372
+        longitude: 4.451009
+
+    trip:
+      type: object
+      properties:
+        id:
+          type: integer
+        origin:
+          $ref: '#/components/schemas/position'
+        destination:
+          $ref: '#/components/schemas/position'
+        departure:
+          type: string
+          description: Date in ISO 8601, YYYY-MM-DD
+        driver_id:
+          type: integer
+        available_seating:
+          type: integer
+      example:
+        id: 38
+        origin:
+          latitude: 50.849372
+          longitude: 4.451009
+        destination:
+          latitude: 50.849372
+          longitude: 4.451009
+        departure: 2022-10-24 10:45:00
+        driver_id: 12
+        available_seating: 2
+
+    passengers:
+      type: object
+      properties:
+        pending:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+        accepted:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+        refused:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+
+    passenger_trips:
+      type: object
+      properties:
+        pending:
+          type: array
+          items:
+            $ref: '#/components/schemas/trip'
+        accepted:
+          type: array
+          items:
+            $ref: '#/components/schemas/trip'
+        refused:
+          type: array
+          items:
+            $ref: '#/components/schemas/trip'
+
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+      example:
+        id: 1
+        email: gregory.seront@vinci.be
+        firstname: Gregory
+        lastname: Seront
