@@ -1,0 +1,16 @@
+
+### POST NEW PASSENGER
+POST http://localhost:9003/passengers/38/39
+
+### GET PASSENGER STATUS
+GET http://localhost:9003/passengers/38/38
+
+### MODIFY PASSENGER STATUS
+PUT http://localhost:9003/passengers/39/38?status=accepted
+
+### GET TRIPS OF A PASSENGER
+GET http://localhost:9003/passengers/user/38
+
+### GET PASSENGERS OF A TRIP
+GET http://localhost:9003/passengers/trip/38
+

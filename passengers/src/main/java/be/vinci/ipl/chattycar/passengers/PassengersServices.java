@@ -30,7 +30,8 @@ public class PassengersServices {
       return HttpStatus.NOT_FOUND;
 
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
-    if (passenger == null || trip.getAvailable_seating() == 0)
+
+    if (passenger != null || trip.getAvailable_seating() == 0)
       return HttpStatus.BAD_REQUEST;
 
     Passenger newPassenger = new Passenger();
@@ -55,13 +56,14 @@ public class PassengersServices {
 
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
 
-    if (passenger == null || (!status.equals("accepted") && !status.equals("refused")) ||
-        passenger.getStatus().equals("accepted")) return HttpStatus.BAD_REQUEST;
+    System.out.println(passenger);
+
+    if (passenger == null || !passenger.getStatus().equals("pending")) return HttpStatus.BAD_REQUEST;
 
     passenger.setStatus(status);
     repository.save(passenger);
 
-    return HttpStatus.ACCEPTED;
+    return HttpStatus.OK;
   }
 
   public PassengerTrips getPassengerTrips(int userId) {
