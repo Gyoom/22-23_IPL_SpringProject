@@ -18,4 +18,16 @@ public class Passengers {
   public List<User> getRefused() {
     return refused;
   }
+
+  public void setPending(List<User> pending) {
+    this.pending = pending;
+  }
+
+  public void setAccepted(List<User> accepted) {
+    this.accepted = accepted;
+  }
+
+  public void setRefused(List<User> refused) {
+    this.refused = refused;
+  }
 }
