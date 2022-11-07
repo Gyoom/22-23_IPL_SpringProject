@@ -1,0 +1,18 @@
+GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
+
+<> 2022-11-07T154332.200.json
+
+###
+
+GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=23
+
+<> 2022-11-07T154247.200.json
+
+###
+
+GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
+
+<> 2022-11-07T154215.200.json
+
+###
+
