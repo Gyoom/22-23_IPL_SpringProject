@@ -38,7 +38,7 @@ public class PassengersController {
     return new ResponseEntity<>(service.updatePassengerStatus(tripsId, userId, status));
   }
 
-  @GetMapping("/passengers/{userId}")
+  @GetMapping("/passengers/user/{userId}")
   public ResponseEntity<PassengerTrips> getPassengerTrips(@PathVariable int userId) {
 
     PassengerTrips passengerTrips = service.getPassengerTrips(userId);
@@ -46,7 +46,7 @@ public class PassengersController {
     return new ResponseEntity<>(passengerTrips, HttpStatus.ACCEPTED);
   }
 
-  @GetMapping("/passengers/{tripId}")
+  @GetMapping("/passengers/trip/{tripId}")
   public ResponseEntity<Passengers> getTripPassengers(@PathVariable int tripId) {
     Passengers passengerTrips = service.getTripPassengers(tripId);
     if (passengerTrips == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -68,7 +68,7 @@ paths:
         200:
           description: Status is updated
 
-  /passengers/{user_id}:
+  /passengers/user/{user_id}:
     parameters:
       - name: user_id
         in: path
@@ -89,11 +89,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/passenger_trips"
 
-  /passengers/{trip_id} :
+  /passengers/trip/{trip_id} :
     get:
       summary: Get list of passengers of a trip, with pending, accepted and refused status
       parameters:
-        - name: id
+        - name: trip_id
           in: path
           required: true
           schema:
