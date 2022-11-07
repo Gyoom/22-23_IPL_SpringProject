@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Chattycar users service
+  description: Microservice handling users database in Chattycar project
+  version: 1.0.0
+servers:
+  - url: http://localhost:9002
+    description: Development server
+
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      requestBody:
+        description: Information of the user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/newUser'
+      responses:
+        400:
+          description: User in request is not correct
+        409:
+          description: A user already exists with this email
+        201:
+          description: User is created, sent user created with its assigned ID
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/user'
+    get:
+      summary: Find user from its email
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            example: gregory.seront@vinci.be
+          description: Email of the user
+      responses:
+        404:
+          description: No user found with this email
+        200:
+          description: Sent user information
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/user'
+
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: ID of the user
+    get:
+      summary: Get user information
+      responses:
+        404:
+          description: No user found with this ID
+        200:
+          description: Sent user information
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/user'
+    put:
+      summary: Update user information
+      requestBody:
+        description: New information of the user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        400:
+          description: User in request is not correct
+        404:
+          description: No user found with this ID
+        200:
+          description: User information is updated
+    delete:
+      summary: Delete user
+      responses:
+        404:
+          description: No user found with this ID
+        200:
+          description: User is deleted
+
+components:
+  schemas:
+    newUser:
+      type: object
+      properties:
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        password:
+          type: string
+      example:
+        email: eliott.rasumny@vinci.be
+        firstname: Eliott
+        lastname: Rasumny
+        password: password123
+
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+      example:
+        id: 1
+        email: eliott.rasumny@vinci.be
+        firstname: Eliott
+        lastname: Rasumny
