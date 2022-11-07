@@ -80,8 +80,6 @@ paths:
     get:
       summary: Get trips where user is a passenger with a future departure date by status
       responses:
-        403:
-          description: Not identified as the corresponding user
         404:
           description: No user found with this ID
         200:
@@ -105,8 +103,6 @@ paths:
       responses:
         400:
           description: Status not in accepted values
-        403:
-          description: Not identified as the corresponding user
         404:
           description: No trip found with this ID
         200:

@@ -1,7 +1,7 @@
 package be.vinci.ipl.chattycar.passengers;
 
-import be.vinci.ipl.chattycar.passengers.models.Passenger;
-import javax.ws.rs.PathParam;
+import be.vinci.ipl.chattycar.passengers.models.PassengerTrips;
+import be.vinci.ipl.chattycar.passengers.models.Passengers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,6 @@ public class PassengersController {
 
   @PostMapping("/passengers/{tripsId}/{userId}")
   public ResponseEntity<String> createPassenger(@PathVariable int tripsId, @PathVariable int userId) {
-
     return new ResponseEntity<>(service.createPassenger(tripsId, userId));
   }
 
@@ -34,8 +33,23 @@ public class PassengersController {
 
   @PutMapping("/passengers/{tripsId}/{userId}")
   public ResponseEntity<String> updatePassengerStatus(@PathVariable int tripsId, @PathVariable int userId,
-      @RequestParam String status) {
+      @RequestParam("status") String status) {
 
     return new ResponseEntity<>(service.updatePassengerStatus(tripsId, userId, status));
+  }
+
+  @GetMapping("/passengers/{userId}")
+  public ResponseEntity<PassengerTrips> getPassengerTrips(@PathVariable int userId) {
+
+    PassengerTrips passengerTrips = service.getPassengerTrips(userId);
+    if (passengerTrips == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(passengerTrips, HttpStatus.ACCEPTED);
+  }
+
+  @GetMapping("/passengers/{tripId}")
+  public ResponseEntity<Passengers> getTripPassengers(@PathVariable int tripId) {
+    Passengers passengerTrips = service.getTripPassengers(tripId);
+    if (passengerTrips == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(passengerTrips, HttpStatus.ACCEPTED);
   }
 }
