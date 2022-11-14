@@ -4,6 +4,7 @@ import be.vinci.ipl.chattycar.passengers.models.PassengerTrips;
 import be.vinci.ipl.chattycar.passengers.models.Passengers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,8 +54,20 @@ public class PassengersController {
     return new ResponseEntity<>(service.getPassengerTrips(userId), HttpStatus.OK);
   }
 
+  @DeleteMapping("/passengers/user/{user_id}")
+  public ResponseEntity<PassengerTrips> removeAllParticipation(@PathVariable("user_id") int userId) {
+    service.removeAllParticipation(userId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
   @GetMapping("/passengers/trip/{trip_id}")
   public ResponseEntity<Passengers> getTripPassengers(@PathVariable("trip_id") int tripId) {
     return new ResponseEntity<>(service.getTripPassengers(tripId), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/passengers/trip/{trip_id}")
+  public ResponseEntity<Passengers> removeAllPassenger(@PathVariable("trip_id") int tripId) {
+    service.removeAllPassenger(tripId);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

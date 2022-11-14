@@ -82,27 +82,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/passenger_trips"
+    delete:
+      summary: Remove all of a user's participation from a trip
+      responses:
+        200:
+          description: All participation deleted
 
   /passengers/trip/{trip_id} :
+    parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of the trip
     get:
       summary: Get list of passengers of a trip, with pending, accepted and refused status
-      parameters:
-        - name: trip_id
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 38
-          description: ID of the trip
       responses:
-        400:
-          description: Status not in accepted values
         200:
           description: Sent list of passengers
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/passengers'
+    delete:
+      summary: Remove all passengers of a trip
+      responses:
+        200:
+          description: All passengers deleted
 
 components:
   schemas:

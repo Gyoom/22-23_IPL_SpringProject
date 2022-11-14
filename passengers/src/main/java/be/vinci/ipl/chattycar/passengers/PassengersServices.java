@@ -64,6 +64,10 @@ public class PassengersServices {
     return passengerTrips;
   }
 
+  public void removeAllParticipation(int userId) {
+    repository.deleteAllByUserId(userId);
+  }
+
   public Passengers getTripPassengers(int tripId) {
     List<Passenger> passengerListOfTrip = repository.findAllByTripId(tripId);
 
@@ -72,6 +76,10 @@ public class PassengersServices {
     tripPassengers.setRefused(passengersToUsers(passengerListOfTrip, "refused"));
     tripPassengers.setPending(passengersToUsers(passengerListOfTrip, "pending"));
     return tripPassengers;
+  }
+
+  public void removeAllPassenger(int tripId) {
+    repository.deleteAllByTripId(tripId);
   }
 
   private List<Trip> passengersToTrips(List<Passenger> passengers, String status) {

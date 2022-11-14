@@ -10,4 +10,6 @@ public interface PassengersRepository extends CrudRepository<Passenger, Long> {
   Passenger findPassengerByTripIdAndUserId(int tripId, int userId);
   List<Passenger> findAllByUserId(int userId);
   List<Passenger> findAllByTripId(int tripId);
+  void deleteAllByUserId(int userId);
+  void deleteAllByTripId(int tripId);
 }
