@@ -18,7 +18,7 @@ import lombok.ToString;
 @Entity(name = "notifications")
 public class Notification {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int notificationId;
   @Column(name = "user_id")
   private int userId;
