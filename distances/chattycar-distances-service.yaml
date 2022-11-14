@@ -45,7 +45,5 @@ paths:
         200:
           description: Sent the distance between the two positions
           content:
-            'application/json':
-              schema:
-                type: number
-                example: 57.63
+            'text/plain':
+              example: 57.63
