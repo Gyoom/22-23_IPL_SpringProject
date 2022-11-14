@@ -17,7 +17,7 @@ public class NotificationsServices {
     if (noIdNotification.getDate() == null || noIdNotification.getNotificationText() == null
         || noIdNotification.getTripId() == 0 || noIdNotification.getUserId() == 0)
       return false;
-    System.out.println(noIdNotification.toNotification());
+
     repository.save(noIdNotification.toNotification());
     return true;
   }
@@ -27,7 +27,6 @@ public class NotificationsServices {
   }
 
   public void deleteNotification(int userId) {
-    System.out.println("bug here");
     repository.deleteAllByUserId(userId);
   }
 

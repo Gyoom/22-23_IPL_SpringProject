@@ -25,9 +25,9 @@ public class PassengersController {
       @PathVariable("user_id") int userId) {
 
     if (service.createPassenger(tripsId, userId)) {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
   }
 
   @GetMapping("/passengers/{trip_id}/{user_id}")
@@ -45,8 +45,8 @@ public class PassengersController {
       @PathVariable("user_id") int userId, @RequestParam("status") String status) {
 
     if (service.updatePassengerStatus(tripsId, userId, status))
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
   }
 
   @GetMapping("/passengers/user/{user_id}")
@@ -55,7 +55,7 @@ public class PassengersController {
   }
 
   @DeleteMapping("/passengers/user/{user_id}")
-  public ResponseEntity<PassengerTrips> removeAllParticipation(@PathVariable("user_id") int userId) {
+  public ResponseEntity<String> removeAllParticipation(@PathVariable("user_id") int userId) {
     service.removeAllParticipation(userId);
     return new ResponseEntity<>(HttpStatus.OK);
   }
@@ -66,7 +66,7 @@ public class PassengersController {
   }
 
   @DeleteMapping("/passengers/trip/{trip_id}")
-  public ResponseEntity<Passengers> removeAllPassenger(@PathVariable("trip_id") int tripId) {
+  public ResponseEntity<String> removeAllPassenger(@PathVariable("trip_id") int tripId) {
     service.removeAllPassenger(tripId);
     return new ResponseEntity<>(HttpStatus.OK);
   }

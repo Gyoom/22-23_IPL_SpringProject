@@ -1,0 +1,38 @@
+### GET PASSENGER STATUS - 404
+GET http://localhost:9003/passengers/1/1
+
+### CREATE PASSENGER - 201
+POST http://localhost:9003/passengers/1/1
+
+### GET PASSENGER STATUS - 200 (pending)
+GET http://localhost:9003/passengers/1/1
+
+### CREATE PASSENGER WITH SAME FKs - 400
+POST http://localhost:9003/passengers/1/1
+
+### UPDATE PASSENGER STATUS WITH NOT KNOWN STATUS - 400
+PUT http://localhost:9003/passengers/1/1?status=notknownstatus
+
+### UPDATE PASSENGER STATUS WITH KNOWN STATUS - 200
+PUT http://localhost:9003/passengers/1/1?status=accepted
+
+### GET PASSENGER STATUS - 200 (accepted)
+GET http://localhost:9003/passengers/1/1
+
+### UPDATE PASSENGER STATUS WITH KNOWN STATUS BUT ALREADY ACCEPTED - 400
+PUT http://localhost:9003/passengers/1/1?status=refused
+
+### UPDATE PASSENGER STATUS WITH KNOWN STATUS BUT ALREADY ACCEPTED - 400
+PUT http://localhost:9003/passengers/1/1?status=refused
+
+### GET TRIPS OF A USER - 200
+GET http://localhost:9003/passengers/user/1
+
+### DELETE TRIPS OF A USER - 200
+DELETE http://localhost:9003/passengers/user/1
+
+### GET PASSENGERS OF A TRIP
+GET http://localhost:9003/passengers/trip/1
+
+### DELETE ALL PASSENGER OF A TRIP
+DELETE http://localhost:9003/passengers/trip/1

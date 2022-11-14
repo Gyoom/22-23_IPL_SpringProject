@@ -26,7 +26,7 @@ public class PassengersServices {
   public boolean createPassenger(int tripsId, int userId) {
     Trip trip = tripsProxy.readTrip(tripsId);
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
-    if (passenger != null || trip.getAvailable_seating() == 0) return false;
+    if (passenger != null || trip == null || trip.getAvailable_seating() == 0) return false;
 
     Passenger newPassenger = new Passenger();
     newPassenger.setTripId(tripsId);
