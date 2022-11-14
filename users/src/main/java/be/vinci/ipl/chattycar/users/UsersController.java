@@ -1,5 +1,7 @@
 package be.vinci.ipl.chattycar.users;
 
+import be.vinci.ipl.chattycar.users.models.NewUser;
+import be.vinci.ipl.chattycar.users.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +16,34 @@ public class UsersController {
         this.service = service;
     }
 
-    @PostMapping("/users/{pseudo}")
-    public ResponseEntity<Void> createOne(@PathVariable String pseudo, @RequestBody User user) {
-        if (user.getPseudo() == null || !user.getPseudo().equals(pseudo) ||
-                user.getLastname() == null || user.getFirstname() == null) {
+    @PostMapping("/users")
+    public ResponseEntity<User> createOne(@RequestBody NewUser newUser) {
+        if (newUser.getEmail() == null || newUser.getFirstname() == null ||
+                newUser.getLastname() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        boolean created = service.createOne(user);
-        if (!created) throw new ResponseStatusException(HttpStatus.CONFLICT);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        User createdUser = service.createOne(newUser);
+        if (createdUser == null) throw new ResponseStatusException(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{pseudo}")
-    public User readOne(@PathVariable String pseudo) {
-        User user = service.readOne(pseudo);
+    @GetMapping("/users")
+    public User findByEmail(@RequestParam(value = "email") String email) {
+        User user = service.findByEmail(email);
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return user;
     }
 
-    @PutMapping("/users/{pseudo}")
-    public void updateOne(@PathVariable String pseudo, @RequestBody User user) {
-        if (user.getPseudo() == null || !user.getPseudo().equals(pseudo) ||
+    @GetMapping("/users/{id}")
+    public User getOne(@PathVariable int id) {
+        User user = service.getOne(id);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return user;
+    }
+
+    @PutMapping("/users/{id}")
+    public void updateOne(@PathVariable int id, @RequestBody User user) {
+        if (id != user.getId() || user.getEmail() == null ||
                 user.getLastname() == null || user.getFirstname() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -42,9 +51,9 @@ public class UsersController {
         if (!found) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/users/{pseudo}")
-    public void deleteOne(@PathVariable String pseudo) {
-        boolean found = service.deleteOne(pseudo);
+    @DeleteMapping("/users/{id}")
+    public void deleteOne(@PathVariable int id) {
+        boolean found = service.deleteOne(id);
         if (!found) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
