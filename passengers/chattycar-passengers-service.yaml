@@ -44,6 +44,8 @@ paths:
                   - pending
                   - accepted
                   - refused
+        404:
+          description: Passenger not found
     put:
       summary: Update passenger status
       parameters:

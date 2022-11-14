@@ -43,6 +43,9 @@ public class PassengersServices {
   }
 
   public boolean updatePassengerStatus(int tripsId, int userId, String status) {
+    if (!status.equals("accepted") && !status.equals("refused"))
+      return false;
+
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
     if (passenger == null || !passenger.getStatus().equals("pending"))
       return false;
