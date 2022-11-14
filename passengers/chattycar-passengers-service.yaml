@@ -29,15 +29,11 @@ paths:
       responses:
         400:
           description: User is already a passenger, or the ride has no available seating left
-        404:
-          description: User or trip not found
         201:
           description: User added as pending passenger
     get:
       summary: Get passenger status in relation to a trip
       responses:
-        404:
-          description: Trip or user not found
         200:
           description: Sent passenger status
           content:
@@ -48,6 +44,8 @@ paths:
                   - pending
                   - accepted
                   - refused
+        404:
+          description: Passenger not found
     put:
       summary: Update passenger status
       parameters:
@@ -63,8 +61,6 @@ paths:
       responses:
         400:
           description: User is not a passenger, or is not in pending status, or status not in accepted value
-        404:
-          description: Trip or user not found
         200:
           description: Status is updated
 
@@ -80,37 +76,41 @@ paths:
     get:
       summary: Get trips where user is a passenger with a future departure date by status
       responses:
-        404:
-          description: No user found with this ID
         200:
           description: Sent user passenger trips
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/passenger_trips"
+    delete:
+      summary: Remove all of a user's participation from a trip
+      responses:
+        200:
+          description: All participation deleted
 
   /passengers/trip/{trip_id} :
+    parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of the trip
     get:
       summary: Get list of passengers of a trip, with pending, accepted and refused status
-      parameters:
-        - name: trip_id
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 38
-          description: ID of the trip
       responses:
-        400:
-          description: Status not in accepted values
-        404:
-          description: No trip found with this ID
         200:
           description: Sent list of passengers
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/passengers'
+    delete:
+      summary: Remove all passengers of a trip
+      responses:
+        200:
+          description: All passengers deleted
 
 components:
   schemas:

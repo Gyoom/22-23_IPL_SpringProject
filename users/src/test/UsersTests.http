@@ -1,25 +1,27 @@
 ### Create user
-POST http://localhost:9002/users/Cat4Life
+POST http://localhost:9002/users
 Content-Type: application/json
 
-{
-  "pseudo": "Cat4Life",
-  "firstname": "Catherine",
-  "lastname": "Mireault"
-}
+{ "email": "eliott.rasumny@vinci.be",
+  "firstname": "Eliott",
+  "lastname": "Rasumny" }
 
-### Read user
-GET http://localhost:9002/users/Cat4Life
+### Get user
+GET http://localhost:9002/users/1
+
+### Find user with email
+GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
+### Find user with no email (Bad Request)
+GET http://localhost:9002/users
 
 ### Update user
-PUT http://localhost:9002/users/Cat4Life
+PUT http://localhost:9002/users/1
 Content-Type: application/json
 
-{
-  "pseudo": "Cat4Life",
-  "firstname": "Cat",
-  "lastname": "Life"
-}
+{ "id": 1,
+  "email": "eliott.rasumny@vinci.be",
+  "firstname": "Eliott",
+  "lastname": "Rasuuuuuu" }
 
 ### Delete user
-DELETE http://localhost:9002/users/Cat4Life
+DELETE http://localhost:9002/users/1
