@@ -9,7 +9,6 @@ import be.vinci.ipl.chattycar.passengers.models.Passengers;
 import be.vinci.ipl.chattycar.passengers.models.Trip;
 import be.vinci.ipl.chattycar.passengers.models.User;
 import java.util.List;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,23 +23,17 @@ public class PassengersServices {
     this.usersProxy = usersProxy;
   }
 
-  public HttpStatus createPassenger(int tripsId, int userId) {
+  public boolean createPassenger(int tripsId, int userId) {
     Trip trip = tripsProxy.readTrip(tripsId);
-    if (trip == null || usersProxy.readUser(userId) == null)
-      return HttpStatus.NOT_FOUND;
-
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
-
-    if (passenger != null || trip.getAvailable_seating() == 0)
-      return HttpStatus.BAD_REQUEST;
+    if (passenger != null || trip.getAvailable_seating() == 0) return false;
 
     Passenger newPassenger = new Passenger();
     newPassenger.setTripId(tripsId);
     newPassenger.setUserId(userId);
     newPassenger.setStatus("pending");
     repository.save(newPassenger);
-
-    return HttpStatus.CREATED;
+    return true;
   }
 
   public String getPassengerStatus(int tripsId, int userId) {
@@ -49,46 +42,32 @@ public class PassengersServices {
     return passenger.getStatus();
   }
 
-  public HttpStatus updatePassengerStatus(int tripsId, int userId, String status) {
-
-    if (tripsProxy.readTrip(tripsId) == null || usersProxy.readUser(userId) == null)
-      return HttpStatus.NOT_FOUND;
-
+  public boolean updatePassengerStatus(int tripsId, int userId, String status) {
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
-
-    System.out.println(passenger);
-
-    if (passenger == null || !passenger.getStatus().equals("pending")) return HttpStatus.BAD_REQUEST;
+    if (passenger == null || !passenger.getStatus().equals("pending"))
+      return false;
 
     passenger.setStatus(status);
     repository.save(passenger);
-
-    return HttpStatus.OK;
+    return true;
   }
 
   public PassengerTrips getPassengerTrips(int userId) {
-    if (usersProxy.readUser(userId) == null) return null;
-
     List<Passenger> passengerListOfUser = repository.findAllByUserId(userId);
-
     PassengerTrips passengerTrips = new PassengerTrips();
     passengerTrips.setAccepted(passengersToTrips(passengerListOfUser, "accepted"));
     passengerTrips.setRefused(passengersToTrips(passengerListOfUser, "refused"));
     passengerTrips.setPending(passengersToTrips(passengerListOfUser, "pending"));
-
     return passengerTrips;
   }
 
   public Passengers getTripPassengers(int tripId) {
-    if (tripsProxy.readTrip(tripId) == null) return null;
-
     List<Passenger> passengerListOfTrip = repository.findAllByTripId(tripId);
 
     Passengers tripPassengers = new Passengers();
     tripPassengers.setAccepted(passengersToUsers(passengerListOfTrip, "accepted"));
     tripPassengers.setRefused(passengersToUsers(passengerListOfTrip, "refused"));
     tripPassengers.setPending(passengersToUsers(passengerListOfTrip, "pending"));
-
     return tripPassengers;
   }
 

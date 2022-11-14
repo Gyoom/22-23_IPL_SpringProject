@@ -29,15 +29,11 @@ paths:
       responses:
         400:
           description: User is already a passenger, or the ride has no available seating left
-        404:
-          description: User or trip not found
         201:
           description: User added as pending passenger
     get:
       summary: Get passenger status in relation to a trip
       responses:
-        404:
-          description: Trip or user not found
         200:
           description: Sent passenger status
           content:
@@ -63,8 +59,6 @@ paths:
       responses:
         400:
           description: User is not a passenger, or is not in pending status, or status not in accepted value
-        404:
-          description: Trip or user not found
         200:
           description: Status is updated
 
@@ -80,8 +74,6 @@ paths:
     get:
       summary: Get trips where user is a passenger with a future departure date by status
       responses:
-        404:
-          description: No user found with this ID
         200:
           description: Sent user passenger trips
           content:
@@ -103,8 +95,6 @@ paths:
       responses:
         400:
           description: Status not in accepted values
-        404:
-          description: No trip found with this ID
         200:
           description: Sent list of passengers
           content:
