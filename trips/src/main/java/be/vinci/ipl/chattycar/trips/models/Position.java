@@ -1,17 +1,15 @@
-package be.vinci.ipl.chattycar.passengers.models;
+package be.vinci.ipl.chattycar.trips.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Embeddable;
-
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 public class Position {
-  private double longitude;
-  private double latitude;
+  private int latitude;
+  private int longitude;
 }

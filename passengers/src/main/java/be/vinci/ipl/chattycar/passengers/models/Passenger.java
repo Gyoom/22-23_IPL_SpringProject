@@ -17,7 +17,7 @@ import lombok.ToString;
 @Entity(name = "passengers")
 public class Passenger {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "passenger_id")
   private int passengerId;
   @Column(name = "user_id")

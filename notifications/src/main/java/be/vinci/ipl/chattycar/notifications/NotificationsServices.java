@@ -1,17 +1,33 @@
 package be.vinci.ipl.chattycar.notifications;
 
 import be.vinci.ipl.chattycar.notifications.data.NotificationsRepository;
-import be.vinci.ipl.chattycar.notifications.data.UsersProxy;
+import be.vinci.ipl.chattycar.notifications.models.NoIdNotification;
+import be.vinci.ipl.chattycar.notifications.models.Notification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationsServices {
   private final NotificationsRepository repository;
-  private final UsersProxy usersProxy;
 
-  public NotificationsServices(NotificationsRepository repository, UsersProxy usersProxy) {
+  public NotificationsServices(NotificationsRepository repository) {
     this.repository = repository;
-    this.usersProxy = usersProxy;
+  }
+
+  public boolean createNotification(NoIdNotification noIdNotification) {
+    if (noIdNotification.getDate() == null || noIdNotification.getNotificationText() == null
+        || noIdNotification.getTripId() == 0 || noIdNotification.getUserId() == 0)
+      return false;
+
+    repository.save(noIdNotification.toNotification());
+    return true;
+  }
+
+  public Iterable<Notification> getNotifications(int userId) {
+    return repository.findAllByUserId(userId);
+  }
+
+  public void deleteNotification(int userId) {
+    repository.deleteAllByUserId(userId);
   }
 
 }
