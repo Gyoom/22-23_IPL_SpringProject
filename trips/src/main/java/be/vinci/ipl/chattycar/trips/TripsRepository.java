@@ -13,4 +13,6 @@ public interface TripsRepository extends CrudRepository<Trip, Integer> {
 
   Iterable<Trip> findByDriver_id(int driverId);
 
+  Iterable<Trip> deleteByDriver_id(int driverId);
+
 }

@@ -23,19 +23,18 @@ public class AuthenticationController {
         return token;
     }
 
-
     @PostMapping("/authentication/verify")
     public String verify(@RequestBody String token) {
-        String pseudo = service.verify(token);
-        if (pseudo == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        return pseudo;
+        String email = service.verify(token);
+        if (email == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        return email;
     }
 
 
-    @PostMapping("/authentication/{pseudo}")
-    public ResponseEntity<Void> createOne(@PathVariable String pseudo, @RequestBody InsecureCredentials credentials) {
-        if (credentials.getPseudo() == null || credentials.getPassword() == null ||
-                !credentials.getPseudo().equals(pseudo)) {
+    @PostMapping("/authentication/{email}")
+    public ResponseEntity<Void> createOne(@PathVariable String email, @RequestBody InsecureCredentials credentials) {
+        if (credentials.getEmail() == null || credentials.getPassword() == null ||
+            !credentials.getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         boolean created = service.createOne(credentials);
@@ -43,20 +42,19 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/authentication/{pseudo}")
-    public void updateOne(@PathVariable String pseudo, @RequestBody InsecureCredentials credentials) {
-        if (credentials.getPseudo() == null || credentials.getPassword() == null ||
-                !credentials.getPseudo().equals(pseudo)) {
+    @PutMapping("/authentication/{email}")
+    public void updateOne(@PathVariable String email, @RequestBody InsecureCredentials credentials) {
+        if (credentials.getEmail() == null || credentials.getPassword() == null ||
+            !credentials.getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         boolean found = service.updateOne(credentials);
         if (!found) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/authentication/{pseudo}")
-    public void deleteCredentials(@PathVariable String pseudo) {
-        boolean found = service.deleteOne(pseudo);
+    @DeleteMapping("/authentication/{email}")
+    public void deleteCredentials(@PathVariable String email) {
+        boolean found = service.deleteOne(email);
         if (!found) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-
 }

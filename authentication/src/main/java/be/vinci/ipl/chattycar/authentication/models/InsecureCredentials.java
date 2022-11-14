@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class InsecureCredentials {
-    private String pseudo;
+    private String email;
     private String password;
 
     public Credentials toCredentials(String hashedPassword) {
-        return new Credentials(pseudo, hashedPassword);
+        return new Credentials(email, hashedPassword);
     }
 }

@@ -1,17 +1,64 @@
 openapi: 3.0.3
 info:
-  title: Chatty Car Ride Sharing Service Authentication API
-  description: API for the authentication service of Chatty Car, the ride sharing app, implemented by Guillaume Piette.
+  title: Chatty Car authentication service
+  description: Microservice handling authentication and credentials database in Chatty Car project, implemented by Guillaume Piette.
   version: 1.0.0
 servers:
   - url: 'http://localhost:9004'
-    description: authentication server
-
+    description: Development server
 paths:
 
-  /auth:
+  /authenticate/connect:
     post:
-      summary: Connect user and retrieve authentication JWT token
+      summary: Connect user
+      requestBody:
+        description: Credentials of the user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        401:
+          description: Wrong username or password
+        200:
+          description: User connected, returned JWT token
+          content:
+            'text/plain':
+              schema:
+                type: string
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
+
+  /authentication/verify:
+    post:
+      summary: Verify JWT token
+      requestBody:
+        description: JWT token
+        content:
+          'text/plain':
+            schema:
+              type: string
+              example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
+      responses:
+        401:
+          description: Token couldn't be verified
+        200:
+          description: Token verified, returned user pseudo
+          content:
+            'application/json':
+              schema:
+                type: string
+                example: Cat4Life
+
+  /authentication/{email}:
+    parameters:
+      - name: email
+        in: path
+        description: email of the user
+        schema:
+          type: string
+
+    post:
+      summary: Create credentials
       requestBody:
         description: Credentials of the user
         content:
@@ -20,60 +67,38 @@ paths:
               $ref: '#/components/schemas/credentials'
       responses:
         400:
-          description: Credentials in request are not correct
-        401:
-          description: Wrong username or password
+          description: Incorrect credentials
+        409:
+          description: Credentials already exists
+        201:
+          description: Credentials created
+
+    put:
+      summary: Update credentials
+      requestBody:
+        description: Credentials of the user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        400:
+          description: Incorrect credentials
+        404:
+          description: Credentials not found
         200:
-          description: User authenticated, sent JWT token
-          content:
-            'text/plain':
-              schema:
-                type: string
-                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
+          description: Credentials updated
+
+    delete:
+      summary: Delete credentials
+      responses:
+        404:
+          description: Credentials not found
+        200:
+          description: Credentials deleted
 
 components:
-  securitySchemes:
-    authentication:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
   schemas:
-
-    newUser:
-      type: object
-      properties:
-        email:
-          type: string
-        firstname:
-          type: string
-        lastname:
-          type: string
-        password:
-          type: string
-      example:
-        email: gregory.seront@vinci.be
-        firstname: Gregory
-        lastname: Seront
-        password: password123
-
-    user:
-      type: object
-      properties:
-        id:
-          type: integer
-        email:
-          type: string
-        firstname:
-          type: string
-        lastname:
-          type: string
-      example:
-        id: 1
-        email: gregory.seront@vinci.be
-        firstname: Gregory
-        lastname: Seront
-
     credentials:
       type: object
       properties:

@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Entity(name = "credentials")
 public class Credentials {
     @Id
-    private String pseudo;
+    private String email;
     @Column(name = "hashed_password")
     private String hashedPassword;
 }

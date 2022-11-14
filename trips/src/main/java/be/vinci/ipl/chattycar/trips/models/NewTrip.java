@@ -17,7 +17,7 @@ public class NewTrip {
   private int driver_id;
   private int available_seat;
 
-  private static int index = 0;
+  private static int index = 1;
 
   public Trip toTrip() {
     Trip newTrip = new Trip(index, origin, destination, departure, driver_id,available_seat);

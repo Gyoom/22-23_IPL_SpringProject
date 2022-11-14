@@ -2,6 +2,7 @@ package be.vinci.ipl.chattycar.trips;
 
 import be.vinci.ipl.chattycar.trips.models.NewTrip;
 import be.vinci.ipl.chattycar.trips.models.Trip;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +17,12 @@ public class TripsService {
   /**
    * Creates a trip
    * @param newTrip NewTrip to create
-   * @return true if the trip could be created, false if another trip exists with this pseudo
+   * @return The trip if the trip could be created, null if another trip exists with this pseudo
    */
-  public boolean createOne(NewTrip newTrip) {
+  public Trip createOne(NewTrip newTrip) {
     if (repository.existsByOriginAndDestinationAndDepartureAndDriver_id(newTrip.getOrigin(), newTrip.getDestination(), newTrip.getDeparture(),
-        newTrip.getDriver_id())) return false;
-    repository.save(newTrip.toTrip());
-    return true;
+        newTrip.getDriver_id())) return null;
+    return repository.save(newTrip.toTrip());
   }
 
   /**
@@ -48,10 +48,11 @@ public class TripsService {
    * @param id int of the trip
    * @return True if the trip could be deleted, false if the trip couldn't be found
    */
-  public boolean deleteOne(int id) {
-    if (!repository.existsById(id)) return false;
+  public Trip deleteOne(int id) {
+    Trip trip = repository.findById(id).orElse(null);
+    if (trip == null) return null;
     repository.deleteById(id);
-    return true;
+    return trip;
   }
 
   /**
@@ -62,5 +63,15 @@ public class TripsService {
   public Iterable<Trip> readOneByDriver(int id) {
     return repository.findByDriver_id(id);
   }
+
+  /**
+   * Delete all the driver list trips.
+   * @param id int of the driver
+   * @return All the trip found.
+   */
+  public Iterable<Trip> deleteAllByDriver(int id) {
+    return repository.deleteByDriver_id(id);
+  }
+
 
 }

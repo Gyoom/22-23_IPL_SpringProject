@@ -1,0 +1,33 @@
+### Create a trip
+POST http://localhost:9001/trips
+Content-Type: application/json
+
+{
+  "origin": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "destination": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "departure": "2022-10-24",
+  "driver_id": 12,
+  "available_seating": 2
+}
+
+### Read all trips
+GET http://localhost:9001/trips
+
+### Read One trip
+GET http://localhost:9001/trips/1
+
+### Delete a trip
+DELETE http://localhost:9001/trips/1
+
+### Get a list trips from a driver
+GET http://localhost:9001/trips/driver/1
+
+### Detete a list trips from a driver
+DELETE http://localhost:9001/trips/driver/1
+

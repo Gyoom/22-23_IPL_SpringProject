@@ -12,9 +12,6 @@ paths:
   /trips:
     post:
       summary: Create a trip
-      security:
-        - authentication:
-            - any_user
       requestBody:
         description: Information of the trip
         content:
@@ -24,10 +21,8 @@ paths:
       responses:
         400:
           description: Trip in request is not correct
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
+        409:
+          description: The trip already exist
         201:
           description: Trip is created, sent trip created with its assigned ID
           content:
@@ -79,8 +74,6 @@ paths:
             example: 4.451009
           description: Longitude of the destination position
       responses:
-        400:
-          description: Both latitude and longitude should be specified for a position query
         200:
           description: Sent list of trips
           content:
@@ -102,6 +95,8 @@ paths:
     get:
       summary: Get trip information
       responses:
+        400:
+          description: Trip in request is not correct
         404:
           description: No trip found with this ID
         200:
@@ -112,17 +107,12 @@ paths:
                 $ref: '#/components/schemas/trip'
     delete:
       summary: Delete trip
-      security:
-        - authentication:
-            - driver
       responses:
-        401:
-          description: Missing authentication
-        403:
-          description: Not identified as the corresponding user
+        400:
+          description: Trip in request is not correct
         404:
           description: No trip found with this ID
-        201:
+        200:
           description: Trip is deleted
 
   /trips/driver/{driver_id}:
@@ -172,7 +162,7 @@ paths:
           description: Longitude of the destination position
       responses:
         400:
-          description: Both latitude and longitude should be specified for a position query
+          description: Trip in request is not correct
         200:
           description: Sent list of trips
           content:
@@ -182,14 +172,15 @@ paths:
                 maxItems: 10
                 items:
                   $ref: '#/components/schemas/trip'
+    delete:
+      summary: Delete the list trips of one driver
+      responses:
+        400:
+          description: Trip delete request is not correct
+        200:
+          description: Trips are deleted
 
 components:
-  securitySchemes:
-    authentication:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
   schemas:
 
     newTrip:

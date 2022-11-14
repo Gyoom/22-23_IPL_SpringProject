@@ -22,41 +22,57 @@ public class TripsController {
   }
 
   @PostMapping("/trips")
-  public ResponseEntity<Void> createOne(@RequestBody NewTrip newTrip) {
+  public ResponseEntity<Trip> createOne(@RequestBody NewTrip newTrip) {
     if (newTrip.getOrigin() == null || newTrip.getDestination() == null ||
         newTrip.getDeparture() == null || newTrip.getDriver_id() <= 0 ||
         newTrip.getAvailable_seat() < 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip in request is not correct");
     }
-    boolean created = service.createOne(newTrip);
-    if (!created) throw new ResponseStatusException(HttpStatus.CONFLICT);
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    Trip created = service.createOne(newTrip);
+    if (created == null) throw new ResponseStatusException(HttpStatus.CONFLICT, "Trip already exist");
+    return new ResponseEntity<>(created, HttpStatus.CREATED);
   }
 
   @GetMapping("/trips")
-  public Iterable<Trip> readAll() {;
+  public ResponseEntity<Iterable<Trip>> readAll() {
     Iterable<Trip> trips = service.readAll();
-
-    if (trips == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    return trips;
+    return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 
   @GetMapping("/trips/{id}")
-  public Trip readOne(@PathVariable int id) {
+  public ResponseEntity<Trip> readOne(@PathVariable int id) {
     Trip trip = service.readOne(id);
-    if (trip == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    return trip;
+    if (trip == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No trip found with this ID");
+    return new ResponseEntity(trip, HttpStatus.OK);
   }
 
   @DeleteMapping("/trips/{id}")
-  public void deleteOne(@PathVariable int id) {
-    boolean found = service.deleteOne(id);
-    if (!found) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+  public ResponseEntity<Trip> deleteOne(@PathVariable int id) {
+    if (id <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip in request is not correct");
+    }
+    Trip trip = service.deleteOne(id);
+    if (trip == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return new ResponseEntity(trip, HttpStatus.OK);
   }
 
   @GetMapping("/trips/driver/{id}")
-  public Iterable<Trip> readOneByDriver(@PathVariable int id) {
-    return service.readOneByDriver(id);
+  public ResponseEntity<Iterable<Trip>> readOneByDriver(@PathVariable int id) {
+    if (id <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip in request is not correct");
+    }
+    Iterable<Trip> trips = service.readOneByDriver(id);
+    return new ResponseEntity(trips, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/trips/driver/{id}")
+  public ResponseEntity<Iterable<Trip>> deleteAllByDriver(@PathVariable int id) {
+    if (id <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip in request is not correct");
+    }
+    Iterable<Trip> trips = service.deleteAllByDriver(id);
+    return new ResponseEntity(trips, HttpStatus.OK);
+
   }
 
 
