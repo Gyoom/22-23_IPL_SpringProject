@@ -44,7 +44,7 @@ public class PassengersServices {
    *
    * @param tripsId The id of a trip
    * @param userId The id of a user
-   * @return the status if the passenger has been found or null
+   * @return The status if the passenger has been found or null
    */
   public String getPassengerStatus(int tripsId, int userId) {
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
@@ -77,7 +77,7 @@ public class PassengersServices {
    * Get trips where user is a passenger with a future departure date by status.
    *
    * @param userId The id of a user
-   * @return all the trips of a user by status
+   * @return All the trips of a user by status
    */
   public PassengerTrips getPassengerTrips(int userId) {
     List<Passenger> passengerListOfUser = repository.findAllByUserId(userId);
@@ -101,7 +101,7 @@ public class PassengersServices {
    * Get list of passengers of a trip, with pending, accepted and refused status.
    *
    * @param tripId The id of a trip
-   * @return all the passengers by status
+   * @return All the passengers by status
    */
   public Passengers getTripPassengers(int tripId) {
     List<Passenger> passengerListOfTrip = repository.findAllByTripId(tripId);
@@ -125,9 +125,9 @@ public class PassengersServices {
   /**
    * Retrieve trips' properties from passenger object.
    *
-   * @param passengers a list of passenger
-   * @param status the status you want to have list of
-   * @return a list of trip
+   * @param passengers A list of passenger
+   * @param status The status you want to have list of
+   * @return A list of trips
    */
   private List<Trip> passengersToTrips(List<Passenger> passengers, String status) {
     return passengers
@@ -140,9 +140,9 @@ public class PassengersServices {
   /**
    * Retrieve users' properties from passenger object.
    *
-   * @param passengers a list of passenger
-   * @param status the status you want to have list of
-   * @return a list of user
+   * @param passengers A list of passenger
+   * @param status The status you want to have list of
+   * @return A list of user
    */
   private List<User> passengersToUsers(List<Passenger> passengers, String status) {
     return passengers

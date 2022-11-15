@@ -13,6 +13,12 @@ public class NotificationsServices {
     this.repository = repository;
   }
 
+  /**
+   * Add new notification.
+   *
+   * @param noIdNotification The new notification
+   * @return true if the notification has been created or false
+   */
   public boolean createNotification(NoIdNotification noIdNotification) {
     if (noIdNotification.getDate() == null || noIdNotification.getNotificationText() == null
         || noIdNotification.getTripId() == 0 || noIdNotification.getUserId() == 0)
@@ -22,10 +28,21 @@ public class NotificationsServices {
     return true;
   }
 
+  /**
+   * Get user notifications.
+   *
+   * @param userId The id of a user
+   * @return All user notification
+   */
   public Iterable<Notification> getNotifications(int userId) {
     return repository.findAllByUserId(userId);
   }
 
+  /**
+   * Delete user notifications.
+   *
+   * @param userId The id of a user
+   */
   public void deleteNotification(int userId) {
     repository.deleteAllByUserId(userId);
   }
