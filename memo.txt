@@ -1,0 +1,7 @@
+TRIPS
+  ResponseEntity<>
+  index trips IDENTITY
+  driver_id -> column(name="") + camel case
+
+USERS :
+  throw new ResponseStatusException plutot ResponseEntity<>

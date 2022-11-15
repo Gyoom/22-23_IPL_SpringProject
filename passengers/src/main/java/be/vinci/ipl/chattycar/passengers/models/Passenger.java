@@ -25,4 +25,10 @@ public class Passenger {
   @Column(name = "trip_id")
   private int tripId;
   private String status;
+
+  public Passenger(int userId, int tripId) {
+    this.userId = userId;
+    this.tripId = tripId;
+    this.status = "pending";
+  }
 }
