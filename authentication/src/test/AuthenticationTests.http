@@ -1,35 +1,35 @@
 ### Create credentials
-POST http://localhost:9004/authentication/Cat4Life
+POST http://localhost:9004/authentication/Chat4Life@test.com
 Content-Type: application/json
 
 {
-  "pseudo": "Cat4Life",
+  "email": "Chat4Life@test.com",
   "password": "azerty"
 }
 
 ### Update credentials
-PUT http://localhost:9004/authentication/Cat4Life
+PUT http://localhost:9004/authentication/Chat4Life@test.com
 Content-Type: application/json
 
 {
-  "pseudo": "Cat4Life",
+  "email": "Chat4Life@test.com",
   "password": "password123"
 }
 
 ### Delete credentials
-DELETE http://localhost:9004/authentication/Cat4Life
+DELETE http://localhost:9004/authentication/Chat4Life@test.com
 
 ### Connect user
 POST http://localhost:9004/authentication/connect
 Content-Type: application/json
 
 {
-  "pseudo": "Cat4Life",
-  "password": "azerty"
+  "email": "Chat4Life@test.com",
+  "password": "password123"
 }
 
 ### Verify token
 POST http://localhost:9004/authentication/verify
 Content-Type: application/json
 
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsImVtYWlsIjoiQ2hhdDRMaWZlQHRlc3QuY29tIn0.z5RIfkZDhc9Dvv4m-1UcxGN_tivuljmXQHOrVxK7JAAfB69yEo_XTeY5qQUjhwzUZcOKFJ-KTIj94CC-1ueNww
