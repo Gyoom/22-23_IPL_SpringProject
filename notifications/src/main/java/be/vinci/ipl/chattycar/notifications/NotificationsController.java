@@ -19,6 +19,12 @@ public class NotificationsController {
     this.service = service;
   }
 
+  /**
+   * Add a notification.
+   *
+   * @param noIdNotification The new notification
+   * @return 200 status code if th notification has been created or 400
+   */
   @PostMapping("/notifications")
   public ResponseEntity<String> createNotification(@RequestBody NoIdNotification noIdNotification) {
     if (service.createNotification(noIdNotification))
@@ -26,11 +32,23 @@ public class NotificationsController {
     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * Get user notifications.
+   *
+   * @param userId The id of a user
+   * @return 200 status code with all user notifications
+   */
   @GetMapping("/notifications/{user_id}")
   public ResponseEntity<Iterable<Notification>> getNotifications(@PathVariable("user_id") int userId) {
     return new ResponseEntity<>(service.getNotifications(userId), HttpStatus.OK);
   }
 
+  /**
+   * Delete all user notifications.
+   *
+   * @param userId The id of a user
+   * @return 200 status code
+   */
   @DeleteMapping("/notifications/{user_id}")
   public ResponseEntity<String> deleteNotification(@PathVariable("user_id") int userId) {
     service.deleteNotification(userId);

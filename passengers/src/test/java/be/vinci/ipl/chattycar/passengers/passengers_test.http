@@ -36,3 +36,4 @@ GET http://localhost:9003/passengers/trip/1
 
 ### DELETE ALL PASSENGER OF A TRIP
 DELETE http://localhost:9003/passengers/trip/1
+
