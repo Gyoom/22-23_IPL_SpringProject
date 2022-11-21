@@ -1,6 +1,7 @@
 package be.vinci.ipl.chattycar.notifications.models;
 
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class NoIdNotification {
   private int userId;
   private int tripId;

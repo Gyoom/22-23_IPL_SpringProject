@@ -35,4 +35,8 @@ public class Notification {
     this.date = date;
     this.notificationText = notificationText;
   }
+
+  public NoIdNotification toNoIdNotification() {
+    return new NoIdNotification(userId, tripId, date, notificationText);
+  }
 }
