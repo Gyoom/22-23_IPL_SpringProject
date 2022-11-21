@@ -40,17 +40,17 @@ public class GatewayService {
     }
 
     public void createUser(UserWithCredentials user) {
-        usersProxy.createUser(user.getPseudo(), user.toUser());
-        authenticationProxy.createCredentials(user.getPseudo(), user.toCredentials());
+        usersProxy.createUser(user.getEmail(), user.toUser()); // throw 409 if the email already exists
+        authenticationProxy.createCredentials(user.getEmail(), user.toCredentials());
     }
 
-    public User readUser(String pseudo) {
-        return usersProxy.readUser(pseudo);
+    public User readUser(String email) {
+        return usersProxy.readUser(email);
     }
 
-    public void updateUser(UserWithCredentials user) {
-        usersProxy.updateUser(user.getPseudo(), user.toUser());
-        authenticationProxy.updateCredentials(user.getPseudo(), user.toCredentials());
+    public void updateUser(UserWithId user) {
+        usersProxy.updateUser(user.getId(), user);
+        // TODO c'est pas là : authenticationProxy.updateCredentials(user.getPseudo(), user.toCredentials());
     }
 
     public void deleteUser(String pseudo) {

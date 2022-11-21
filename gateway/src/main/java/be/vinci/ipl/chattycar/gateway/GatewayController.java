@@ -29,25 +29,29 @@ public class GatewayController {
     }
 
 
-    @PostMapping("/users/{pseudo}")
-    ResponseEntity<Void> createUser(@PathVariable String pseudo, @RequestBody UserWithCredentials user) {
-        if (!user.getPseudo().equals(pseudo)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    @PostMapping("/users")
+    ResponseEntity<Void> createUser(@RequestBody UserWithCredentials user) {
+        if (user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null || user.getPassword() == null ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         service.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{pseudo}")
-    User readUser(@PathVariable String pseudo) {
-        return service.readUser(pseudo);
+    @GetMapping("/users")
+    User readUser(@RequestParam(value = "email") String email) {
+        return service.readUser(email);
     }
 
-    @PutMapping("/users/{pseudo}")
-    void updateUser(@PathVariable String pseudo, @RequestBody UserWithCredentials user, @RequestHeader("Authorization") String token) {
-        if (!user.getPseudo().equals(pseudo)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    // TODO PUT Update password
 
-        String userPseudo = service.verify(token);
-        if (!userPseudo.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    // TODO GET users/{id}
+
+    @PutMapping("/users/{id}")
+    void updateUser(@PathVariable int id, @RequestBody UserWithId user, @RequestHeader("Authorization") String token) {
+        if (user.getId() != id || user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        String userEmail = service.verify(token);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         service.updateUser(user);
     }
