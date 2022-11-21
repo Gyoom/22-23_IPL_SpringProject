@@ -1,224 +1,129 @@
-GET http://localhost:9006/notifications/1
+GET http://localhost:9001/trips
 
-<> 2022-11-21T114958.200.json
-
-###
-
-DELETE http://localhost:9006/notifications/1
+<> 2022-11-21T111804.200.json
 
 ###
 
-GET http://localhost:9006/notifications/1
+DELETE http://localhost:9001/trips/2
 
-<> 2022-11-21T114947.200.json
+<> 2022-11-21T111757.200.json
 
 ###
 
-POST http://localhost:9006/notifications
+GET http://localhost:9001/trips
+
+<> 2022-11-21T111748.200.json
+
+###
+
+DELETE http://localhost:9001/trips/driver/12
+
+<> 2022-11-21T111740.200.json
+
+###
+
+DELETE http://localhost:9001/trips/driver/1
+
+<> 2022-11-21T111732.200.json
+
+###
+
+GET http://localhost:9001/trips/driver/12
+
+<> 2022-11-21T111728.200.json
+
+###
+
+POST http://localhost:9001/trips
 Content-Type: application/json
 
 {
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Test"
+  "origin": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "destination": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "departure": "2022-10-25",
+  "driver_id": 12,
+  "available_seating": 2
 }
 
-<> 2022-11-21T114934.201.json
+<> 2022-11-21T111722.201.json
 
 ###
 
-GET http://localhost:9006/notifications/1
+GET http://localhost:9001/trips/driver/12
 
-<> 2022-11-21T114931.200.json
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113834.200.json
+<> 2022-11-21T111703.200.json
 
 ###
 
-POST http://localhost:9006/notifications
+GET http://localhost:9001/trips/2
+
+<> 2022-11-21T111655.200.json
+
+###
+
+GET http://localhost:9001/trips
+
+<> 2022-11-21T111639.200.json
+
+###
+
+POST http://localhost:9001/trips
 Content-Type: application/json
 
 {
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Test"
+  "origin": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "destination": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "departure": "2022-10-24",
+  "driver_id": 11,
+  "available_seating": 2
 }
+
+<> 2022-11-21T111633.201.json
 
 ###
 
-POST http://localhost:9006/notifications
+GET http://localhost:9001/trips/1
+
+<> 2022-11-21T111610.200.json
+
+###
+
+GET http://localhost:9001/trips
+
+<> 2022-11-21T111603.200.json
+
+###
+
+POST http://localhost:9001/trips
 Content-Type: application/json
 
 {
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Test"
+  "origin": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "destination": {
+    "latitude": 50.849372,
+    "longitude": 4.451009
+  },
+  "departure": "2022-10-24",
+  "driver_id": 12,
+  "available_seating": 2
 }
 
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113830.200.json
-
-###
-
-DELETE http://localhost:9006/notifications/1
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113815.200.json
-
-###
-
-POST http://localhost:9006/notifications
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Salute"
-}
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113808.200.json
-
-###
-
-POST http://localhost:9006/notifications
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Salute"
-}
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113414.500.json
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113412.500.json
-
-###
-
-POST http://localhost:9006/notifications
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Salute"
-}
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113408.200.json
-
-###
-
-DELETE http://localhost:9006/notifications/1
-
-###
-
-DELETE http://localhost:9006/notifications/1
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113137.200.json
-
-###
-
-DELETE http://localhost:9006/notifications/1
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113033.200.json
-
-###
-
-POST http://localhost:9006/notifications
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Salute"
-}
-
-###
-
-POST http://localhost:9006/notifications
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Salute"
-}
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T113022.200.json
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T112841.200.json
-
-###
-
-DELETE http://localhost:9006/notifications/1
-
-###
-
-GET http://localhost:9006/notifications/1
-
-<> 2022-11-21T112807.200.json
-
-###
-
-POST http://localhost:9006/notifications
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "tripId": 1,
-  "date": "2012-02-15",
-  "notificationText": "Salute"
-}
+<> 2022-11-21T111548.201.json
 
 ###
 
@@ -394,6 +299,123 @@ Content-Type: application/json
 GET http://localhost:9002/users
 
 <> 2022-11-14T122415.400.json
+
+###
+
+GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
+
+<> 2022-11-14T122412.200.json
+
+###
+
+GET http://localhost:9002/users/1
+
+<> 2022-11-14T122405.200.json
+
+###
+
+POST http://localhost:9002/users
+Content-Type: application/json
+
+{ "email": "eliott.rasumny@vinci.be",
+  "firstname": "Eliott",
+  "lastname": "Rasumny" }
+
+<> 2022-11-14T122401.409.json
+
+###
+
+GET http://localhost:9002/users/1
+
+<> 2022-11-14T122350.200.json
+
+###
+
+GET http://localhost:9002/users/0
+
+<> 2022-11-14T122344.404.json
+
+###
+
+POST http://localhost:9002/users
+Content-Type: application/json
+
+{ "email": "eliott.rasumny@vinci.be",
+  "firstname": "Eliott",
+  "lastname": "Rasumny" }
+
+<> 2022-11-14T122336.201.json
+
+###
+
+PUT http://localhost:9002/users/0
+Content-Type: application/json
+
+{ "id": 0,
+  "email": "eliott.rasumny@vinci.be",
+  "firstname": "Eliott",
+  "lastname": "Rasuuuuuu" }
+
+<> 2022-11-14T121852.404.json
+
+###
+
+GET http://localhost:9002/users
+
+<> 2022-11-14T120229.400.json
+
+###
+
+GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
+
+<> 2022-11-14T120157.200.json
+
+###
+
+GET http://localhost:9002/users?email=eliott.rasumny@vinci.b
+
+<> 2022-11-14T120143.404.json
+
+###
+
+GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
+
+<> 2022-11-14T120123.200.json
+
+###
+
+GET http://localhost:9002/users/0
+
+<> 2022-11-14T120119.200.json
+
+###
+
+POST http://localhost:9002/users
+Content-Type: application/json
+
+{ "email": "eliott.rasumny@vinci.be",
+  "firstname": "Eliott",
+  "lastname": "Rasumny" }
+
+<> 2022-11-14T120108.201.json
+
+###
+
+GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
+
+<> 2022-11-14T120054.404.json
+
+###
+
+GET http://localhost:9002/users/0
+
+<> 2022-11-14T114612.200.json
+
+###
+
+GET http://localhost:9002/users/1
+
+<> 2022-11-14T114603.404.json
 
 ###
 

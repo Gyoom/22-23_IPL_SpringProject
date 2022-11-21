@@ -11,7 +11,7 @@ Content-Type: application/json
     "latitude": 50.849372,
     "longitude": 4.451009
   },
-  "departure": "2022-10-24",
+  "departure": "2022-10-25",
   "driver_id": 12,
   "available_seating": 2
 }
@@ -20,14 +20,14 @@ Content-Type: application/json
 GET http://localhost:9001/trips
 
 ### Read One trip
-GET http://localhost:9001/trips/1
+GET http://localhost:9001/trips/2
 
 ### Delete a trip
-DELETE http://localhost:9001/trips/1
+DELETE http://localhost:9001/trips/2
 
 ### Get a list trips from a driver
-GET http://localhost:9001/trips/driver/1
+GET http://localhost:9001/trips/driver/12
 
 ### Detete a list trips from a driver
-DELETE http://localhost:9001/trips/driver/1
+DELETE http://localhost:9001/trips/driver/12
 
