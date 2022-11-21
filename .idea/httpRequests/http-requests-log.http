@@ -1,3 +1,227 @@
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T114958.200.json
+
+###
+
+DELETE http://localhost:9006/notifications/1
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T114947.200.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Test"
+}
+
+<> 2022-11-21T114934.201.json
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T114931.200.json
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113834.200.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Test"
+}
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Test"
+}
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113830.200.json
+
+###
+
+DELETE http://localhost:9006/notifications/1
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113815.200.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Salute"
+}
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113808.200.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Salute"
+}
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113414.500.json
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113412.500.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Salute"
+}
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113408.200.json
+
+###
+
+DELETE http://localhost:9006/notifications/1
+
+###
+
+DELETE http://localhost:9006/notifications/1
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113137.200.json
+
+###
+
+DELETE http://localhost:9006/notifications/1
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113033.200.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Salute"
+}
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Salute"
+}
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T113022.200.json
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T112841.200.json
+
+###
+
+DELETE http://localhost:9006/notifications/1
+
+###
+
+GET http://localhost:9006/notifications/1
+
+<> 2022-11-21T112807.200.json
+
+###
+
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripId": 1,
+  "date": "2012-02-15",
+  "notificationText": "Salute"
+}
+
+###
+
 GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
 
 <> 2022-11-14T123419.200.json
@@ -170,169 +394,6 @@ Content-Type: application/json
 GET http://localhost:9002/users
 
 <> 2022-11-14T122415.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T122412.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122405.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122401.409.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122350.200.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T122344.404.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122336.201.json
-
-###
-
-PUT http://localhost:9002/users/0
-Content-Type: application/json
-
-{ "id": 0,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T121852.404.json
-
-###
-
-GET http://localhost:9002/users
-
-<> 2022-11-14T120229.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120157.200.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.b
-
-<> 2022-11-14T120143.404.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120123.200.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T120119.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T120108.201.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120054.404.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T114612.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T114603.404.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T114548.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T114439.409.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T114404.201.json
-
-###
-
-GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
-
-<> 2022-11-07T154332.200.json
-
-###
-
-GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=23
-
-<> 2022-11-07T154247.200.json
-
-###
-
-GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
-
-<> 2022-11-07T154215.200.json
 
 ###
 
