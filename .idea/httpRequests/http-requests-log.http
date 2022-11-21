@@ -1,3 +1,174 @@
+POST http://localhost:9004/authentication/verify
+Content-Type: application/json
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsImVtYWlsIjoiQ2hhdDRMaWZlQHRlc3QuY29tIn0.z5RIfkZDhc9Dvv4m-1UcxGN_tivuljmXQHOrVxK7JAAfB69yEo_XTeY5qQUjhwzUZcOKFJ-KTIj94CC-1ueNww
+
+<> 2022-11-21T115608.200.txt
+
+###
+
+POST http://localhost:9004/authentication/connect
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+<> 2022-11-21T115559.200.txt
+
+###
+
+POST http://localhost:9004/authentication/verify
+Content-Type: application/json
+
+null
+
+<> 2022-11-21T115544.401.json
+
+###
+
+POST http://localhost:9004/authentication/connect
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+<> 2022-11-21T115541.200.txt
+
+###
+
+POST http://localhost:9004/authentication/verify
+Content-Type: application/json
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsImVtYWlsIjoiQ2hhdDRMaWZlQHRlc3QuY29tIn0.z5RIfkZDhc9Dvv4m-1UcxGN_tivuljmXQHOrVxK7JAAfB69yEo_XTeY5qQUjhwzUZcOKFJ-KTIj94CC-1ueNww
+
+<> 2022-11-21T115432.200.txt
+
+###
+
+POST http://localhost:9004/authentication/connect
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+<> 2022-11-21T115417.200.txt
+
+###
+
+POST http://localhost:9004/authentication/verify
+Content-Type: application/json
+Authorization: null
+
+<> 2022-11-21T115348.400.json
+
+###
+
+POST http://localhost:9004/authentication/connect
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+<> 2022-11-21T115344.200.txt
+
+###
+
+POST http://localhost:9004/authentication/verify
+Content-Type: application/json
+
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsImVtYWlsIjoiQ2hhdDRMaWZlQHRlc3QuY29tIn0.z5RIfkZDhc9Dvv4m-1UcxGN_tivuljmXQHOrVxK7JAAfB69yEo_XTeY5qQUjhwzUZcOKFJ-KTIj94CC-1ueNww"
+}
+
+<> 2022-11-21T114928.401.json
+
+###
+
+POST http://localhost:9004/authentication/connect
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+<> 2022-11-21T114855.200.txt
+
+###
+
+POST http://localhost:9004/authentication/verify
+Content-Type: application/json
+
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsImVtYWlsIjoiQ2hhdDRMaWZlQHRlc3QuY29tIn0.z5RIfkZDhc9Dvv4m-1UcxGN_tivuljmXQHOrVxK7JAAfB69yEo_XTeY5qQUjhwzUZcOKFJ-KTIj94CC-1ueNww"
+}
+
+<> 2022-11-21T114829.401.json
+
+###
+
+POST http://localhost:9004/authentication/connect
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+<> 2022-11-21T114713.200.txt
+
+###
+
+PUT http://localhost:9004/authentication/Chat4Life@test.com
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+###
+
+PUT http://localhost:9004/authentication/Chat4Life@test.com
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "password123"
+}
+
+###
+
+POST http://localhost:9004/authentication/Chat4Life@test.com
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "azerty"
+}
+
+###
+
+POST http://localhost:9004/authentication/Cat4Life
+Content-Type: application/json
+
+{
+  "email": "Chat4Life@test.com",
+  "password": "azerty"
+}
+
+<> 2022-11-21T114359.400.json
+
+###
+
 GET http://localhost:9001/trips
 
 <> 2022-11-21T111804.200.json
@@ -299,123 +470,6 @@ Content-Type: application/json
 GET http://localhost:9002/users
 
 <> 2022-11-14T122415.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T122412.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122405.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122401.409.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122350.200.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T122344.404.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122336.201.json
-
-###
-
-PUT http://localhost:9002/users/0
-Content-Type: application/json
-
-{ "id": 0,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T121852.404.json
-
-###
-
-GET http://localhost:9002/users
-
-<> 2022-11-14T120229.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120157.200.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.b
-
-<> 2022-11-14T120143.404.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120123.200.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T120119.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T120108.201.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120054.404.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T114612.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T114603.404.json
 
 ###
 
