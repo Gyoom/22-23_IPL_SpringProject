@@ -22,18 +22,17 @@ GET http://localhost:9003/passengers/1/1
 ### UPDATE PASSENGER STATUS WITH KNOWN STATUS BUT ALREADY ACCEPTED - 400
 PUT http://localhost:9003/passengers/1/1?status=refused
 
-### UPDATE PASSENGER STATUS WITH KNOWN STATUS BUT ALREADY ACCEPTED - 400
-PUT http://localhost:9003/passengers/1/1?status=refused
-
-### GET TRIPS OF A USER - 200
+### GET TRIPS OF A USER - 200 - one trip in accepted array
 GET http://localhost:9003/passengers/user/1
+
+### GET PASSENGERS OF A TRIP - 200 - user on accepted array
+GET http://localhost:9003/passengers/trip/1
 
 ### DELETE TRIPS OF A USER - 200
 DELETE http://localhost:9003/passengers/user/1
 
-### GET PASSENGERS OF A TRIP
+### GET PASSENGERS OF A TRIP - 200 - empty arrays
 GET http://localhost:9003/passengers/trip/1
 
-### DELETE ALL PASSENGER OF A TRIP
-DELETE http://localhost:9003/passengers/trip/1
-
+### GET TRIPS OF A USER - 200 - empty arrays
+GET http://localhost:9003/passengers/user/1
