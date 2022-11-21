@@ -1,3 +1,265 @@
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T123155.200.json
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T123153.200.json
+
+###
+
+DELETE http://localhost:9003/passengers/user/1
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T123145.200.json
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T123132.200.json
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=refused
+
+<> 2022-11-21T123128.400.json
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T123126.200.txt
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=accepted
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=notknownstatus
+
+<> 2022-11-21T123120.400.json
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T123117.400.json
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T123115.200.txt
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T123109.404.json
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T123108.404.json
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T122357.200.json
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T122318.200.json
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T122306.200.json
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T122303.200.json
+
+###
+
+DELETE http://localhost:9003/passengers/user/1
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T122255.200.json
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T122247.200.json
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=refused
+
+<> 2022-11-21T122242.400.json
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T122240.200.txt
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=notknownstatus
+
+<> 2022-11-21T122237.400.json
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=accepted
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T122229.200.txt
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T122224.404.json
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T122010.404.json
+
+###
+
+DELETE http://localhost:9003/passengers/user/1
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T121901.200.json
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T121850.200.json
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T121840.200.json
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+###
+
+GET http://localhost:9003/passengers/trip/1
+
+<> 2022-11-21T121815.200.json
+
+###
+
+DELETE http://localhost:9003/passengers/user/1
+
+###
+
+GET http://localhost:9003/passengers/user/1
+
+<> 2022-11-21T121744.200.json
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=refused
+
+<> 2022-11-21T121736.400.json
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=refused
+
+<> 2022-11-21T121733.400.json
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T121720.200.txt
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=accepted
+
+###
+
+PUT http://localhost:9003/passengers/1/1?status=notknownstatus
+
+<> 2022-11-21T121712.400.json
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T121703.400.json
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T121659.200.txt
+
+###
+
+POST http://localhost:9003/passengers/1/1
+
+###
+
+GET http://localhost:9003/passengers/1/1
+
+<> 2022-11-21T121649.404.json
+
+###
+
 GET http://localhost:9001/trips
 
 <> 2022-11-21T111804.200.json
@@ -7,415 +269,6 @@ GET http://localhost:9001/trips
 DELETE http://localhost:9001/trips/2
 
 <> 2022-11-21T111757.200.json
-
-###
-
-GET http://localhost:9001/trips
-
-<> 2022-11-21T111748.200.json
-
-###
-
-DELETE http://localhost:9001/trips/driver/12
-
-<> 2022-11-21T111740.200.json
-
-###
-
-DELETE http://localhost:9001/trips/driver/1
-
-<> 2022-11-21T111732.200.json
-
-###
-
-GET http://localhost:9001/trips/driver/12
-
-<> 2022-11-21T111728.200.json
-
-###
-
-POST http://localhost:9001/trips
-Content-Type: application/json
-
-{
-  "origin": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
-  },
-  "destination": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
-  },
-  "departure": "2022-10-25",
-  "driver_id": 12,
-  "available_seating": 2
-}
-
-<> 2022-11-21T111722.201.json
-
-###
-
-GET http://localhost:9001/trips/driver/12
-
-<> 2022-11-21T111703.200.json
-
-###
-
-GET http://localhost:9001/trips/2
-
-<> 2022-11-21T111655.200.json
-
-###
-
-GET http://localhost:9001/trips
-
-<> 2022-11-21T111639.200.json
-
-###
-
-POST http://localhost:9001/trips
-Content-Type: application/json
-
-{
-  "origin": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
-  },
-  "destination": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
-  },
-  "departure": "2022-10-24",
-  "driver_id": 11,
-  "available_seating": 2
-}
-
-<> 2022-11-21T111633.201.json
-
-###
-
-GET http://localhost:9001/trips/1
-
-<> 2022-11-21T111610.200.json
-
-###
-
-GET http://localhost:9001/trips
-
-<> 2022-11-21T111603.200.json
-
-###
-
-POST http://localhost:9001/trips
-Content-Type: application/json
-
-{
-  "origin": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
-  },
-  "destination": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
-  },
-  "departure": "2022-10-24",
-  "driver_id": 12,
-  "available_seating": 2
-}
-
-<> 2022-11-21T111548.201.json
-
-###
-
-GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
-
-<> 2022-11-14T123419.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122946.404.json
-
-###
-
-DELETE http://localhost:9002/users/1
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122938.201.json
-
-###
-
-DELETE http://localhost:9002/users/1
-
-<> 2022-11-14T122933.404.json
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-PUT http://localhost:9002/users/2
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T122601.400.json
-
-###
-
-PUT http://localhost:9002/users/2
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T122558.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T122552.200.json
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T122543.404.json
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.b",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 2,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T122510.400.json
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 2,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T122505.400.json
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122450.200.json
-
-###
-
-PUT http://localhost:9002/users/1
-Content-Type: application/json
-
-{ "id": 1,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-###
-
-GET http://localhost:9002/users
-
-<> 2022-11-14T122415.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T122412.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122405.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122401.409.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T122350.200.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T122344.404.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T122336.201.json
-
-###
-
-PUT http://localhost:9002/users/0
-Content-Type: application/json
-
-{ "id": 0,
-  "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasuuuuuu" }
-
-<> 2022-11-14T121852.404.json
-
-###
-
-GET http://localhost:9002/users
-
-<> 2022-11-14T120229.400.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120157.200.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.b
-
-<> 2022-11-14T120143.404.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120123.200.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T120119.200.json
-
-###
-
-POST http://localhost:9002/users
-Content-Type: application/json
-
-{ "email": "eliott.rasumny@vinci.be",
-  "firstname": "Eliott",
-  "lastname": "Rasumny" }
-
-<> 2022-11-14T120108.201.json
-
-###
-
-GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-
-<> 2022-11-14T120054.404.json
-
-###
-
-GET http://localhost:9002/users/0
-
-<> 2022-11-14T114612.200.json
-
-###
-
-GET http://localhost:9002/users/1
-
-<> 2022-11-14T114603.404.json
 
 ###
 

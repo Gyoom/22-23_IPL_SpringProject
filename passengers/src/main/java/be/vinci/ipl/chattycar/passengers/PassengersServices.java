@@ -3,11 +3,11 @@ package be.vinci.ipl.chattycar.passengers;
 import be.vinci.ipl.chattycar.passengers.data.PassengersRepository;
 import be.vinci.ipl.chattycar.passengers.data.TripsProxy;
 import be.vinci.ipl.chattycar.passengers.data.UsersProxy;
+import be.vinci.ipl.chattycar.passengers.models.NoIdTrip;
+import be.vinci.ipl.chattycar.passengers.models.NoIdUser;
 import be.vinci.ipl.chattycar.passengers.models.Passenger;
 import be.vinci.ipl.chattycar.passengers.models.PassengerTrips;
 import be.vinci.ipl.chattycar.passengers.models.Passengers;
-import be.vinci.ipl.chattycar.passengers.models.Trip;
-import be.vinci.ipl.chattycar.passengers.models.User;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class PassengersServices {
    * @return true if the passenger has been created
    */
   public boolean createPassenger(int tripsId, int userId) {
-    Trip trip = tripsProxy.readTrip(tripsId);
+    NoIdTrip trip = tripsProxy.readTrip(tripsId);
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
     if (passenger != null || trip == null || trip.getAvailable_seating() == 0) return false;
 
@@ -105,7 +105,6 @@ public class PassengersServices {
    */
   public Passengers getTripPassengers(int tripId) {
     List<Passenger> passengerListOfTrip = repository.findAllByTripId(tripId);
-
     Passengers tripPassengers = new Passengers();
     tripPassengers.setAccepted(passengersToUsers(passengerListOfTrip, "accepted"));
     tripPassengers.setRefused(passengersToUsers(passengerListOfTrip, "refused"));
@@ -129,7 +128,7 @@ public class PassengersServices {
    * @param status The status you want to have list of
    * @return A list of trips
    */
-  private List<Trip> passengersToTrips(List<Passenger> passengers, String status) {
+  private List<NoIdTrip> passengersToTrips(List<Passenger> passengers, String status) {
     return passengers
         .stream()
         .filter(p -> p.getStatus().equals(status))
@@ -144,7 +143,7 @@ public class PassengersServices {
    * @param status The status you want to have list of
    * @return A list of user
    */
-  private List<User> passengersToUsers(List<Passenger> passengers, String status) {
+  private List<NoIdUser> passengersToUsers(List<Passenger> passengers, String status) {
     return passengers
         .stream()
         .filter(p -> p.getStatus().equals(status))

@@ -1,7 +1,6 @@
 package be.vinci.ipl.chattycar.notifications;
 
 import be.vinci.ipl.chattycar.notifications.models.NoIdNotification;
-import be.vinci.ipl.chattycar.notifications.models.Notification;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
