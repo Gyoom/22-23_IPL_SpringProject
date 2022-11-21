@@ -7,6 +7,8 @@ import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
+import be.vinci.ipl.chattycar.gateway.models.Trip;
+import be.vinci.ipl.chattycar.gateway.models.Position;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -157,6 +159,16 @@ public class GatewayController {
         if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         service.deleteReview(id);
+    }
+
+    @PostMapping("/trips")
+    Trip createTrip(@RequestBody NewTrip trip, @RequestHeader("Authorization") String token){
+        String user = service.verify(token);
+
+        Trip createdTrip = service.createTrip(trip);
+
+        return createdTrip;
+
     }
 
 }

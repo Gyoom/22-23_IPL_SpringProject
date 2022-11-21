@@ -1,9 +1,6 @@
 package be.vinci.ipl.chattycar.gateway;
 
-import be.vinci.ipl.chattycar.gateway.data.AuthenticationProxy;
-import be.vinci.ipl.chattycar.gateway.data.ReviewsProxy;
-import be.vinci.ipl.chattycar.gateway.data.UsersProxy;
-import be.vinci.ipl.chattycar.gateway.data.VideosProxy;
+import be.vinci.ipl.chattycar.gateway.data.*;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
@@ -20,15 +17,18 @@ public class GatewayService {
     private final ReviewsProxy reviewsProxy;
     private final UsersProxy usersProxy;
     private final VideosProxy videosProxy;
+    private final TripsProxy tripsProxy;
 
     public GatewayService(AuthenticationProxy authenticationProxy,
                           ReviewsProxy reviewsProxy,
                           UsersProxy usersProxy,
-                          VideosProxy videosProxy) {
+                          VideosProxy videosProxy,
+                          TripsProxy tripsProxy) {
         this.authenticationProxy = authenticationProxy;
         this.reviewsProxy = reviewsProxy;
         this.usersProxy = usersProxy;
         this.videosProxy = videosProxy;
+        this.tripsProxy = tripsProxy;
     }
 
     public String connect(Credentials credentials) {
@@ -117,6 +117,10 @@ public class GatewayService {
 
     public Iterable<Video> readBestVideos() {
         return reviewsProxy.readBestVideos();
+    }
+
+    public Trip createTrip(NewTrip trip){
+        return tripsProxy.createOne(trip).getBody();
     }
 
 }
