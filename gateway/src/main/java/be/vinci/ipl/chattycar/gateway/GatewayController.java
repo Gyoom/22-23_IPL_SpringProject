@@ -4,7 +4,6 @@ import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
-import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
 import org.springframework.http.HttpStatus;
@@ -38,13 +37,25 @@ public class GatewayController {
     }
 
     @GetMapping("/users")
-    User readUser(@RequestParam(value = "email") String email) {
+    UserWithId readUser(@RequestParam(value = "email") String email) {
         return service.readUser(email);
     }
 
-    // TODO PUT Update password
+    @PutMapping("/users")
+    void updateUserPassword(@RequestBody Credentials credentials, @RequestHeader("Authorization") String token) {
+        if (credentials.getEmail() == null || credentials.getPassword() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-    // TODO GET users/{id}
+        String userEmail = service.verify(token);
+        if (!userEmail.equals(credentials.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        service.updateUserPassword(credentials);
+    }
+
+    @GetMapping("/users/{id}")
+    UserWithId getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        service.verify(token);
+        return service.getUser(id);
+    }
 
     @PutMapping("/users/{id}")
     void updateUser(@PathVariable int id, @RequestBody UserWithId user, @RequestHeader("Authorization") String token) {

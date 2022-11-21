@@ -13,8 +13,11 @@ public interface UsersProxy {
     @PostMapping("/users/{email}")
     void createUser(@PathVariable String email, @RequestBody User user);
 
-    @GetMapping("/users/{pseudo}")
-    User readUser(@PathVariable String pseudo);
+    @GetMapping("/users/{email}")
+    UserWithId readUser(@PathVariable String email);
+
+    @GetMapping("/users/{id}")
+    UserWithId getOne(@PathVariable int id);
 
     @PutMapping("/users/{id}")
     void updateUser(@PathVariable int id, @RequestBody UserWithId user);

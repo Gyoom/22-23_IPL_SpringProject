@@ -8,7 +8,6 @@ import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
-import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
 import org.springframework.stereotype.Service;
@@ -44,13 +43,20 @@ public class GatewayService {
         authenticationProxy.createCredentials(user.getEmail(), user.toCredentials());
     }
 
-    public User readUser(String email) {
+    public UserWithId readUser(String email) {
         return usersProxy.readUser(email);
+    }
+
+    public void updateUserPassword(Credentials credentials) {
+        authenticationProxy.updateOne(credentials.getEmail(), credentials);
+    }
+
+    public UserWithId getUser(int id) {
+        return usersProxy.getOne(id);
     }
 
     public void updateUser(UserWithId user) {
         usersProxy.updateUser(user.getId(), user);
-        // TODO c'est pas là : authenticationProxy.updateCredentials(user.getPseudo(), user.toCredentials());
     }
 
     public void deleteUser(String pseudo) {
