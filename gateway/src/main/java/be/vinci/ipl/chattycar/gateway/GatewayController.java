@@ -67,12 +67,13 @@ public class GatewayController {
         service.updateUser(user);
     }
 
-    @DeleteMapping("/users/{pseudo}")
-    void deleteUser(@PathVariable String pseudo, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        if (!user.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        String userEmail = service.verify(token);
+        UserWithId user = service.getUser(id);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        service.deleteUser(pseudo);
+        service.deleteUser(id);
     }
 
 

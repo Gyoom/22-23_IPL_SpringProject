@@ -22,7 +22,7 @@ public interface UsersProxy {
     @PutMapping("/users/{id}")
     void updateUser(@PathVariable int id, @RequestBody UserWithId user);
 
-    @DeleteMapping("/users/{email}")
-    void deleteUser(@PathVariable String email);
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable int id);
 
 }

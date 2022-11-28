@@ -1,6 +1,7 @@
 package be.vinci.ipl.chattycar.gateway;
 
 import be.vinci.ipl.chattycar.gateway.data.AuthenticationProxy;
+import be.vinci.ipl.chattycar.gateway.data.NotificationProxy;
 import be.vinci.ipl.chattycar.gateway.data.ReviewsProxy;
 import be.vinci.ipl.chattycar.gateway.data.UsersProxy;
 import be.vinci.ipl.chattycar.gateway.data.VideosProxy;
@@ -16,18 +17,15 @@ import org.springframework.stereotype.Service;
 public class GatewayService {
 
     private final AuthenticationProxy authenticationProxy;
-    private final ReviewsProxy reviewsProxy;
+    private final NotificationProxy notificationProxy;
     private final UsersProxy usersProxy;
-    private final VideosProxy videosProxy;
 
     public GatewayService(AuthenticationProxy authenticationProxy,
-                          ReviewsProxy reviewsProxy,
-                          UsersProxy usersProxy,
-                          VideosProxy videosProxy) {
+                          NotificationProxy notificationProxy,
+                          UsersProxy usersProxy) {
         this.authenticationProxy = authenticationProxy;
-        this.reviewsProxy = reviewsProxy;
+        this.notificationProxy = notificationProxy;
         this.usersProxy = usersProxy;
-        this.videosProxy = videosProxy;
     }
 
     public String connect(Credentials credentials) {
@@ -59,7 +57,7 @@ public class GatewayService {
         usersProxy.updateUser(user.getId(), user);
     }
 
-    public void deleteUser(String pseudo) {
+    public void deleteUser(int id) {
         reviewsProxy.deleteReviewsFromUser(pseudo);
         videosProxy.deleteVideosFromAuthor(pseudo);
         authenticationProxy.deleteCredentials(pseudo);
