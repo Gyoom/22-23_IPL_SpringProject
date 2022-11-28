@@ -4,6 +4,7 @@ import be.vinci.ipl.chattycar.gateway.data.*;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -75,12 +76,12 @@ public class GatewayService {
         return passengersProxy.getPassengerTrips(idUser);
     }
 
-    public PassengerTrips getUserNotification(int idUser) {
-        return passengersProxy.getPassengerTrips(idUser);
+    public List<Notification> getUserNotification(int idUser) {
+        return notificationProxy.getNotifications(idUser);
     }
 
-    public PassengerTrips deleteAllUserNotification(int idUser) {
-        return passengersProxy.getPassengerTrips(idUser);
+    public void deleteAllUserNotification(int idUser) {
+        notificationProxy.deleteNotification(idUser);
     }
 
     public Trip createTrip(NewTrip trip){
