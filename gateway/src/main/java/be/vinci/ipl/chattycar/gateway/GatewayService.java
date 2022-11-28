@@ -79,6 +79,14 @@ public class GatewayService {
         return passengersProxy.getPassengerTrips(idUser);
     }
 
+    public PassengerTrips getUserNotification(int idUser) {
+        return passengersProxy.getPassengerTrips(idUser);
+    }
+
+    public PassengerTrips deleteAllUserNotification(int idUser) {
+        return passengersProxy.getPassengerTrips(idUser);
+    }
+
 
     public Iterable<Video> readVideos() {
         return videosProxy.readVideos();

@@ -99,6 +99,30 @@ public class GatewayController {
         return service.getTripsOfUser(idUser);
     }
 
+    @GetMapping("/users/{id_user}/notifications")
+    public PassengerTrips getUserNotification(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        String email = service.verify(token);
+        UserWithId user = service.getUser(idUser);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        return service.getUserNotification(idUser);
+    }
+
+    @DeleteMapping("/users/{id_user}/notifications")
+    public PassengerTrips deleteAllUserNotification(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        String email = service.verify(token);
+        UserWithId user = service.getUser(idUser);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        return service.deleteAllUserNotification(idUser);
+    }
+
+
+
     @GetMapping("/users/{pseudo}/videos")
     Iterable<Video> readUserVideos(@PathVariable String pseudo) {
         return service.readVideosFromUser(pseudo);
