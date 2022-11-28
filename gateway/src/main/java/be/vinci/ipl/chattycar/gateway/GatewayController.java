@@ -2,10 +2,7 @@ package be.vinci.ipl.chattycar.gateway;
 
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
-import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
-import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
-import be.vinci.ipl.chattycar.gateway.models.Video;
 import be.vinci.ipl.chattycar.gateway.models.Trip;
 import be.vinci.ipl.chattycar.gateway.models.Position;
 import org.springframework.http.HttpStatus;
@@ -98,16 +95,6 @@ public class GatewayController {
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         return service.getTripsOfUser(idUser);
-    }
-
-    @GetMapping("/users/{pseudo}/videos")
-    Iterable<Video> readUserVideos(@PathVariable String pseudo) {
-        return service.readVideosFromUser(pseudo);
-    }
-
-    @GetMapping("/users/{pseudo}/reviews")
-    Iterable<Review> readUserReviews(@PathVariable String pseudo) {
-        return service.readReviewsFromUser(pseudo);
     }
 
     @PostMapping("/trips")
