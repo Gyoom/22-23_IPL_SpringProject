@@ -34,7 +34,6 @@ public class PassengersController {
 
     if (!service.createPassenger(tripsId, userId))
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
@@ -60,7 +59,6 @@ public class PassengersController {
    * @param tripsId The id of a trip
    * @param userId The id of a user
    * @param status The new status {"accepted" or "refused"}
-   * @return 200 response status if the status has been updated or 400
    */
   @PutMapping("/passengers/{trip_id}/{user_id}")
   public void updatePassengerStatus(@PathVariable("trip_id") int tripsId,
