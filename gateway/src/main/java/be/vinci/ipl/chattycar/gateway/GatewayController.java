@@ -77,6 +77,27 @@ public class GatewayController {
         service.deleteUser(pseudo);
     }
 
+    @GetMapping("/users/{id_driver}/driver")
+    public Iterable<Trip> getTripsOfDriver(@PathVariable("id_driver") int idDriver,
+        @RequestHeader("Authorization") String token) {
+
+        String email = service.verify(token);
+        UserWithId user = service.getUser(idDriver);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        return service.getTripsOfDriver(idDriver);
+    }
+
+    @GetMapping("/users/{id_user}/passenger")
+    public PassengerTrips getTripsOfUser(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        String email = service.verify(token);
+        UserWithId user = service.getUser(idUser);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        return service.getTripsOfUser(idUser);
+    }
 
     @GetMapping("/users/{pseudo}/videos")
     Iterable<Video> readUserVideos(@PathVariable String pseudo) {
@@ -127,7 +148,5 @@ public class GatewayController {
 
         return service.deleteOne(id);
     }
-
-
 
 }

@@ -24,7 +24,7 @@ public interface TripsProxy {
     ResponseEntity<Trip> deleteOne(@PathVariable int id);
 
     @GetMapping("/trips/driver/{id}")
-    ResponseEntity<Iterable<Trip>> readOneByDriver(@PathVariable int id);
+    Iterable<Trip> readOneByDriver(@PathVariable int id);
 
     @DeleteMapping("/trips/driver/{id}")
     ResponseEntity<Iterable<Trip>> deleteAllByDriver(@PathVariable int id);
