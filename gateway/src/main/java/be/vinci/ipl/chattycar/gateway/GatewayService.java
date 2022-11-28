@@ -7,6 +7,8 @@ import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -128,5 +130,9 @@ public class GatewayService {
     public Trip createTrip(NewTrip trip){
         return tripsProxy.createOne(trip).getBody();
     }
+
+    public ResponseEntity<Trip> readOne(int id){ return tripsProxy.readOne(id);}
+
+    public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
 
 }
