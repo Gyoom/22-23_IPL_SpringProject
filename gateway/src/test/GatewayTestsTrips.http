@@ -1,0 +1,127 @@
+### Create a driver
+POST http://localhost:8080/users/Seb
+Content-Type: application/json
+
+{
+  "pseudo": "Seb",
+  "firstname": "Sébastien",
+  "lastname": "Strebelle",
+  "password": "notsaying"
+}
+
+### Connect user
+POST http://localhost:8080/auth
+Content-Type: application/json
+
+{
+  "pseudo": "Seb",
+  "password": "notsaying"
+}
+
+> {% client.global.set("token", response.body) %}
+
+
+### Create a trip
+POST http://localhost:8080/trips
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "origin": {
+    "latitude": 1,
+    "longitude": 2
+  },
+  "destination": {
+    "latitude": 3,
+    "longitude": 5
+  },
+  "departure_date": "2022-12-03",
+  "driver_id": 0,
+  "available_seating": 15
+}
+
+### Get trip by search
+GET http://localhost:8080/trips
+Content-Type: application/json
+
+{
+  "originLat": 1,
+  "originLon": 2
+}
+
+### Get trip informations
+GET http://localhost:8080/trips/0
+Content-Type: application/json
+
+### Create passenger 1
+POST http://localhost:8080/users/Seb
+Content-Type: application/json
+
+{
+  "pseudo": "Pass_1",
+  "firstname": "Pass",
+  "lastname": "enger",
+  "password": "notsaying"
+}
+
+### Create passenger 2
+POST http://localhost:8080/users/Seb
+Content-Type: application/json
+
+{
+  "pseudo": "Pass_2",
+  "firstname": "Pass",
+  "lastname": "enger",
+  "password": "notsaying"
+}
+
+### Add Pass 1 to trip as pending
+POST http://localhost:8080/trips/0/passengers/1
+Content-Type: application/json
+Authorization: {{token}}
+
+### Add Pass 2 to trip as pending
+POST http://localhost:8080/trips/0/passengers/2
+Content-Type: application/json
+Authorization: {{token}}
+
+### Confirm Pass 1 place
+PUT http://localhost:8080/trips/0/passengers/1
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "status": "accepted"
+}
+
+### Delete Pass 2 from trip
+DELETE http://localhost:8080/trips/0/passengers/2
+Content-Type: application/json
+Authorization: {{token}}
+
+### Get Pass 1 informations
+GET http://localhost:8080/trips/0/passengers/1
+Content-Type: application/json
+Authorization: {{token}}
+
+### Get all passengers from the trip
+GET http://localhost:8080/trips/0/passengers
+Content-Type: application/json
+Authorization: {{token}}
+
+### Delete trip
+DELETE http://localhost:8080/trips/0
+Content-Type: application/json
+Authorization: {{token}}
+
+### Delete driver
+DELETE http://localhost:8080/users/Seb
+Authorization: {{token}}
+
+### Delete Pass 1
+DELETE http://localhost:8080/users/Pass_1
+Authorization: {{token}}
+
+### Delete Pass 2
+DELETE http://localhost:8080/users/Pass_2
+Authorization: {{token}}

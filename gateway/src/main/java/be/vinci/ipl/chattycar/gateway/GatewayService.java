@@ -1,16 +1,14 @@
 package be.vinci.ipl.chattycar.gateway;
 
-import be.vinci.ipl.chattycar.gateway.data.AuthenticationProxy;
-import be.vinci.ipl.chattycar.gateway.data.NotificationProxy;
-import be.vinci.ipl.chattycar.gateway.data.ReviewsProxy;
-import be.vinci.ipl.chattycar.gateway.data.UsersProxy;
-import be.vinci.ipl.chattycar.gateway.data.VideosProxy;
+import be.vinci.ipl.chattycar.gateway.data.*;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +17,24 @@ public class GatewayService {
     private final AuthenticationProxy authenticationProxy;
     private final NotificationProxy notificationProxy;
     private final UsersProxy usersProxy;
+    private final VideosProxy videosProxy;
+    private final TripsProxy tripsProxy;
+    private final PassengersProxy passengersProxy;
 
     public GatewayService(AuthenticationProxy authenticationProxy,
                           NotificationProxy notificationProxy,
                           UsersProxy usersProxy) {
+                          ReviewsProxy reviewsProxy,
+                          UsersProxy usersProxy,
+                          VideosProxy videosProxy,
+                          TripsProxy tripsProxy,
+                          PassengersProxy passengersProxy) {
         this.authenticationProxy = authenticationProxy;
         this.notificationProxy = notificationProxy;
         this.usersProxy = usersProxy;
+        this.videosProxy = videosProxy;
+        this.tripsProxy = tripsProxy;
+        this.passengersProxy = passengersProxy;
     }
 
     public String connect(Credentials credentials) {
@@ -63,6 +72,15 @@ public class GatewayService {
         authenticationProxy.deleteCredentials(pseudo);
         usersProxy.deleteUser(pseudo);
     }
+
+    public Iterable<Trip> getTripsOfDriver(int idDriver) {
+        return tripsProxy.readOneByDriver(idDriver);
+    }
+
+    public PassengerTrips getTripsOfUser(int idUser) {
+        return passengersProxy.getPassengerTrips(idUser);
+    }
+
 
     public Iterable<Video> readVideos() {
         return videosProxy.readVideos();
@@ -122,5 +140,13 @@ public class GatewayService {
     public Iterable<Video> readBestVideos() {
         return reviewsProxy.readBestVideos();
     }
+
+    public Trip createTrip(NewTrip trip){
+        return tripsProxy.createOne(trip).getBody();
+    }
+
+    public ResponseEntity<Trip> readOne(int id){ return tripsProxy.readOne(id);}
+
+    public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
 
 }
