@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,6 +36,31 @@ public class TripsController {
 
   @GetMapping("/trips")
   public ResponseEntity<Iterable<Trip>> readAll() {
+    Iterable<Trip> trips = service.readAll();
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping("/trips")
+  public ResponseEntity<Iterable<Trip>> readAllWithDepartureDate(
+      @RequestParam String departure_date) {
+    if (departure_date == "")  throw new ResponseStatusException(
+        HttpStatus.BAD_REQUEST, "departure date in request is not correct");
+    Iterable<Trip> trips = service.readAll();
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping("/trips")
+  public ResponseEntity<Iterable<Trip>> readAllWithOrigin(
+      @RequestParam float originLat,
+      @RequestParam float originLon) {
+    Iterable<Trip> trips = service.readAll();
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping("/trips")
+  public ResponseEntity<Iterable<Trip>> readAllWithDestination(
+      @RequestParam float destinationLat,
+      @RequestParam float destinationLon) {
     Iterable<Trip> trips = service.readAll();
     return new ResponseEntity<>(trips, HttpStatus.OK);
   }

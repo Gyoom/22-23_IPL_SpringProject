@@ -2,7 +2,10 @@ package be.vinci.ipl.chattycar.trips;
 
 import be.vinci.ipl.chattycar.trips.models.NewTrip;
 import be.vinci.ipl.chattycar.trips.models.Trip;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,6 +42,13 @@ public class TripsService {
    * @return All trips found.
    */
   public Iterable<Trip> readAll() {
+    return limitNumber(repository.findAll(), 20);
+  }
+
+  /**
+   *
+   */
+  public Iterable<Trip> readAllWithDepartureDate() {
     return repository.findAll();
   }
 
@@ -73,5 +83,10 @@ public class TripsService {
     return repository.deleteByDriverId(id);
   }
 
+  private Iterable<Trip> limitNumber(Iterable<Trip> trips, int limit) {
+    return StreamSupport.stream(trips.spliterator(), false)
+        .limit(limit)
+        .collect(Collectors.toList());
+  }
 
 }
