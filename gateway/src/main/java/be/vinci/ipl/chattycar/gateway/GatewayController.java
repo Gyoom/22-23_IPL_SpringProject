@@ -2,10 +2,7 @@ package be.vinci.ipl.chattycar.gateway;
 
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
-import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
-import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
-import be.vinci.ipl.chattycar.gateway.models.Video;
 import be.vinci.ipl.chattycar.gateway.models.Trip;
 import be.vinci.ipl.chattycar.gateway.models.Position;
 import org.springframework.http.HttpStatus;
@@ -69,12 +66,13 @@ public class GatewayController {
         service.updateUser(user);
     }
 
-    @DeleteMapping("/users/{pseudo}")
-    void deleteUser(@PathVariable String pseudo, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        if (!user.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        String userEmail = service.verify(token);
+        UserWithId user = service.getUser(id);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        service.deleteUser(pseudo);
+        service.deleteUser(id);
     }
 
     @GetMapping("/users/{id_driver}/driver")
@@ -119,18 +117,6 @@ public class GatewayController {
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         return service.deleteAllUserNotification(idUser);
-    }
-
-
-
-    @GetMapping("/users/{pseudo}/videos")
-    Iterable<Video> readUserVideos(@PathVariable String pseudo) {
-        return service.readVideosFromUser(pseudo);
-    }
-
-    @GetMapping("/users/{pseudo}/reviews")
-    Iterable<Review> readUserReviews(@PathVariable String pseudo) {
-        return service.readReviewsFromUser(pseudo);
     }
 
     @PostMapping("/trips")

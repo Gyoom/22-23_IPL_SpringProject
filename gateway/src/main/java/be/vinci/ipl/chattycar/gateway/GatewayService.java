@@ -3,11 +3,7 @@ package be.vinci.ipl.chattycar.gateway;
 import be.vinci.ipl.chattycar.gateway.data.*;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
-import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
-import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
-import be.vinci.ipl.chattycar.gateway.models.Video;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +11,20 @@ import org.springframework.stereotype.Service;
 public class GatewayService {
 
     private final AuthenticationProxy authenticationProxy;
-    private final ReviewsProxy reviewsProxy;
+    private final NotificationProxy notificationProxy;
     private final UsersProxy usersProxy;
-    private final VideosProxy videosProxy;
     private final TripsProxy tripsProxy;
     private final PassengersProxy passengersProxy;
 
     public GatewayService(AuthenticationProxy authenticationProxy,
-                          ReviewsProxy reviewsProxy,
+                          NotificationProxy notificationProxy,
                           UsersProxy usersProxy,
-                          VideosProxy videosProxy,
                           TripsProxy tripsProxy,
                           PassengersProxy passengersProxy) {
+
         this.authenticationProxy = authenticationProxy;
-        this.reviewsProxy = reviewsProxy;
+        this.notificationProxy = notificationProxy;
         this.usersProxy = usersProxy;
-        this.videosProxy = videosProxy;
         this.tripsProxy = tripsProxy;
         this.passengersProxy = passengersProxy;
     }
@@ -64,11 +58,13 @@ public class GatewayService {
         usersProxy.updateUser(user.getId(), user);
     }
 
-    public void deleteUser(String pseudo) {
+    public void deleteUser(int id) {
+        /*
         reviewsProxy.deleteReviewsFromUser(pseudo);
         videosProxy.deleteVideosFromAuthor(pseudo);
         authenticationProxy.deleteCredentials(pseudo);
         usersProxy.deleteUser(pseudo);
+         */
     }
 
     public Iterable<Trip> getTripsOfDriver(int idDriver) {
@@ -85,66 +81,6 @@ public class GatewayService {
 
     public PassengerTrips deleteAllUserNotification(int idUser) {
         return passengersProxy.getPassengerTrips(idUser);
-    }
-
-
-    public Iterable<Video> readVideos() {
-        return videosProxy.readVideos();
-    }
-
-    public void createVideo(Video video) {
-        usersProxy.readUser(video.getAuthor());
-        videosProxy.createVideo(video.getHash(), video);
-    }
-
-    public Video readVideo(String hash) {
-        return videosProxy.readVideo(hash);
-    }
-
-    public void updateVideo(Video video) {
-        videosProxy.updateVideo(video.getHash(), video);
-    }
-
-    public void deleteVideo(String hash) {
-        reviewsProxy.deleteReviewsOfVideo(hash);
-        videosProxy.deleteVideo(hash);
-    }
-
-    public Iterable<Video> readVideosFromUser(String pseudo) {
-        usersProxy.readUser(pseudo);
-        return videosProxy.readVideosFromAuthor(pseudo);
-    }
-
-    public Review createReview(NoIdReview review) {
-        usersProxy.readUser(review.getPseudo());
-        videosProxy.readVideo(review.getHash());
-        return reviewsProxy.createReview(review);
-    }
-
-    public Review readReview(long id) {
-        return reviewsProxy.readReview(id);
-    }
-
-    public void updateReview(Review review) {
-        reviewsProxy.updateReview(review.getId(), review);
-    }
-
-    public void deleteReview(long id) {
-        reviewsProxy.deleteReview(id);
-    }
-
-    public Iterable<Review> readReviewsFromUser(String pseudo) {
-        usersProxy.readUser(pseudo);
-        return reviewsProxy.readReviewsFromUser(pseudo);
-    }
-
-    public Iterable<Review> readReviewsOfVideo(String hash) {
-        videosProxy.readVideo(hash);
-        return reviewsProxy.readReviewsOfVideo(hash);
-    }
-
-    public Iterable<Video> readBestVideos() {
-        return reviewsProxy.readBestVideos();
     }
 
     public Trip createTrip(NewTrip trip){

@@ -52,6 +52,7 @@ paths:
   /authentication/{email}:
     parameters:
       - name: email
+        required: true
         in: path
         description: email of the user
         schema:
