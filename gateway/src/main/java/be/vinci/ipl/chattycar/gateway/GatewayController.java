@@ -178,12 +178,28 @@ public class GatewayController {
 
     @PostMapping("/trips")
     Trip createTrip(@RequestBody NewTrip trip, @RequestHeader("Authorization") String token){
-        String user = service.verify(token);
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        if (user.)
 
         Trip createdTrip = service.createTrip(trip);
 
         return createdTrip;
 
     }
+
+    @GetMapping("/trips")
+    ResponseEntity<Trip> readAll(){
+        //TODO ajouter arguments optionnels
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @GetMapping("/trips/{id}")
+    ResponseEntity<Trip> readOne(@PathVariable int id){
+        if ()
+    }
+
+
 
 }
