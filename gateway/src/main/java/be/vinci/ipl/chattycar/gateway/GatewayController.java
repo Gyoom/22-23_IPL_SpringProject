@@ -148,7 +148,7 @@ public class GatewayController {
     }
 
     @PostMapping("/trips/{trip_id}/passengers/{user_id}")
-    ResponseEntity<Void> addPendingPassengerInTrip(@PathVariable int tripsId, @PathVariable int userId, @RequestHeader("Authorization") String token){
+    ResponseEntity<Void> addPendingPassengerInTrip(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
         UserWithId user = service.readUser(userEmail);
 
@@ -165,7 +165,23 @@ public class GatewayController {
         return service.createPassenger(tripsId, userId);
     }
 
+    @GetMapping("/trips/{trips_id}/passengers/{user_id}")
+    String getPassengerStatus(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
 
+        Trip trip = service.readOne(tripsId).getBody();
+
+        if (trip == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return service.getPassengerStatus(tripsId, userId);
+    }
 
 
 

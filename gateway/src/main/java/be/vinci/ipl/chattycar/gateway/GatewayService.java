@@ -142,4 +142,5 @@ public class GatewayService {
 
     public ResponseEntity<Void> createPassenger(int tripsId, int userId){return passengersProxy.createPassenger(tripsId, userId);}
 
+    public String getPassengerStatus(int tripsId, int userId){return passengersProxy.getPassengerStatus(tripsId, userId);}
 }
