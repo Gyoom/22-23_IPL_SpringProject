@@ -19,17 +19,20 @@ public class GatewayService {
     private final UsersProxy usersProxy;
     private final VideosProxy videosProxy;
     private final TripsProxy tripsProxy;
+    private final PassengersProxy passengersProxy;
 
     public GatewayService(AuthenticationProxy authenticationProxy,
                           ReviewsProxy reviewsProxy,
                           UsersProxy usersProxy,
                           VideosProxy videosProxy,
-                          TripsProxy tripsProxy) {
+                          TripsProxy tripsProxy,
+                          PassengersProxy passengersProxy) {
         this.authenticationProxy = authenticationProxy;
         this.reviewsProxy = reviewsProxy;
         this.usersProxy = usersProxy;
         this.videosProxy = videosProxy;
         this.tripsProxy = tripsProxy;
+        this.passengersProxy = passengersProxy;
     }
 
     public String connect(Credentials credentials) {
@@ -134,5 +137,7 @@ public class GatewayService {
     public ResponseEntity<Trip> readOne(int id){ return tripsProxy.readOne(id);}
 
     public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
+
+    public Passengers getTripPassengers(int id){return passengersProxy.getTripPassengers(id);}
 
 }

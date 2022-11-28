@@ -25,7 +25,6 @@ public interface VideosProxy {
     @DeleteMapping("/videos/{hash}")
     void deleteVideo(@PathVariable String hash);
 
-
     @GetMapping("/videos/author/{pseudo}")
     Iterable<Video> readVideosFromAuthor(@PathVariable String pseudo);
 

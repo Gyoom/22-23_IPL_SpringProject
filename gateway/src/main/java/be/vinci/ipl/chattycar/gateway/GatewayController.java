@@ -1,5 +1,6 @@
 package be.vinci.ipl.chattycar.gateway;
 
+import be.vinci.ipl.chattycar.gateway.data.PassengersProxy;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
@@ -126,6 +127,24 @@ public class GatewayController {
         }
 
         return service.deleteOne(id);
+    }
+
+    @GetMapping("/trips/{id}/passengers")
+    Passengers getTripsPassengers(@PathVariable int id, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        Trip trip = service.readOne(id).getBody();
+
+        if (trip == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getId() != trip.getDriverId()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return service.getTripPassengers(id);
     }
 
 
