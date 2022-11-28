@@ -6,6 +6,8 @@ import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
+import be.vinci.ipl.chattycar.gateway.models.Trip;
+import be.vinci.ipl.chattycar.gateway.models.Position;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,92 +88,46 @@ public class GatewayController {
         return service.readReviewsFromUser(pseudo);
     }
 
+    @PostMapping("/trips")
+    Trip createTrip(@RequestBody NewTrip trip, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
 
-    @GetMapping("/videos")
-    Iterable<Video> readVideos() {
-        return service.readVideos();
+        if (user.getId() != trip.getDriver_id()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Trip createdTrip = service.createTrip(trip);
+
+        return createdTrip;
+
+    }
+
+    @GetMapping("/trips")
+    ResponseEntity<Trip> readAll(){
+        //TODO ajouter arguments optionnels
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @GetMapping("/trips/{id}")
+    ResponseEntity<Trip> readOne(@PathVariable int id){
+        return service.readOne(id);
+    }
+
+    @DeleteMapping("/trips/{id}")
+    ResponseEntity<Trip> deleteOne(@PathVariable int id, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        Trip trip = service.readOne(id).getBody();
+
+        if (trip.getDriverId() != user.getId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return service.deleteOne(id);
     }
 
 
-    @GetMapping("/videos/best")
-    Iterable<Video> readBestVideos() {
-        return service.readBestVideos();
-    }
-
-
-    @PostMapping("/videos/{hash}")
-    ResponseEntity<Void> createVideo(@PathVariable String hash, @RequestBody Video video, @RequestHeader("Authorization") String token) {
-        if (!video.getHash().equals(hash)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        String user = service.verify(token);
-        if (!video.getAuthor().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.createVideo(video);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @GetMapping("/videos/{hash}")
-    Video readVideo(@PathVariable String hash) {
-        return service.readVideo(hash);
-    }
-
-    @PutMapping("/videos/{hash}")
-    void updateVideo(@PathVariable String hash, @RequestBody Video video, @RequestHeader("Authorization") String token) {
-        if (!video.getHash().equals(hash)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        String user = service.verify(token);
-        if (!video.getAuthor().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.updateVideo(video);
-    }
-
-    @DeleteMapping("/videos/{hash}")
-    void deleteVideo(@PathVariable String hash, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        Video video = service.readVideo(hash);
-        if (!video.getAuthor().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.deleteVideo(hash);
-    }
-
-
-    @GetMapping("/videos/{hash}/reviews")
-    Iterable<Review> readVideoReviews(@PathVariable String hash) {
-        return service.readReviewsOfVideo(hash);
-    }
-
-
-    @PostMapping("/reviews")
-    ResponseEntity<Review> createReview(@RequestBody NoIdReview review, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        Review createdReview = service.createReview(review);
-        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/reviews/{id}")
-    Review readReview(@PathVariable long id) {
-        return service.readReview(id);
-    }
-
-    @PutMapping("/reviews/{id}")
-    void updateReview(@PathVariable long id, @RequestBody Review review, @RequestHeader("Authorization") String token) {
-        if (review.getId() != id) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        String user = service.verify(token);
-        if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.updateReview(review);
-    }
-
-    @DeleteMapping("/reviews/{id}")
-    void deleteReview(@PathVariable long id, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        Review review = service.readReview(id);
-        if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.deleteReview(id);
-    }
 
 }
