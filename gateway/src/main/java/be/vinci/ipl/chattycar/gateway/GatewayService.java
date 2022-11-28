@@ -5,7 +5,6 @@ import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
-import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
 import org.springframework.stereotype.Service;
@@ -40,17 +39,24 @@ public class GatewayService {
     }
 
     public void createUser(UserWithCredentials user) {
-        usersProxy.createUser(user.getPseudo(), user.toUser());
-        authenticationProxy.createCredentials(user.getPseudo(), user.toCredentials());
+        usersProxy.createUser(user.getEmail(), user.toUser()); // throw 409 if the email already exists
+        authenticationProxy.createCredentials(user.getEmail(), user.toCredentials());
     }
 
-    public User readUser(String pseudo) {
-        return usersProxy.readUser(pseudo);
+    public UserWithId readUser(String email) {
+        return usersProxy.readUser(email);
     }
 
-    public void updateUser(UserWithCredentials user) {
-        usersProxy.updateUser(user.getPseudo(), user.toUser());
-        authenticationProxy.updateCredentials(user.getPseudo(), user.toCredentials());
+    public void updateUserPassword(Credentials credentials) {
+        authenticationProxy.updateOne(credentials.getEmail(), credentials);
+    }
+
+    public UserWithId getUser(int id) {
+        return usersProxy.getOne(id);
+    }
+
+    public void updateUser(UserWithId user) {
+        usersProxy.updateUser(user.getId(), user);
     }
 
     public void deleteUser(String pseudo) {

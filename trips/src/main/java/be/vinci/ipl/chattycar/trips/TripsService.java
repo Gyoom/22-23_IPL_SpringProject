@@ -20,7 +20,7 @@ public class TripsService {
    * @return The trip if the trip could be created, null if another trip exists with this pseudo
    */
   public Trip createOne(NewTrip newTrip) {
-    if (repository.existsByOriginAndDestinationAndDepartureAndDriver_id(newTrip.getOrigin(), newTrip.getDestination(), newTrip.getDeparture(),
+    if (repository.existsByOriginAndDestinationAndDepartureAndDriverId(newTrip.getOrigin(), newTrip.getDestination(), newTrip.getDeparture(),
         newTrip.getDriver_id())) return null;
     return repository.save(newTrip.toTrip());
   }
@@ -61,7 +61,7 @@ public class TripsService {
    * @return All the trip found.
    */
   public Iterable<Trip> readOneByDriver(int id) {
-    return repository.findByDriver_id(id);
+    return repository.findByDriverId(id);
   }
 
   /**
@@ -70,7 +70,7 @@ public class TripsService {
    * @return All the trip found.
    */
   public Iterable<Trip> deleteAllByDriver(int id) {
-    return repository.deleteByDriver_id(id);
+    return repository.deleteByDriverId(id);
   }
 
 

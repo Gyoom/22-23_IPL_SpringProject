@@ -4,7 +4,6 @@ import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
 import be.vinci.ipl.chattycar.gateway.models.Review;
-import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Video;
 import be.vinci.ipl.chattycar.gateway.models.Trip;
@@ -31,25 +30,41 @@ public class GatewayController {
     }
 
 
-    @PostMapping("/users/{pseudo}")
-    ResponseEntity<Void> createUser(@PathVariable String pseudo, @RequestBody UserWithCredentials user) {
-        if (!user.getPseudo().equals(pseudo)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    @PostMapping("/users")
+    ResponseEntity<Void> createUser(@RequestBody UserWithCredentials user) {
+        if (user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null || user.getPassword() == null ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         service.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{pseudo}")
-    User readUser(@PathVariable String pseudo) {
-        return service.readUser(pseudo);
+    @GetMapping("/users")
+    UserWithId readUser(@RequestParam(value = "email") String email) {
+        return service.readUser(email);
     }
 
-    @PutMapping("/users/{pseudo}")
-    void updateUser(@PathVariable String pseudo, @RequestBody UserWithCredentials user, @RequestHeader("Authorization") String token) {
-        if (!user.getPseudo().equals(pseudo)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    @PutMapping("/users")
+    void updateUserPassword(@RequestBody Credentials credentials, @RequestHeader("Authorization") String token) {
+        if (credentials.getEmail() == null || credentials.getPassword() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        String userPseudo = service.verify(token);
-        if (!userPseudo.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        String userEmail = service.verify(token);
+        if (!userEmail.equals(credentials.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        service.updateUserPassword(credentials);
+    }
+
+    @GetMapping("/users/{id}")
+    UserWithId getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        service.verify(token);
+        return service.getUser(id);
+    }
+
+    @PutMapping("/users/{id}")
+    void updateUser(@PathVariable int id, @RequestBody UserWithId user, @RequestHeader("Authorization") String token) {
+        if (user.getId() != id || user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        String userEmail = service.verify(token);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         service.updateUser(user);
     }

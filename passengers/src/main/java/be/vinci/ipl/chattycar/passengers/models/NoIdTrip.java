@@ -1,20 +1,22 @@
 package be.vinci.ipl.chattycar.passengers.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-public class Trip {
-  private int id;
+@AllArgsConstructor
+public class NoIdTrip {
   private Position origin;
   private Position destination;
   private LocalDate departure;
+  @JsonProperty("driver_id")
   private int driverId;
-  private int available_seating;
+  @JsonProperty("available_seating")
+  private int availableSeating;
 }

@@ -17,7 +17,7 @@ public class UsersController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createOne(@RequestBody NewUser newUser) {
+    public ResponseEntity<User> createUser(@RequestBody NewUser newUser) {
         if (newUser.getEmail() == null || newUser.getFirstname() == null ||
                 newUser.getLastname() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -28,7 +28,7 @@ public class UsersController {
     }
 
     @GetMapping("/users")
-    public User findByEmail(@RequestParam(value = "email") String email) {
+    public User readUser(@RequestParam(value = "email") String email) {
         User user = service.findByEmail(email);
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return user;
@@ -42,7 +42,7 @@ public class UsersController {
     }
 
     @PutMapping("/users/{id}")
-    public void updateOne(@PathVariable int id, @RequestBody User user) {
+    public void updateUser(@PathVariable int id, @RequestBody User user) {
         if (id != user.getId() || user.getEmail() == null ||
                 user.getLastname() == null || user.getFirstname() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

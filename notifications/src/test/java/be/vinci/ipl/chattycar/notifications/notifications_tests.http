@@ -1,0 +1,19 @@
+### CREATE NOTIFICATION - 201 with the created notification
+POST http://localhost:9006/notifications
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "trip_id": 1,
+  "date": "2012-02-15",
+  "notification_text": "Test"
+}
+
+### GET NOTIFICATION - 200 wih notification body
+GET http://localhost:9006/notifications/1
+
+### DELETE ALL NOTIFICATIONS OF A USER - 200
+DELETE http://localhost:9006/notifications/1
+
+### GET NOTIFICATION OF A USER - 200 but empty array
+GET http://localhost:9006/notifications/1

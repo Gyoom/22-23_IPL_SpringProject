@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class PassengersController {
@@ -20,54 +21,92 @@ public class PassengersController {
     this.service = service;
   }
 
+  /**
+   * Add user as passenger to a trip with pending status.
+   *
+   * @param tripsId The id of a trip
+   * @param userId The id of a user
+   * @return 201 status code if created or 400
+   */
   @PostMapping("/passengers/{trip_id}/{user_id}")
-  public ResponseEntity<String> createPassenger(@PathVariable("trip_id") int tripsId,
+  public ResponseEntity<Void> createPassenger(@PathVariable("trip_id") int tripsId,
       @PathVariable("user_id") int userId) {
 
-    if (service.createPassenger(tripsId, userId)) {
-      return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    if (!service.createPassenger(tripsId, userId))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
+  /**
+   * Get passenger status in relation to a trip.
+   *
+   * @param tripsId The id of a trip
+   * @param userId The id of a user
+   * @return 200 response status with the status if the passenger has been found or 400
+   */
   @GetMapping("/passengers/{trip_id}/{user_id}")
-  public ResponseEntity<String> getPassengerStatus(@PathVariable("trip_id") int tripsId,
+  public String getPassengerStatus(@PathVariable("trip_id") int tripsId,
       @PathVariable("user_id") int userId) {
 
     String passengerStatus = service.getPassengerStatus(tripsId, userId);
-    if (passengerStatus == null)
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    return new ResponseEntity<>(passengerStatus, HttpStatus.OK);
+    if (passengerStatus == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return passengerStatus;
   }
 
+  /**
+   * Update passenger status.
+   *
+   * @param tripsId The id of a trip
+   * @param userId The id of a user
+   * @param status The new status {"accepted" or "refused"}
+   */
   @PutMapping("/passengers/{trip_id}/{user_id}")
-  public ResponseEntity<String> updatePassengerStatus(@PathVariable("trip_id") int tripsId,
+  public void updatePassengerStatus(@PathVariable("trip_id") int tripsId,
       @PathVariable("user_id") int userId, @RequestParam("status") String status) {
 
-    if (service.updatePassengerStatus(tripsId, userId, status))
-      return new ResponseEntity<>(HttpStatus.OK);
-    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    if (!service.updatePassengerStatus(tripsId, userId, status))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * Get trips where user is a passenger with a future departure date by status.
+   *
+   * @param userId The id of a user
+   * @return 200 response status with all the trips of a user by status
+   */
   @GetMapping("/passengers/user/{user_id}")
-  public ResponseEntity<PassengerTrips> getPassengerTrips(@PathVariable("user_id") int userId) {
-    return new ResponseEntity<>(service.getPassengerTrips(userId), HttpStatus.OK);
+  public PassengerTrips getPassengerTrips(@PathVariable("user_id") int userId) {
+    return service.getPassengerTrips(userId);
   }
 
+  /**
+   * Remove all of a user's participation from a trip.
+   *
+   * @param userId The id of a user
+   */
   @DeleteMapping("/passengers/user/{user_id}")
-  public ResponseEntity<String> removeAllParticipation(@PathVariable("user_id") int userId) {
+  public void removeAllParticipation(@PathVariable("user_id") int userId) {
     service.removeAllParticipation(userId);
-    return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  /**
+   * Get list of passengers of a trip, with pending, accepted and refused status.
+   *
+   * @param tripId The id of a trip
+   * @return 200 response status with all the passengers by status
+   */
   @GetMapping("/passengers/trip/{trip_id}")
-  public ResponseEntity<Passengers> getTripPassengers(@PathVariable("trip_id") int tripId) {
-    return new ResponseEntity<>(service.getTripPassengers(tripId), HttpStatus.OK);
+  public Passengers getTripPassengers(@PathVariable("trip_id") int tripId) {
+    return service.getTripPassengers(tripId);
   }
 
+  /**
+   * Remove all passengers of a trip.
+   *
+   * @param tripId The id of a trip
+   */
   @DeleteMapping("/passengers/trip/{trip_id}")
-  public ResponseEntity<String> removeAllPassenger(@PathVariable("trip_id") int tripId) {
+  public void removeAllPassenger(@PathVariable("trip_id") int tripId) {
     service.removeAllPassenger(tripId);
-    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
