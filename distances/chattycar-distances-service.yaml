@@ -41,7 +41,8 @@ paths:
             example: 40.451009
           description: Longitude of the second position
       responses:
-        #TODO(Eliott) 400: est ce qu'il faut tester si les query params sont là ou bien le "required: true" le check tout seul ?
+        400:
+          description: A parameters is missing
         200:
           description: Sent the distance between the two positions
           content:

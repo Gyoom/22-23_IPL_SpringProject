@@ -115,7 +115,15 @@ paths:
         200:
           description: Trip is deleted
 
-  /trips/driver/{driver_id}:
+  /trips/driver/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 38
+        description: ID of the driver
     get:
       summary: get the list of trips for a specific driver.
       description:

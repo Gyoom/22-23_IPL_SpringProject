@@ -2,11 +2,10 @@ package be.vinci.ipl.chattycar.gateway;
 
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
-import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
-import be.vinci.ipl.chattycar.gateway.models.Review;
-import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
-import be.vinci.ipl.chattycar.gateway.models.Video;
+import be.vinci.ipl.chattycar.gateway.models.Trip;
+import be.vinci.ipl.chattycar.gateway.models.Position;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,134 +28,132 @@ public class GatewayController {
     }
 
 
-    @PostMapping("/users/{pseudo}")
-    ResponseEntity<Void> createUser(@PathVariable String pseudo, @RequestBody UserWithCredentials user) {
-        if (!user.getPseudo().equals(pseudo)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    @PostMapping("/users")
+    ResponseEntity<Void> createUser(@RequestBody UserWithCredentials user) {
+        if (user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null || user.getPassword() == null ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         service.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{pseudo}")
-    User readUser(@PathVariable String pseudo) {
-        return service.readUser(pseudo);
+    @GetMapping("/users")
+    UserWithId readUser(@RequestParam(value = "email") String email) {
+        return service.readUser(email);
     }
 
-    @PutMapping("/users/{pseudo}")
-    void updateUser(@PathVariable String pseudo, @RequestBody UserWithCredentials user, @RequestHeader("Authorization") String token) {
-        if (!user.getPseudo().equals(pseudo)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    @PutMapping("/users")
+    void updateUserPassword(@RequestBody Credentials credentials, @RequestHeader("Authorization") String token) {
+        if (credentials.getEmail() == null || credentials.getPassword() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        String userPseudo = service.verify(token);
-        if (!userPseudo.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        String userEmail = service.verify(token);
+        if (!userEmail.equals(credentials.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        service.updateUserPassword(credentials);
+    }
+
+    @GetMapping("/users/{id}")
+    UserWithId getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        service.verify(token);
+        return service.getUser(id);
+    }
+
+    @PutMapping("/users/{id}")
+    void updateUser(@PathVariable int id, @RequestBody UserWithId user, @RequestHeader("Authorization") String token) {
+        if (user.getId() != id || user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        String userEmail = service.verify(token);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         service.updateUser(user);
     }
 
-    @DeleteMapping("/users/{pseudo}")
-    void deleteUser(@PathVariable String pseudo, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        if (!user.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        String userEmail = service.verify(token);
+        UserWithId user = service.getUser(id);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        service.deleteUser(pseudo);
+        service.deleteUser(id);
     }
 
+    @GetMapping("/users/{id_driver}/driver")
+    public Iterable<Trip> getTripsOfDriver(@PathVariable("id_driver") int idDriver,
+        @RequestHeader("Authorization") String token) {
 
-    @GetMapping("/users/{pseudo}/videos")
-    Iterable<Video> readUserVideos(@PathVariable String pseudo) {
-        return service.readVideosFromUser(pseudo);
+        isAuthorized(token, idDriver);
+        return service.getTripsOfDriver(idDriver);
     }
 
-    @GetMapping("/users/{pseudo}/reviews")
-    Iterable<Review> readUserReviews(@PathVariable String pseudo) {
-        return service.readReviewsFromUser(pseudo);
+    @GetMapping("/users/{id_user}/passenger")
+    public PassengerTrips getTripsOfUser(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        isAuthorized(token, idUser);
+        return service.getTripsOfUser(idUser);
     }
 
+    @GetMapping("/users/{id_user}/notifications")
+    public ResponseEntity<List<Notification>> getUserNotification(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
 
-    @GetMapping("/videos")
-    Iterable<Video> readVideos() {
-        return service.readVideos();
+        isAuthorized(token, idUser);
+        return new ResponseEntity<>(service.getUserNotification(idUser), HttpStatus.OK);
     }
 
+    @DeleteMapping("/users/{id_user}/notifications")
+    public void deleteAllUserNotification(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
 
-    @GetMapping("/videos/best")
-    Iterable<Video> readBestVideos() {
-        return service.readBestVideos();
+        isAuthorized(token, idUser);
+        service.deleteAllUserNotification(idUser);
     }
 
-
-    @PostMapping("/videos/{hash}")
-    ResponseEntity<Void> createVideo(@PathVariable String hash, @RequestBody Video video, @RequestHeader("Authorization") String token) {
-        if (!video.getHash().equals(hash)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        String user = service.verify(token);
-        if (!video.getAuthor().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.createVideo(video);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    private void isAuthorized(String token, int idUser) {
+        if (token == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        String email = service.verify(token);
+        UserWithId user = service.getUser(idUser);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
-    @GetMapping("/videos/{hash}")
-    Video readVideo(@PathVariable String hash) {
-        return service.readVideo(hash);
+    @PostMapping("/trips")
+    Trip createTrip(@RequestBody NewTrip trip, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        if (user.getId() != trip.getDriver_id()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Trip createdTrip = service.createTrip(trip);
+
+        return createdTrip;
+
     }
 
-    @PutMapping("/videos/{hash}")
-    void updateVideo(@PathVariable String hash, @RequestBody Video video, @RequestHeader("Authorization") String token) {
-        if (!video.getHash().equals(hash)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        String user = service.verify(token);
-        if (!video.getAuthor().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.updateVideo(video);
+    @GetMapping("/trips")
+    ResponseEntity<Trip> readAll(){
+        //TODO ajouter arguments optionnels
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @DeleteMapping("/videos/{hash}")
-    void deleteVideo(@PathVariable String hash, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        Video video = service.readVideo(hash);
-        if (!video.getAuthor().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.deleteVideo(hash);
+    @GetMapping("/trips/{id}")
+    ResponseEntity<Trip> readOne(@PathVariable int id){
+        return service.readOne(id);
     }
 
+    @DeleteMapping("/trips/{id}")
+    ResponseEntity<Trip> deleteOne(@PathVariable int id, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
 
-    @GetMapping("/videos/{hash}/reviews")
-    Iterable<Review> readVideoReviews(@PathVariable String hash) {
-        return service.readReviewsOfVideo(hash);
-    }
+        Trip trip = service.readOne(id).getBody();
 
+        if (trip.getDriverId() != user.getId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
 
-    @PostMapping("/reviews")
-    ResponseEntity<Review> createReview(@RequestBody NoIdReview review, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        Review createdReview = service.createReview(review);
-        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/reviews/{id}")
-    Review readReview(@PathVariable long id) {
-        return service.readReview(id);
-    }
-
-    @PutMapping("/reviews/{id}")
-    void updateReview(@PathVariable long id, @RequestBody Review review, @RequestHeader("Authorization") String token) {
-        if (review.getId() != id) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        String user = service.verify(token);
-        if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.updateReview(review);
-    }
-
-    @DeleteMapping("/reviews/{id}")
-    void deleteReview(@PathVariable long id, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        Review review = service.readReview(id);
-        if (!review.getPseudo().equals(user)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        service.deleteReview(id);
+        return service.deleteOne(id);
     }
 
 }

@@ -1,4 +1,4 @@
-package be.vinci.ipl.chattycar.passengers.models;
+package be.vinci.ipl.chattycar.gateway.models;
 
 import java.util.List;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class PassengerTrips {
-  private List<NoIdTrip> pending;
-  private List<NoIdTrip> accepted;
-  private List<NoIdTrip> refused;
+  private List<NewTrip> pending;
+  private List<NewTrip> accepted;
+  private List<NewTrip> refused;
 }

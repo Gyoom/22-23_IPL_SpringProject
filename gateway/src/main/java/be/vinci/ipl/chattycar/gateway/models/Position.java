@@ -7,8 +7,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private String email;
-    private String firstname;
-    private String lastname;
+public class Position {
+  private double longitude;
+  private double latitude;
 }

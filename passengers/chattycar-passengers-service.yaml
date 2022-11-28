@@ -128,8 +128,6 @@ components:
     trip:
       type: object
       properties:
-        id:
-          type: integer
         origin:
           $ref: '#/components/schemas/position'
         destination:
@@ -142,7 +140,6 @@ components:
         available_seating:
           type: integer
       example:
-        id: 38
         origin:
           latitude: 50.849372
           longitude: 4.451009
@@ -188,8 +185,6 @@ components:
     user:
       type: object
       properties:
-        id:
-          type: integer
         email:
           type: string
         firstname:
@@ -197,7 +192,6 @@ components:
         lastname:
           type: string
       example:
-        id: 1
         email: gregory.seront@vinci.be
         firstname: Gregory
         lastname: Seront

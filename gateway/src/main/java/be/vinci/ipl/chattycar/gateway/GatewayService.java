@@ -1,34 +1,33 @@
 package be.vinci.ipl.chattycar.gateway;
 
-import be.vinci.ipl.chattycar.gateway.data.AuthenticationProxy;
-import be.vinci.ipl.chattycar.gateway.data.ReviewsProxy;
-import be.vinci.ipl.chattycar.gateway.data.UsersProxy;
-import be.vinci.ipl.chattycar.gateway.data.VideosProxy;
+import be.vinci.ipl.chattycar.gateway.data.*;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
-import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
-import be.vinci.ipl.chattycar.gateway.models.Review;
-import be.vinci.ipl.chattycar.gateway.models.User;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
-import be.vinci.ipl.chattycar.gateway.models.Video;
+import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GatewayService {
 
     private final AuthenticationProxy authenticationProxy;
-    private final ReviewsProxy reviewsProxy;
+    private final NotificationProxy notificationProxy;
     private final UsersProxy usersProxy;
-    private final VideosProxy videosProxy;
+    private final TripsProxy tripsProxy;
+    private final PassengersProxy passengersProxy;
 
     public GatewayService(AuthenticationProxy authenticationProxy,
-                          ReviewsProxy reviewsProxy,
+                          NotificationProxy notificationProxy,
                           UsersProxy usersProxy,
-                          VideosProxy videosProxy) {
+                          TripsProxy tripsProxy,
+                          PassengersProxy passengersProxy) {
+
         this.authenticationProxy = authenticationProxy;
-        this.reviewsProxy = reviewsProxy;
+        this.notificationProxy = notificationProxy;
         this.usersProxy = usersProxy;
-        this.videosProxy = videosProxy;
+        this.tripsProxy = tripsProxy;
+        this.passengersProxy = passengersProxy;
     }
 
     public String connect(Credentials credentials) {
@@ -40,83 +39,57 @@ public class GatewayService {
     }
 
     public void createUser(UserWithCredentials user) {
-        usersProxy.createUser(user.getPseudo(), user.toUser());
-        authenticationProxy.createCredentials(user.getPseudo(), user.toCredentials());
+        usersProxy.createUser(user.getEmail(), user.toUser()); // throw 409 if the email already exists
+        authenticationProxy.createCredentials(user.getEmail(), user.toCredentials());
     }
 
-    public User readUser(String pseudo) {
-        return usersProxy.readUser(pseudo);
+    public UserWithId readUser(String email) {
+        return usersProxy.readUser(email);
     }
 
-    public void updateUser(UserWithCredentials user) {
-        usersProxy.updateUser(user.getPseudo(), user.toUser());
-        authenticationProxy.updateCredentials(user.getPseudo(), user.toCredentials());
+    public void updateUserPassword(Credentials credentials) {
+        authenticationProxy.updateOne(credentials.getEmail(), credentials);
     }
 
-    public void deleteUser(String pseudo) {
+    public UserWithId getUser(int id) {
+        return usersProxy.getOne(id);
+    }
+
+    public void updateUser(UserWithId user) {
+        usersProxy.updateUser(user.getId(), user);
+    }
+
+    public void deleteUser(int id) {
+        /*
         reviewsProxy.deleteReviewsFromUser(pseudo);
         videosProxy.deleteVideosFromAuthor(pseudo);
         authenticationProxy.deleteCredentials(pseudo);
         usersProxy.deleteUser(pseudo);
+         */
     }
 
-    public Iterable<Video> readVideos() {
-        return videosProxy.readVideos();
+    public Iterable<Trip> getTripsOfDriver(int idDriver) {
+        return tripsProxy.readOneByDriver(idDriver);
     }
 
-    public void createVideo(Video video) {
-        usersProxy.readUser(video.getAuthor());
-        videosProxy.createVideo(video.getHash(), video);
+    public PassengerTrips getTripsOfUser(int idUser) {
+        return passengersProxy.getPassengerTrips(idUser);
     }
 
-    public Video readVideo(String hash) {
-        return videosProxy.readVideo(hash);
+    public List<Notification> getUserNotification(int idUser) {
+        return notificationProxy.getNotifications(idUser);
     }
 
-    public void updateVideo(Video video) {
-        videosProxy.updateVideo(video.getHash(), video);
+    public void deleteAllUserNotification(int idUser) {
+        notificationProxy.deleteNotification(idUser);
     }
 
-    public void deleteVideo(String hash) {
-        reviewsProxy.deleteReviewsOfVideo(hash);
-        videosProxy.deleteVideo(hash);
+    public Trip createTrip(NewTrip trip){
+        return tripsProxy.createOne(trip).getBody();
     }
 
-    public Iterable<Video> readVideosFromUser(String pseudo) {
-        usersProxy.readUser(pseudo);
-        return videosProxy.readVideosFromAuthor(pseudo);
-    }
+    public ResponseEntity<Trip> readOne(int id){ return tripsProxy.readOne(id);}
 
-    public Review createReview(NoIdReview review) {
-        usersProxy.readUser(review.getPseudo());
-        videosProxy.readVideo(review.getHash());
-        return reviewsProxy.createReview(review);
-    }
-
-    public Review readReview(long id) {
-        return reviewsProxy.readReview(id);
-    }
-
-    public void updateReview(Review review) {
-        reviewsProxy.updateReview(review.getId(), review);
-    }
-
-    public void deleteReview(long id) {
-        reviewsProxy.deleteReview(id);
-    }
-
-    public Iterable<Review> readReviewsFromUser(String pseudo) {
-        usersProxy.readUser(pseudo);
-        return reviewsProxy.readReviewsFromUser(pseudo);
-    }
-
-    public Iterable<Review> readReviewsOfVideo(String hash) {
-        videosProxy.readVideo(hash);
-        return reviewsProxy.readReviewsOfVideo(hash);
-    }
-
-    public Iterable<Video> readBestVideos() {
-        return reviewsProxy.readBestVideos();
-    }
+    public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
 
 }
