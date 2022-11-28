@@ -1,3 +1,17 @@
+POST http://localhost:8080/users/Seb
+Content-Type: application/json
+
+{
+  "pseudo": "Seb",
+  "firstname": "Sébastien",
+  "lastname": "Strebelle",
+  "password": "notsaying"
+}
+
+<> 2022-11-14T154704.503.json
+
+###
+
 GET http://localhost:9005/distances?lat1=3&lon1=4&lat2=5&lon2=6
 
 <> 2022-11-14T123419.200.json
