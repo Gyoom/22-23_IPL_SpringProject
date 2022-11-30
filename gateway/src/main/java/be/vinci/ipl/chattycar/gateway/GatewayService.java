@@ -62,12 +62,8 @@ public class GatewayService {
     }
 
     public void deleteUser(int id) {
-        /*
-        reviewsProxy.deleteReviewsFromUser(pseudo);
-        videosProxy.deleteVideosFromAuthor(pseudo);
-        authenticationProxy.deleteCredentials(pseudo);
-        usersProxy.deleteUser(pseudo);
-         */
+        passengersProxy.removeAllParticipation(id);
+        usersProxy.deleteUser(id);
     }
 
     public Iterable<Trip> getTripsOfDriver(int idDriver) {
