@@ -7,8 +7,6 @@ import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class GatewayService {
@@ -96,7 +94,7 @@ public class GatewayService {
 
     public String getPassengerStatus(int tripsId, int userId){return passengersProxy.getPassengerStatus(tripsId, userId);}
 
-    public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);};
+    public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);}
 
-    public void removeAllParticipation(int userId){passengersProxy.removeAllParticipation(userId);};
+    public void removeAllParticipation(int userId){passengersProxy.removeAllParticipation(userId);}
 }
