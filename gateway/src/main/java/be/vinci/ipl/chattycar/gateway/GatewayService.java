@@ -60,12 +60,8 @@ public class GatewayService {
     }
 
     public void deleteUser(int id) {
-        /*
-        reviewsProxy.deleteReviewsFromUser(pseudo);
-        videosProxy.deleteVideosFromAuthor(pseudo);
-        authenticationProxy.deleteCredentials(pseudo);
-        usersProxy.deleteUser(pseudo);
-         */
+        passengersProxy.removeAllParticipation(id);
+        usersProxy.deleteUser(id);
     }
 
     public Iterable<Trip> getTripsOfDriver(int idDriver) {
@@ -92,4 +88,13 @@ public class GatewayService {
 
     public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
 
+    public Passengers getTripPassengers(int id){return passengersProxy.getTripPassengers(id);}
+
+    public ResponseEntity<Void> createPassenger(int tripsId, int userId){return passengersProxy.createPassenger(tripsId, userId);}
+
+    public String getPassengerStatus(int tripsId, int userId){return passengersProxy.getPassengerStatus(tripsId, userId);}
+
+    public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);}
+
+    public void removeAllParticipation(int userId){passengersProxy.removeAllParticipation(userId);}
 }

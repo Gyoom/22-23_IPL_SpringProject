@@ -1,5 +1,6 @@
 package be.vinci.ipl.chattycar.gateway;
 
+import be.vinci.ipl.chattycar.gateway.data.PassengersProxy;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
@@ -155,5 +156,102 @@ public class GatewayController {
 
         return service.deleteOne(id);
     }
+
+    @GetMapping("/trips/{id}/passengers")
+    Passengers getTripsPassengers(@PathVariable int id, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        Trip trip = service.readOne(id).getBody();
+
+        if (trip == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getId() != trip.getDriverId()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return service.getTripPassengers(id);
+    }
+
+    @PostMapping("/trips/{trip_id}/passengers/{user_id}")
+    ResponseEntity<Void> addPendingPassengerInTrip(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        Trip trip = service.readOne(tripsId).getBody();
+
+        if (trip == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return service.createPassenger(tripsId, userId);
+    }
+
+    @GetMapping("/trips/{trips_id}/passengers/{user_id}")
+    String getPassengerStatus(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        Trip trip = service.readOne(tripsId).getBody();
+
+        if (trip == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return service.getPassengerStatus(tripsId, userId);
+    }
+
+
+    @PutMapping("/trips/{trips_id}/passengers/{user_id}")
+    void updatePassengerStatus(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token, @RequestBody String status){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        String oldStatus = service.getPassengerStatus(tripsId, userId);
+
+        if (oldStatus == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        service.updatePassengerStatus(tripsId, userId, status);
+    }
+
+    @DeleteMapping("/trips/{trips_id}/passengers/{user_id}")
+    void deletePassenger(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        String oldStatus = service.getPassengerStatus(tripsId, userId);
+
+        if (oldStatus == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        service.removeAllParticipation(userId);
+        //TODO modifier la méthode
+
+
+    }
+
+
+
 
 }
