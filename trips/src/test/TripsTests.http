@@ -3,30 +3,48 @@ POST http://localhost:9001/trips
 Content-Type: application/json
 
 {
+  "departure": "2022-10-25",
   "origin": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
+    "latitude": 50.849371,
+    "longitude": 4.451008
   },
   "destination": {
-    "latitude": 50.849372,
-    "longitude": 4.451009
+    "latitude": 50.849373,
+    "longitude": 4.45101
   },
-  "departure": "2022-10-25",
   "driver_id": 12,
-  "available_seating": 2
+  "available_seat": 3
 }
 
-### Read all trips
+### Get all trips
 GET http://localhost:9001/trips
 
-### Read One trip
+### Get all trips with this date
+GET http://localhost:9001/trips?departure_date=2022-10-25
+
+### Get all trips with this origin coordinates
+GET http://localhost:9001/trips?originLat=50.849371&originLon=4.451008
+
+### Get all trips with this destination coordinates
+GET http://localhost:9001/trips?destinationLat=50.849373&destination=4.45101
+
+### Get One trip
 GET http://localhost:9001/trips/2
 
 ### Delete a trip
 DELETE http://localhost:9001/trips/2
 
-### Get a list trips from a driver
+### Get All trips from a driver
 GET http://localhost:9001/trips/driver/12
+
+### Get all trips from a driver with this date
+GET http://localhost:9001/trips/driver/12?departure_date=2022-10-25
+
+### Get all trips from a driver with this origin coordinates
+GET http://localhost:9001/trips/driver/12?originLat=50.849371&originLon=4.451008
+
+### Get all trips from a driver with this destination coordinates
+GET http://localhost:9001/trips/driver/12?destinationLat=50.849373&destination=4.45101
 
 ### Detete a list trips from a driver
 DELETE http://localhost:9001/trips/driver/12

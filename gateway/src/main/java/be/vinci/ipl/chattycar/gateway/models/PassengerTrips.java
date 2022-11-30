@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class PassengerTrips {
-  private List<NoIdTrip> pending;
-  private List<NoIdTrip> accepted;
-  private List<NoIdTrip> refused;
+  private List<NewTrip> pending;
+  private List<NewTrip> accepted;
+  private List<NewTrip> refused;
 }

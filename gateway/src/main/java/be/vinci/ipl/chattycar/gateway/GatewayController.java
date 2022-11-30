@@ -3,12 +3,10 @@ package be.vinci.ipl.chattycar.gateway;
 import be.vinci.ipl.chattycar.gateway.data.PassengersProxy;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
-import be.vinci.ipl.chattycar.gateway.models.NoIdReview;
-import be.vinci.ipl.chattycar.gateway.models.Review;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
-import be.vinci.ipl.chattycar.gateway.models.Video;
 import be.vinci.ipl.chattycar.gateway.models.Trip;
 import be.vinci.ipl.chattycar.gateway.models.Position;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,23 +68,53 @@ public class GatewayController {
         service.updateUser(user);
     }
 
-    @DeleteMapping("/users/{pseudo}")
-    void deleteUser(@PathVariable String pseudo, @RequestHeader("Authorization") String token) {
-        String user = service.verify(token);
-        if (!user.equals(pseudo)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        String userEmail = service.verify(token);
+        UserWithId user = service.getUser(id);
+        if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        service.deleteUser(pseudo);
+        service.deleteUser(id);
     }
 
+    @GetMapping("/users/{id_driver}/driver")
+    public Iterable<Trip> getTripsOfDriver(@PathVariable("id_driver") int idDriver,
+        @RequestHeader("Authorization") String token) {
 
-    @GetMapping("/users/{pseudo}/videos")
-    Iterable<Video> readUserVideos(@PathVariable String pseudo) {
-        return service.readVideosFromUser(pseudo);
+        isAuthorized(token, idDriver);
+        return service.getTripsOfDriver(idDriver);
     }
 
-    @GetMapping("/users/{pseudo}/reviews")
-    Iterable<Review> readUserReviews(@PathVariable String pseudo) {
-        return service.readReviewsFromUser(pseudo);
+    @GetMapping("/users/{id_user}/passenger")
+    public PassengerTrips getTripsOfUser(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        isAuthorized(token, idUser);
+        return service.getTripsOfUser(idUser);
+    }
+
+    @GetMapping("/users/{id_user}/notifications")
+    public ResponseEntity<List<Notification>> getUserNotification(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        isAuthorized(token, idUser);
+        return new ResponseEntity<>(service.getUserNotification(idUser), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{id_user}/notifications")
+    public void deleteAllUserNotification(@PathVariable("id_user") int idUser,
+        @RequestHeader("Authorization") String token) {
+
+        isAuthorized(token, idUser);
+        service.deleteAllUserNotification(idUser);
+    }
+
+    private void isAuthorized(String token, int idUser) {
+        if (token == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        String email = service.verify(token);
+        UserWithId user = service.getUser(idUser);
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/trips")

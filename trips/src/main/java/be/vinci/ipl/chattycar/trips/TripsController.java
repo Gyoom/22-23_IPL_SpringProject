@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -39,6 +40,31 @@ public class TripsController {
     return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 
+  @GetMapping(value = "/trips", params = { "departure_date"})
+  public ResponseEntity<Iterable<Trip>> readAllWithDepartureDate(
+      @RequestParam String departure_date) {
+    if (departure_date == "")  throw new ResponseStatusException(
+        HttpStatus.BAD_REQUEST, "departure date in request is not correct");
+    Iterable<Trip> trips = service.readWithDepartureDate(departure_date);
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/trips", params = { "originLat", "originLon"})
+  public ResponseEntity<Iterable<Trip>> readAllWithOrigin(
+      @RequestParam float originLat,
+      @RequestParam float originLon) {
+    Iterable<Trip> trips = service.readWithOrigin(originLat, originLon);
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/trips", params = { "destinationLat", "destinationLon"})
+  public ResponseEntity<Iterable<Trip>> readAllWithDestination(
+      @RequestParam float destinationLat,
+      @RequestParam float destinationLon) {
+    Iterable<Trip> trips = service.readWithDestination(destinationLat, destinationLon);
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
   @GetMapping("/trips/{id}")
   public ResponseEntity<Trip> readOne(@PathVariable int id) {
     Trip trip = service.readOne(id);
@@ -57,12 +83,49 @@ public class TripsController {
   }
 
   @GetMapping("/trips/driver/{id}")
-  public ResponseEntity<Iterable<Trip>> readOneByDriver(@PathVariable int id) {
+  public ResponseEntity<Iterable<Trip>> readAllThoseDriver(@PathVariable int id) {
     if (id <= 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip in request is not correct");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
     }
-    Iterable<Trip> trips = service.readOneByDriver(id);
+    Iterable<Trip> trips = service.readAllThoseDriver(id);
     return new ResponseEntity(trips, HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/trips/driver/{id}", params = { "departure_date"})
+  public ResponseEntity<Iterable<Trip>> readAllThoseDriverWithDepartureDate(
+      @PathVariable int id,
+      @RequestParam String departure_date) {
+    if (id <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
+    }
+    if (departure_date == "")  throw new ResponseStatusException(
+        HttpStatus.BAD_REQUEST, "departure date in request is not correct");
+    Iterable<Trip> trips = service.readAllFromDriverWithDepartureDate(id, departure_date);
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/trips/driver/{id}", params = { "originLat", "originLon"})
+  public ResponseEntity<Iterable<Trip>> readAllThoseDriverWithOrigin(
+      @PathVariable int id,
+      @RequestParam float originLat,
+      @RequestParam float originLon) {
+    if (id <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
+    }
+    Iterable<Trip> trips = service.readAllThoseDriverWithOrigin(id, originLat, originLon);
+    return new ResponseEntity<>(trips, HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/trips/driver/{id}", params = { "destinationLat", "destinationLon"})
+  public ResponseEntity<Iterable<Trip>> readAllThoseDriverWithDestination(
+      @PathVariable int id,
+      @RequestParam float destinationLat,
+      @RequestParam float destinationLon) {
+    if (id <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
+    }
+    Iterable<Trip> trips = service.readAllThoseDriverWithDestination(id, destinationLat, destinationLon);
+    return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 
   @DeleteMapping("/trips/driver/{id}")
