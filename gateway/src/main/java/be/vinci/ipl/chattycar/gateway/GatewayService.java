@@ -10,6 +10,8 @@ import be.vinci.ipl.chattycar.gateway.models.Video;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class GatewayService {
@@ -143,4 +145,7 @@ public class GatewayService {
     public ResponseEntity<Void> createPassenger(int tripsId, int userId){return passengersProxy.createPassenger(tripsId, userId);}
 
     public String getPassengerStatus(int tripsId, int userId){return passengersProxy.getPassengerStatus(tripsId, userId);}
+
+    public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);};
+
 }

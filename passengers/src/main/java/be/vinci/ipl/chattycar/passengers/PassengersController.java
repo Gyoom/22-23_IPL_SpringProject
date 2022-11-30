@@ -66,6 +66,8 @@ public class PassengersController {
 
     if (!service.updatePassengerStatus(tripsId, userId, status))
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+    throw new ResponseStatusException(HttpStatus.OK);
   }
 
   /**

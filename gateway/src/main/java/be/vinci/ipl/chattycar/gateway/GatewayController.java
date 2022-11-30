@@ -184,5 +184,25 @@ public class GatewayController {
     }
 
 
+    @PutMapping("/trips/{trips_id}/passengers/{user_id}")
+    void updatePassengerStatus(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token, @RequestBody String status){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        String oldStatus = service.getPassengerStatus(tripsId, userId);
+
+        if (oldStatus == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        service.updatePassengerStatus(tripsId, userId, status);
+    }
+
+
+
 
 }
