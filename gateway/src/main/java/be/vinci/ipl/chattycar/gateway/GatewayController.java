@@ -202,6 +202,27 @@ public class GatewayController {
         service.updatePassengerStatus(tripsId, userId, status);
     }
 
+    @DeleteMapping("/trips/{trips_id}/passengers/{user_id}")
+    void deletePassenger(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+        String userEmail = service.verify(token);
+        UserWithId user = service.readUser(userEmail);
+
+        if (user.getId() != userId){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        String oldStatus = service.getPassengerStatus(tripsId, userId);
+
+        if (oldStatus == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        service.removeAllParticipation(userId);
+        //TODO modifier la méthode
+
+
+    }
+
 
 
 

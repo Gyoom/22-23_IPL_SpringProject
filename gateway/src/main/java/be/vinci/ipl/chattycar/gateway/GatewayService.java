@@ -148,4 +148,5 @@ public class GatewayService {
 
     public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);};
 
+    public void removeAllParticipation(int userId){passengersProxy.removeAllParticipation(userId);};
 }
