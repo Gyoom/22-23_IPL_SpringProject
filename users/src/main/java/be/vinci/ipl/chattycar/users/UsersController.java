@@ -28,7 +28,7 @@ public class UsersController {
     }
 
     @GetMapping("/users")
-    public User readUser(@RequestParam(value = "email") String email) {
+    public User readUser(@RequestParam("email") String email) {
         User user = service.findByEmail(email);
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return user;

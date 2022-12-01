@@ -37,9 +37,10 @@ public class GatewayService {
         return authenticationProxy.verify(token);
     }
 
-    public void createUser(UserWithCredentials user) {
-        usersProxy.createUser(user.getEmail(), user.toUser()); // throw 409 if the email already exists
+    public UserWithId createUser(UserWithCredentials user) {
+        UserWithId newUser = usersProxy.createUser(user.toUser()); // throw 409 if the email already exists
         authenticationProxy.createCredentials(user.getEmail(), user.toCredentials());
+        return newUser;
     }
 
     public UserWithId readUser(String email) {
@@ -58,13 +59,13 @@ public class GatewayService {
         usersProxy.updateUser(user.getId(), user);
     }
 
-    public void deleteUser(int id) {
-        /*
-        reviewsProxy.deleteReviewsFromUser(pseudo);
-        videosProxy.deleteVideosFromAuthor(pseudo);
-        authenticationProxy.deleteCredentials(pseudo);
-        usersProxy.deleteUser(pseudo);
-         */
+    public void deleteUser(UserWithId user) {
+        // We can not create transaction, so we delete from less important to most important
+        notificationProxy.deleteNotification(user.getId());
+        passengersProxy.removeAllParticipation(user.getId());
+        tripsProxy.deleteAllByDriver(user.getId());
+        authenticationProxy.deleteCredentials(user.getEmail());
+        usersProxy.deleteUser(user.getId());
     }
 
     public Iterable<Trip> getTripsOfDriver(int idDriver) {

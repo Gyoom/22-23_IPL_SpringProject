@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Chatty Car Ride Sharing Service Passengers API
+  title: Chatty Car Ride Sharing Service Notifications API
   description: API for the notifications service of Chatty Car, the ride sharing app.
   version: 1.0.0
 servers:

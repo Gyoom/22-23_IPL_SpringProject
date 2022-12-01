@@ -1,4 +1,4 @@
-### Create user
+### Create user 201
 POST http://localhost:9002/users
 Content-Type: application/json
 
@@ -6,15 +6,15 @@ Content-Type: application/json
   "firstname": "Eliott",
   "lastname": "Rasumny" }
 
-### Get user
+### Get user 200
 GET http://localhost:9002/users/1
 
-### Find user with email
+### Find user with email 200
 GET http://localhost:9002/users?email=eliott.rasumny@vinci.be
-### Find user with no email (Bad Request)
+### Find user with no email 400
 GET http://localhost:9002/users
 
-### Update user
+### Update user 200
 PUT http://localhost:9002/users/1
 Content-Type: application/json
 

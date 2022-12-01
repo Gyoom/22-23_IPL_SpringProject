@@ -28,15 +28,15 @@ public class GatewayController {
 
 
     @PostMapping("/users")
-    ResponseEntity<Void> createUser(@RequestBody UserWithCredentials user) {
+    ResponseEntity<UserWithId> createUser(@RequestBody UserWithCredentials user) {
         if (user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null || user.getPassword() == null ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        service.createUser(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        UserWithId newUser = service.createUser(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/users")
-    UserWithId readUser(@RequestParam(value = "email") String email) {
+    UserWithId readUser(@RequestParam("email") String email) {
         return service.readUser(email);
     }
 
@@ -72,7 +72,7 @@ public class GatewayController {
         UserWithId user = service.getUser(id);
         if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        service.deleteUser(id);
+        service.deleteUser(user);
     }
 
     @GetMapping("/users/{id_driver}/driver")

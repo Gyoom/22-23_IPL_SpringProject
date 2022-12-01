@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "users")
 public interface UsersProxy {
 
-    @PostMapping("/users/{email}")
-    void createUser(@PathVariable String email, @RequestBody User user);
+    @PostMapping("/users")
+    UserWithId createUser(@RequestBody User user);
 
-    @GetMapping("/users/{email}")
-    UserWithId readUser(@PathVariable String email);
+    @GetMapping("/users")
+    UserWithId readUser(@RequestParam("email") String email);
 
     @GetMapping("/users/{id}")
     UserWithId getOne(@PathVariable int id);
