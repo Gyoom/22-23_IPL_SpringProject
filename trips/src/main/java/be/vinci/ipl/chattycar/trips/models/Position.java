@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Embeddable
 public class Position {
-  private float latitude;
-  private float longitude;
+  private Double latitude;
+  private Double longitude;
 }

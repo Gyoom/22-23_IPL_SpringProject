@@ -46,58 +46,34 @@ public class TripsService {
   }
 
   /**
-   * returns the list of the last 20 registered trips for which there is at least 1 free seat.
-   * @return All trips found.
+   * Returns the list of the last 20 recorded trips of the database,
+   * for which there is at least 1 free space left and which has been filtered
+   * according to the parameters provided with the request.
+   * @param departure_date : the date of the trips to keep.
+   * @param originLat : the latitude of the trips origin to keep.
+   * @param originLon : the longitude of the trip origin to keep.
+   * @param destinationLat : the latitude of the trip destination to keep.
+   * @param destinationLon : the longitude of the trip destination to keep.
+   * @return trips found and sorted
    */
-  public Iterable<Trip> readAll() {
-    return StreamSupport.stream(repository.findAll().spliterator(), false)
+  public Iterable<Trip> readAll(
+      String departure_date,
+      Double originLat,
+      Double originLon,
+      Double destinationLat,
+      Double destinationLon) {
+    Iterable<Trip> trips = StreamSupport.stream(repository.findAll().spliterator(), false)
         .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
+        .collect(Collectors.toList());
+    return filterAll(
+        trips,
+        departure_date,
+        originLat,
+        originLon,
+        destinationLat,
+        destinationLon
+    );
   }
-
-  /**
-   * Returns the list of the last 20 recorded trips for which there is at least
-   * 1 free seat left and for which the date passed in param match.
-   * @param departure_date trip departure date
-   * @return an iterable element containing a list meeting the above criteria.
-   */
-  public Iterable<Trip> readWithDepartureDate(String departure_date) {
-    return StreamSupport.stream(repository.findAll().spliterator(), false)
-        .filter(trip -> trip.getDeparture().equals(departure_date))
-        .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
-  }
-
-  /**
-   * Returns the list of the last 20 registered trips for which there is at least 1 free seat
-   * left and for which the coordinates of the destination of the trip correspond.
-   * @param originLat the latitude of the coordinate indicating the origin of the trip.
-   * @param originLon the longitude of the coordinate indicating the origin of the trip.
-   * @return an iterable element containing a list meeting the above criteria.
-   */
-  public Iterable<Trip> readWithOrigin(float originLat, float originLon) {
-    return StreamSupport.stream(repository.findAll().spliterator(), false)
-        .filter(trip -> trip.getOrigin().getLatitude() == originLat
-            && trip.getOrigin().getLongitude() == originLon)
-        .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
-  }
-
-  /**
-   * Returns the list of the last 20 registered trips for which there is at least 1 free seat
-   * left and for which the coordinates of the destination of the trip correspond.
-   * @param destinationLat the latitude of the coordinate indicating the destination of the trip.
-   * @param destinationLon the longitude of the coordinate indicating the destination of the trip.
-   * @return an iterable element containing a list meeting the above criteria.
-   */
-  public Iterable<Trip> readWithDestination(float destinationLat, float destinationLon) {
-    return StreamSupport.stream(repository.findAll().spliterator(), false)
-        .filter(trip -> trip.getDestination().getLatitude() == destinationLat
-            && trip.getDestination().getLongitude() == destinationLon)
-        .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
-  }
-
 
   /**
    * Deletes a trip
@@ -112,64 +88,36 @@ public class TripsService {
   }
 
   /**
-   * Returns the list of the last 20 registered trips for which the user with
-   * the id is the driver and for which there is at least 1 free seat.
+   * Returns the list of the last 20 recorded trips for which the user with the identifier
+   * is the driver, for which there is at least 1 free space left and which has been filtered
+   * according to the parameters provided with the request.
    * @param id int of the driver
-   * @return All the trip found.
+   * @param departure_date : the date of the trips
+   * @param originLat : the latitude of the trips origin
+   * @param originLon : the longitude of the trips origin
+   * @param destinationLat : the latitude of the trips destination
+   * @param destinationLon : the longitude of the trips destination
+   * @return the list of trips filtered.
    */
-  public Iterable<Trip> readAllThoseDriver(int id) {
-    return StreamSupport.stream(repository.findByDriverId(id).spliterator(), false)
+  public Iterable<Trip> readAllThoseDriver(
+      int id,
+      String departure_date,
+      Double originLat,
+      Double originLon,
+      Double destinationLat,
+      Double destinationLon
+  ) {
+    Iterable<Trip> trips = StreamSupport.stream(repository.findByDriverId(id).spliterator(), false)
         .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
-  }
-
-  /**
-   * Returns the list of the last 20 recorded trips for which the user with
-   * the id is the driver, for which there is at least 1 free seat left and
-   * for which the date passed in param match.
-   * @param id int of the driver
-   * @param departure_date trip departure date
-   * @return
-   */
-  public Iterable<Trip> readAllFromDriverWithDepartureDate(int id, String departure_date) {
-    return StreamSupport.stream(repository.findByDriverId(id).spliterator(), false)
-        .filter(trip -> trip.getDeparture().equals(departure_date))
-        .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
-  }
-
-  /**
-   * Returns the list of the last 20 registered trips for which the user with the id is the driver,
-   * for which there is at least 1 free seat left and for which the coordinates of the origin
-   * of the trip correspond.
-   * @param id int of the driver
-   * @param originLat the latitude of the coordinate indicating the origin of the trip.
-   * @param originLon the longitude of the coordinate indicating the origin of the trip.
-   * @return an iterable element containing a list meeting the above criteria.
-   */
-  public Iterable<Trip> readAllThoseDriverWithOrigin(int id, float originLat, float originLon) {
-    return StreamSupport.stream(repository.findByDriverId(id).spliterator(), false)
-        .filter(trip -> trip.getOrigin().getLatitude() == originLat
-            && trip.getOrigin().getLongitude() == originLon)
-        .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
-  }
-
-  /**
-   * Returns the list of the last 20 registered trips for which the user with the id is the driver,
-   * for which there is at least 1 free seat left and for which the coordinates of the destination
-   * of the trip correspond.
-   * @param id int of the driver
-   * @param destinationLat the latitude of the coordinate indicating the destination of the trip.
-   * @param destinationLon the longitude of the coordinate indicating the destination of the trip.
-   * @return an iterable element containing a list meeting the above criteria.
-   */
-  public Iterable<Trip> readAllThoseDriverWithDestination(int id, float destinationLat, float destinationLon) {
-    return StreamSupport.stream(repository.findByDriverId(id).spliterator(), false)
-        .filter(trip -> trip.getDestination().getLatitude() == destinationLat
-            && trip.getDestination().getLongitude() == destinationLon)
-        .filter(trip -> trip.getAvailableSeat() > 0)
-        .collect(lastN(20));
+        .collect(Collectors.toList());
+    return filterAll(
+        trips,
+        departure_date,
+        originLat,
+        originLon,
+        destinationLat,
+        destinationLon
+    );
   }
 
   /**
@@ -179,6 +127,80 @@ public class TripsService {
    */
   public Iterable<Trip> deleteAllByDriver(int id) {
     return repository.deleteByDriverId(id);
+  }
+
+  /**
+   * Call the different filter methods on the trip list based on
+   * the state of the provided parameters
+   * @param trips : travel list to filter.
+   * @param departure_date : the date of the trips to keep.
+   * @param originLat : the latitude of the trips origin to keep.
+   * @param originLon : the longitude of the trip origin to keep.
+   * @param destinationLat : the latitude of the trip destination to keep.
+   * @param destinationLon : the longitude of the trip destination to keep.
+   * @return
+   */
+  private Iterable<Trip> filterAll(
+      Iterable<Trip> trips,
+      String departure_date,
+      Double originLat,
+      Double originLon,
+      Double destinationLat,
+      Double destinationLon
+  ) {
+    if (departure_date != null)
+      trips = departureDateFilter(trips, departure_date);
+    if (originLat != null && originLon != null)
+      trips = originFilter(trips, originLat, originLon);
+    if (destinationLat != null && destinationLon != null)
+      trips = destinationFilter(trips, destinationLat, destinationLon);
+    trips = StreamSupport.stream(trips.spliterator(), false)
+        .collect(lastN(20));
+    return trips;
+  }
+
+  /**
+   * filters the list of trips provided in param by keeping only
+   * those whose date corresponds to that provided in param.
+   * @param trips : list of trips to filter.
+   * @param departure_date : date to the trips to keep.
+   * @return the list filtered.
+   */
+  private Iterable<Trip> departureDateFilter(Iterable<Trip> trips, String departure_date) {
+    return StreamSupport.stream(trips.spliterator(), false)
+        .filter(trip -> trip.getDeparture().equals(departure_date))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Filters the list provided in param with the trip origin data
+   * provided in param and returns the sorted list.
+   * @param trips : list of trips to filter.
+   * @param originLat : latitude of trips origin to keep.
+   * @param originLon : longitude of trips origins to keep.
+   * @return the list filtered.
+   */
+  private Iterable<Trip> originFilter(Iterable<Trip> trips, Double originLat, Double originLon) {
+    System.out.println(originLat);
+    return StreamSupport.stream(trips.spliterator(), false)
+        .filter(trip -> trip.getOrigin().getLatitude().equals(originLat)
+            && trip.getOrigin().getLongitude().equals(originLon))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Filters the list provided in param with the trip origin
+   * data provided in param and returns the sorted list.
+   * @param trips : list of trips to filter.
+   * @param destinationLat : latitude of trips destination to keep.
+   * @param destinationLon : longitude of trips destination to keep.
+   * @return the list filtered.
+   */
+  private Iterable<Trip> destinationFilter(Iterable<Trip> trips, Double destinationLat, Double destinationLon) {
+    return StreamSupport.stream(trips.spliterator(), false)
+        .filter(trip -> trip.getDestination().getLatitude().equals(destinationLat)
+            && trip.getDestination().getLongitude().equals(destinationLon))
+        .collect(Collectors.toList());
   }
 
   /**

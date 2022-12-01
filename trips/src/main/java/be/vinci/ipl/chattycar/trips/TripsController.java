@@ -35,33 +35,24 @@ public class TripsController {
   }
 
   @GetMapping("/trips")
-  public ResponseEntity<Iterable<Trip>> readAll() {
-    Iterable<Trip> trips = service.readAll();
-    return new ResponseEntity<>(trips, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/trips", params = { "departure_date"})
-  public ResponseEntity<Iterable<Trip>> readAllWithDepartureDate(
-      @RequestParam String departure_date) {
-    if (departure_date == "")  throw new ResponseStatusException(
-        HttpStatus.BAD_REQUEST, "departure date in request is not correct");
-    Iterable<Trip> trips = service.readWithDepartureDate(departure_date);
-    return new ResponseEntity<>(trips, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/trips", params = { "originLat", "originLon"})
-  public ResponseEntity<Iterable<Trip>> readAllWithOrigin(
-      @RequestParam float originLat,
-      @RequestParam float originLon) {
-    Iterable<Trip> trips = service.readWithOrigin(originLat, originLon);
-    return new ResponseEntity<>(trips, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/trips", params = { "destinationLat", "destinationLon"})
-  public ResponseEntity<Iterable<Trip>> readAllWithDestination(
-      @RequestParam float destinationLat,
-      @RequestParam float destinationLon) {
-    Iterable<Trip> trips = service.readWithDestination(destinationLat, destinationLon);
+  public ResponseEntity<Iterable<Trip>> readAll(
+      @RequestParam(required = false) String departure_date,
+      @RequestParam(required = false) Double originLat,
+      @RequestParam(required = false) Double originLon,
+      @RequestParam(required = false) Double destinationLat,
+      @RequestParam(required = false) Double destinationLon
+  ) {
+    // checks :
+    CheckAll(
+        departure_date,
+        originLat,
+        originLon,
+        destinationLat,
+        destinationLon
+    );
+    // call next method :
+    System.out.println(destinationLat + " " + destinationLon);
+    Iterable<Trip> trips = service.readAll(departure_date, originLat, originLon, destinationLat, destinationLon);
     return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 
@@ -83,48 +74,27 @@ public class TripsController {
   }
 
   @GetMapping("/trips/driver/{id}")
-  public ResponseEntity<Iterable<Trip>> readAllThoseDriver(@PathVariable int id) {
-    if (id <= 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
-    }
-    Iterable<Trip> trips = service.readAllThoseDriver(id);
-    return new ResponseEntity(trips, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/trips/driver/{id}", params = { "departure_date"})
-  public ResponseEntity<Iterable<Trip>> readAllThoseDriverWithDepartureDate(
+  public ResponseEntity<Iterable<Trip>> readAllThoseDriver(
       @PathVariable int id,
-      @RequestParam String departure_date) {
+      String departure_date,
+      Double originLat,
+      Double originLon,
+      Double destinationLat,
+      Double destinationLon
+  ) {
+    // checks :
     if (id <= 0) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
     }
-    if (departure_date == "")  throw new ResponseStatusException(
-        HttpStatus.BAD_REQUEST, "departure date in request is not correct");
-    Iterable<Trip> trips = service.readAllFromDriverWithDepartureDate(id, departure_date);
-    return new ResponseEntity<>(trips, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/trips/driver/{id}", params = { "originLat", "originLon"})
-  public ResponseEntity<Iterable<Trip>> readAllThoseDriverWithOrigin(
-      @PathVariable int id,
-      @RequestParam float originLat,
-      @RequestParam float originLon) {
-    if (id <= 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
-    }
-    Iterable<Trip> trips = service.readAllThoseDriverWithOrigin(id, originLat, originLon);
-    return new ResponseEntity<>(trips, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/trips/driver/{id}", params = { "destinationLat", "destinationLon"})
-  public ResponseEntity<Iterable<Trip>> readAllThoseDriverWithDestination(
-      @PathVariable int id,
-      @RequestParam float destinationLat,
-      @RequestParam float destinationLon) {
-    if (id <= 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Driver id must be positive");
-    }
-    Iterable<Trip> trips = service.readAllThoseDriverWithDestination(id, destinationLat, destinationLon);
+    CheckAll(
+        departure_date,
+        originLat,
+        originLon,
+        destinationLat,
+        destinationLon
+    );
+    // call next method :
+    Iterable<Trip> trips = service.readAllThoseDriver(id, departure_date, originLat, originLon, destinationLat, destinationLon);
     return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 
@@ -135,8 +105,43 @@ public class TripsController {
     }
     Iterable<Trip> trips = service.deleteAllByDriver(id);
     return new ResponseEntity(trips, HttpStatus.OK);
-
   }
+
+  /**
+   *
+   * @param departure_date : the date of the trip
+   * @param originLat : the latitude of the trip origin
+   * @param originLon : the longitude of the trip origin
+   * @param destinationLat : the latitude of the trip destination
+   * @param destinationLon : the longitude of the trip destination
+   */
+  private void CheckAll(
+      String departure_date,
+      Double originLat,
+      Double originLon,
+      Double destinationLat,
+      Double destinationLon
+  ) {
+    // Departure checks :
+    if (departure_date != null && departure_date == "")
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "departure date in request is not correct");
+    // Origin checks :
+    if ((originLat == null && originLon != null) || (originLat != null && originLon == null))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "originLat && originLon have to be initialized both");
+    if (originLat != null && (originLat > 180 ||  originLat < -180))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "originLat in request is not correct");
+    if (originLon != null && (originLon > 180 ||  originLon < -180))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "originLon in request is not correct");
+    // Destination checks :
+    if ((destinationLat == null && destinationLon != null) || (destinationLat != null && destinationLon == null))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "destinationLat && destinationLon have to be initialized both");
+    if (destinationLat != null && (destinationLat > 180 ||  destinationLat < -180))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "destinationLat in request is not correct");
+    if (destinationLon != null && (destinationLon > 180 ||  destinationLon < -180))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "destinationLon in request is not correct");
+  }
+
+
 
 
 }
