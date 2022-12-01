@@ -1,11 +1,9 @@
 package be.vinci.ipl.chattycar.gateway;
 
-import be.vinci.ipl.chattycar.gateway.data.PassengersProxy;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Trip;
-import be.vinci.ipl.chattycar.gateway.models.Position;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -133,9 +131,23 @@ public class GatewayController {
     }
 
     @GetMapping("/trips")
-    ResponseEntity<Trip> readAll(){
-        //TODO ajouter arguments optionnels
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    Iterable<Trip> readAll(@RequestParam("departure_date") String departure_date,
+        @RequestParam("origin_lat") Double origin_lat,
+        @RequestParam("origin_lon") Double origin_lon,
+        @RequestParam("destination_lat") Double destination_lat,
+        @RequestParam("destination_lon") Double destination_lon){
+
+        if ((origin_lon != null && origin_lat == null) || (origin_lon == null && origin_lat != null)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if ((destination_lon != null && destination_lat == null) || (destination_lon == null && destination_lat
+            != null)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+
+        return service.readAll(departure_date, origin_lat, origin_lon, destination_lat, destination_lon);
     }
 
     @GetMapping("/trips/{id}")
@@ -194,7 +206,7 @@ public class GatewayController {
     }
 
     @GetMapping("/trips/{trips_id}/passengers/{user_id}")
-    String getPassengerStatus(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+    String getPassengerStatus(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
         UserWithId user = service.readUser(userEmail);
 
@@ -213,7 +225,7 @@ public class GatewayController {
 
 
     @PutMapping("/trips/{trips_id}/passengers/{user_id}")
-    void updatePassengerStatus(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token, @RequestBody String status){
+    void updatePassengerStatus(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token, @RequestBody String status){
         String userEmail = service.verify(token);
         UserWithId user = service.readUser(userEmail);
 
@@ -231,7 +243,7 @@ public class GatewayController {
     }
 
     @DeleteMapping("/trips/{trips_id}/passengers/{user_id}")
-    void deletePassenger(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
+    void deletePassenger(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
         UserWithId user = service.readUser(userEmail);
 

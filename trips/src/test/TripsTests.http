@@ -23,10 +23,10 @@ GET http://localhost:9001/trips
 GET http://localhost:9001/trips?departure_date=2022-10-3
 
 ### Get all trips with this origin coordinates
-GET http://localhost:9001/trips?originLat=50.849385&originLon=4.451008
+GET http://localhost:9001/trips?origin_lat=50.849385&origin_lon=4.451008
 
 ### Get all trips with this destination coordinates
-GET http://localhost:9001/trips?destinationLat=50.849375&destinationLon=4.45101
+GET http://localhost:9001/trips?destination_lat=50.849375&destination_lon=4.45101
 
 ### Get One trip
 GET http://localhost:9001/trips/2

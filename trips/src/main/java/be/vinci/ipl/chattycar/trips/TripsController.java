@@ -37,22 +37,23 @@ public class TripsController {
   @GetMapping("/trips")
   public ResponseEntity<Iterable<Trip>> readAll(
       @RequestParam(required = false) String departure_date,
-      @RequestParam(required = false) Double originLat,
+      @RequestParam(required = false) Double origin_lat,
       @RequestParam(required = false) Double originLon,
       @RequestParam(required = false) Double destinationLat,
-      @RequestParam(required = false) Double destinationLon
+      @RequestParam(required = false) Double destination_lon
   ) {
     // checks :
     CheckAll(
         departure_date,
-        originLat,
+        origin_lat,
         originLon,
         destinationLat,
-        destinationLon
+        destination_lon
     );
     // call next method :
-    System.out.println(destinationLat + " " + destinationLon);
-    Iterable<Trip> trips = service.readAll(departure_date, originLat, originLon, destinationLat, destinationLon);
+    System.out.println(destinationLat + " " + destination_lon);
+    Iterable<Trip> trips = service.readAll(departure_date, origin_lat, originLon, destinationLat,
+        destination_lon);
     return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 

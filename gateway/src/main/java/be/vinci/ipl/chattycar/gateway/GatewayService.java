@@ -88,6 +88,13 @@ public class GatewayService {
 
     public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
 
+    public Iterable<Trip> readAll(
+        String departure_date,
+        Double originLat,
+        Double originLon,
+        Double destinationLat,
+        Double destinationLon){ return tripsProxy.readAll(departure_date, originLat, originLon, destinationLat, destinationLon);}
+
     public Passengers getTripPassengers(int id){return passengersProxy.getTripPassengers(id);}
 
     public ResponseEntity<Void> createPassenger(int tripsId, int userId){return passengersProxy.createPassenger(tripsId, userId);}
