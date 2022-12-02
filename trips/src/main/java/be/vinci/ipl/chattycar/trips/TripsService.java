@@ -2,19 +2,14 @@ package be.vinci.ipl.chattycar.trips;
 
 import be.vinci.ipl.chattycar.trips.models.NewTrip;
 import be.vinci.ipl.chattycar.trips.models.Trip;
-import com.google.common.util.concurrent.Striped;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class TripsService {
@@ -31,8 +26,9 @@ public class TripsService {
    * @return The trip if the trip could be created, null if another trip exists with this pseudo
    */
   public Trip createOne(NewTrip newTrip) {
+    System.out.println("service trip");
     if (repository.existsByOriginAndDestinationAndDepartureAndDriverId(newTrip.getOrigin(), newTrip.getDestination(), newTrip.getDeparture(),
-        newTrip.getDriver_id())) return null;
+        newTrip.getDriverId())) return null;
     return repository.save(newTrip.toTrip());
   }
 

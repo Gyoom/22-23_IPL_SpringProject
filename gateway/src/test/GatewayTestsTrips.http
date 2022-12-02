@@ -1,9 +1,9 @@
 ### Create a driver
-POST http://localhost:8080/users/Seb
+POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-  "pseudo": "Seb",
+  "email": "Seb",
   "firstname": "Sébastien",
   "lastname": "Strebelle",
   "password": "notsaying"
@@ -14,7 +14,7 @@ POST http://localhost:8080/auth
 Content-Type: application/json
 
 {
-  "pseudo": "Seb",
+  "email": "Seb",
   "password": "notsaying"
 }
 
@@ -35,9 +35,9 @@ Authorization: {{token}}
     "latitude": 3,
     "longitude": 5
   },
-  "departure_date": "2022-12-03",
-  "driver_id": 0,
-  "available_seating": 15
+  "departure": "2022-12-03",
+  "driverId": 1,
+  "availableSeat": 15
 }
 
 ### Get trip by search
@@ -76,7 +76,7 @@ Content-Type: application/json
 }
 
 ### Add Pass 1 to trip as pending
-POST http://localhost:8080/trips/0/passengers/1
+POST http://localhost:8080/trips/1/passengers/1
 Content-Type: application/json
 Authorization: {{token}}
 
@@ -124,4 +124,8 @@ Authorization: {{token}}
 
 ### Delete Pass 2
 DELETE http://localhost:8080/users/Pass_2
+Authorization: {{token}}
+
+### Delete the passenger of a specific trip
+DELETE http://localhost:8080/trips/1/passengers/1
 Authorization: {{token}}

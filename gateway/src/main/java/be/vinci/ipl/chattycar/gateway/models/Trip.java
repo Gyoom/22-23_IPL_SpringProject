@@ -15,5 +15,5 @@ public class Trip {
   private Position destination;
   private String departure;
   private int driverId;
-  private int available_seating;
+  private int availableSeat;
 }

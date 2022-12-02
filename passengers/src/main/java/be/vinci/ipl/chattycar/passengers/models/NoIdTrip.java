@@ -1,7 +1,6 @@
 package be.vinci.ipl.chattycar.passengers.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +17,5 @@ public class NoIdTrip {
   @JsonProperty("driver_id")
   private int driverId;
   @JsonProperty("available_seating")
-  private int availableSeating;
+  private int availableSeat;
 }

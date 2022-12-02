@@ -120,10 +120,9 @@ public class GatewayController {
         String userEmail = service.verify(token);
         User user = service.readUser(userEmail);
 
-        if (user.getId() != trip.getDriver_id()){
+        if (user.getId() != trip.getDriverId()){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-
         Trip createdTrip = service.createTrip(trip);
 
         return createdTrip;
@@ -131,21 +130,19 @@ public class GatewayController {
     }
 
     @GetMapping("/trips")
-    Iterable<Trip> readAll(@RequestParam("departure_date") String departure_date,
-        @RequestParam("origin_lat") Double origin_lat,
-        @RequestParam("origin_lon") Double origin_lon,
-        @RequestParam("destination_lat") Double destination_lat,
-        @RequestParam("destination_lon") Double destination_lon){
-
+    Iterable<Trip> readAll(
+        @RequestParam(required = false) String departure_date,
+        @RequestParam(required = false) Double origin_lat,
+        @RequestParam(required = false) Double origin_lon,
+        @RequestParam(required = false) Double destination_lat,
+        @RequestParam(required = false) Double destination_lon){
         if ((origin_lon != null && origin_lat == null) || (origin_lon == null && origin_lat != null)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
         if ((destination_lon != null && destination_lat == null) || (destination_lon == null && destination_lat
             != null)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
 
         return service.readAll(departure_date, origin_lat, origin_lon, destination_lat, destination_lon);
     }

@@ -1,0 +1,71 @@
+### Create a user OK
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "Seb",
+  "firstname": "Sébastien",
+  "lastname": "Strebelle",
+  "password": "notsaying"
+}
+
+### Connect a user OK
+POST http://localhost:8080/auth
+Content-Type: application/json
+
+{
+  "email": "Seb",
+  "password": "notsaying"
+}
+
+> {% client.global.set("token", response.body) %}
+
+### Create a trip OK
+POST http://localhost:8080/trips
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "departure": "2022-12-03",
+  "origin": {
+    "latitude": 1,
+    "longitude": 2
+  },
+  "destination": {
+    "latitude": 3,
+    "longitude": 5
+  },
+  "driverId": 1,
+  "availableSeat": 15
+}
+
+### Get all trip OK
+GET http://localhost:8080/trips
+Content-Type: application/json
+
+### Get all trips with this date OK
+GET http://localhost:8080/trips?departure=2022-12-03
+Content-Type: application/json
+
+### Get all trips with this origin coordinates OK
+GET http://localhost:8080/trips?origin_lat=1&origin_lon=2
+Content-Type: application/json
+
+### Get all trips with this destination coordinates OK
+GET http://localhost:8080/trips?destination_lat=3&destination_lon=5
+Content-Type: application/json
+
+### Get a trip informations OK
+GET http://localhost:8080/trips/1
+Content-Type: application/json
+
+### Delete a trip OK
+DELETE http://localhost:9001/trips/1
+
+
+
+
+
+### Delete the passenger of a specific trip OK
+DELETE http://localhost:8080/trips/1/passengers/1
+Authorization: {{token}}

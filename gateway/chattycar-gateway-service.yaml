@@ -292,7 +292,7 @@ paths:
         Destination query (lat+lon) will order by distance with specified destination position.
         Both origin and destination queries will order by sum of distances.
       parameters:
-        - name: departure_date
+        - name: departure
           in: query
           required: false
           schema:

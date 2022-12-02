@@ -31,11 +31,11 @@ public class PassengersServices {
    * @return true if the passenger has been created
    */
   public boolean createPassenger(int tripsId, int userId) {
-    /*NoIdTrip trip = tripsProxy.readOne(tripsId).getBody();
+    NoIdTrip trip = tripsProxy.readOne(tripsId).getBody();
     System.out.println(trip);
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
-    if (passenger != null || trip == null || trip.getAvailableSeating() == 0) return false;
-    System.out.println("service");*/
+    if (passenger != null || trip == null || trip.getAvailableSeat() == 0) return false;
+    System.out.println("service");
     repository.save(new Passenger(userId, tripsId));
     return true;
   }

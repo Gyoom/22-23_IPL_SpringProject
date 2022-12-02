@@ -28,13 +28,13 @@ public class NewTrip {
   private Position destination;
 
   private String departure;
-  private int driver_id;
-  private int available_seat;
+  private int driverId;
+  private int availableSeat;
 
   private static int index = 1;
 
   public Trip toTrip() {
-    Trip newTrip = new Trip(index, origin, destination, departure, driver_id,available_seat);
+    Trip newTrip = new Trip(index, origin, destination, departure, driverId, availableSeat);
     index++;
     return newTrip;
   }

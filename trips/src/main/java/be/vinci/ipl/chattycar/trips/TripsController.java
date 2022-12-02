@@ -24,9 +24,10 @@ public class TripsController {
 
   @PostMapping("/trips")
   public ResponseEntity<Trip> createOne(@RequestBody NewTrip newTrip) {
+    System.out.println("controller trip" + newTrip);
     if (newTrip.getOrigin() == null || newTrip.getDestination() == null ||
-        newTrip.getDeparture() == null || newTrip.getDriver_id() <= 0 ||
-        newTrip.getAvailable_seat() < 0) {
+        newTrip.getDeparture() == null || newTrip.getDriverId() <= 0 ||
+        newTrip.getAvailableSeat() < 0) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip in request is not correct");
     }
     Trip created = service.createOne(newTrip);
@@ -36,24 +37,24 @@ public class TripsController {
 
   @GetMapping("/trips")
   public ResponseEntity<Iterable<Trip>> readAll(
-      @RequestParam(required = false) String departure_date,
-      @RequestParam(required = false) Double origin_lat,
+      @RequestParam(required = false) String departure,
+      @RequestParam(required = false) Double originLat,
       @RequestParam(required = false) Double originLon,
       @RequestParam(required = false) Double destinationLat,
-      @RequestParam(required = false) Double destination_lon
+      @RequestParam(required = false) Double destinationLon
   ) {
     // checks :
     CheckAll(
-        departure_date,
-        origin_lat,
+        departure,
+        originLat,
         originLon,
         destinationLat,
-        destination_lon
+        destinationLon
     );
     // call next method :
-    System.out.println(destinationLat + " " + destination_lon);
-    Iterable<Trip> trips = service.readAll(departure_date, origin_lat, originLon, destinationLat,
-        destination_lon);
+    System.out.println(destinationLat + " " + destinationLon);
+    Iterable<Trip> trips = service.readAll(departure, originLat, originLon, destinationLat,
+        destinationLon);
     return new ResponseEntity<>(trips, HttpStatus.OK);
   }
 
