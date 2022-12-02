@@ -37,13 +37,13 @@ public class GatewayService {
         return authenticationProxy.verify(token);
     }
 
-    public UserWithId createUser(UserWithCredentials user) {
-        UserWithId newUser = usersProxy.createUser(user.toUser()); // throw 409 if the email already exists
+    public User createUser(UserWithCredentials user) {
+        User newUser = usersProxy.createUser(user.toUser()); // throw 409 if the email already exists
         authenticationProxy.createCredentials(user.getEmail(), user.toCredentials());
         return newUser;
     }
 
-    public UserWithId readUser(String email) {
+    public User readUser(String email) {
         return usersProxy.readUser(email);
     }
 
@@ -51,15 +51,15 @@ public class GatewayService {
         authenticationProxy.updateOne(credentials.getEmail(), credentials);
     }
 
-    public UserWithId getUser(int id) {
+    public User getUser(int id) {
         return usersProxy.getOne(id);
     }
 
-    public void updateUser(UserWithId user) {
+    public void updateUser(User user) {
         usersProxy.updateUser(user.getId(), user);
     }
 
-    public void deleteUser(UserWithId user) {
+    public void deleteUser(User user) {
         // We can not create transaction, so we delete from less important to most important
         notificationProxy.deleteNotification(user.getId());
         passengersProxy.removeAllParticipation(user.getId());

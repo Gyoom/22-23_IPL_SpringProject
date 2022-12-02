@@ -26,7 +26,6 @@ public class AuthenticationController {
 
     @PostMapping("/authentication/verify")
     public String verify(@RequestBody String token) {
-        System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
         String email = service.verify(token);
         if (email == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         return email;
@@ -46,7 +45,6 @@ public class AuthenticationController {
 
     @PutMapping("/authentication/{email}")
     public void updateOne(@PathVariable String email, @RequestBody InsecureCredentials credentials) {
-        System.out.println("YYYYYYYYYYYYYYYYYYYYYYY");
         if (credentials.getEmail() == null || credentials.getPassword() == null ||
             !credentials.getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

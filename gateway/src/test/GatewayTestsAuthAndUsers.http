@@ -59,13 +59,13 @@ Content-Type: application/json
 }
 
 ### Find user from its email 200
-POST http://localhost:8080/users?email=gregory.seront@vinci.be
+GET http://localhost:8080/users?email=gregory.seront@vinci.be
 
 ### Find no user 404
-POST http://localhost:8080/users?email=gregory.seront@vinci.b
+GET http://localhost:8080/users?email=gregory.seront@vinci.b
 
 ### Update user password 200
-DELETE http://localhost:8080/users
+PUT http://localhost:8080/users
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -75,7 +75,7 @@ Content-Type: application/json
 }
 
 ### Update no password 400
-DELETE http://localhost:8080/users
+PUT http://localhost:8080/users
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -84,7 +84,8 @@ Content-Type: application/json
 }
 
 ### Update nope 401
-DELETE http://localhost:8080/users
+PUT http://localhost:8080/users
+Authorization: "ezrzer"
 Content-Type: application/json
 
 {
@@ -103,7 +104,7 @@ Content-Type: application/json
   "password": "oui"
 }
 ### Update an other user password 403
-DELETE http://localhost:8080/users
+PUT http://localhost:8080/users
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -112,14 +113,85 @@ Content-Type: application/json
   "password": "password12"
 }
 
-### Update no user password 404
-DELETE http://localhost:8080/users
+### Find user with id 200
+GET http://localhost:8080/users/1
+Authorization: {{token}}
+
+### Find user nope 401
+GET http://localhost:8080/users/1
+Authorization: "azerzer"
+
+### Find user with id 404
+GET http://localhost:8080/users/20
+Authorization: {{token}}
+
+### Update user information 200
+PUT http://localhost:8080/users/1
 Authorization: {{token}}
 Content-Type: application/json
 
 {
-  "email": "gregory.seront@vinci.b",
-  "password": "password12"
+  "id": 1,
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregor",
+  "lastname": "Seront"
 }
+
+### Update user information 400
+PUT http://localhost:8080/users/1
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregor"
+}
+
+### Update user information 401
+PUT http://localhost:8080/users/1
+Authorization: "zieruyi"
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregor",
+  "lastname": "Seront"
+}
+
+### Update user information 403
+PUT http://localhost:8080/users/2
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "email": "oui.oui@vinci.be",
+  "firstname": "ouiiii",
+  "lastname": "oui"
+}
+
+### Delete user 401
+DELETE http://localhost:8080/users/1
+Authorization: "iuyiuyi"
+Content-Type: application/json
+
+### Delete user 403
+DELETE http://localhost:8080/users/2
+Authorization: {{token}}
+Content-Type: application/json
+
+### Delete user 404
+DELETE http://localhost:8080/users/3
+Authorization: {{token}}
+Content-Type: application/json
+
+### Delete user 200
+DELETE http://localhost:8080/users/1
+Authorization: {{token}}
+Content-Type: application/json
+
+
 
 

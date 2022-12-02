@@ -4,7 +4,6 @@ import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
 import be.vinci.ipl.chattycar.gateway.models.Trip;
-import be.vinci.ipl.chattycar.gateway.models.Position;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,15 +27,15 @@ public class GatewayController {
 
 
     @PostMapping("/users")
-    ResponseEntity<UserWithId> createUser(@RequestBody UserWithCredentials user) {
+    ResponseEntity<User> createUser(@RequestBody UserWithCredentials user) {
         if (user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null || user.getPassword() == null ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        UserWithId newUser = service.createUser(user);
+        User newUser = service.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/users")
-    UserWithId readUser(@RequestParam("email") String email) {
+    User readUser(@RequestParam String email) {
         return service.readUser(email);
     }
 
@@ -51,13 +50,13 @@ public class GatewayController {
     }
 
     @GetMapping("/users/{id}")
-    UserWithId getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+    User getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
         service.verify(token);
         return service.getUser(id);
     }
 
     @PutMapping("/users/{id}")
-    void updateUser(@PathVariable int id, @RequestBody UserWithId user, @RequestHeader("Authorization") String token) {
+    void updateUser(@PathVariable int id, @RequestBody User user, @RequestHeader("Authorization") String token) {
         if (user.getId() != id || user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         String userEmail = service.verify(token);
@@ -69,7 +68,7 @@ public class GatewayController {
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
         String userEmail = service.verify(token);
-        UserWithId user = service.getUser(id);
+        User user = service.getUser(id);
         if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         service.deleteUser(user);
@@ -80,7 +79,7 @@ public class GatewayController {
         @RequestHeader("Authorization") String token) {
 
         String email = service.verify(token);
-        UserWithId user = service.getUser(idDriver);
+        User user = service.getUser(idDriver);
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         return service.getTripsOfDriver(idDriver);
@@ -91,7 +90,7 @@ public class GatewayController {
         @RequestHeader("Authorization") String token) {
 
         String email = service.verify(token);
-        UserWithId user = service.getUser(idUser);
+        User user = service.getUser(idUser);
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         return service.getTripsOfUser(idUser);
@@ -100,7 +99,7 @@ public class GatewayController {
     @PostMapping("/trips")
     Trip createTrip(@RequestBody NewTrip trip, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         if (user.getId() != trip.getDriver_id()){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -126,7 +125,7 @@ public class GatewayController {
     @DeleteMapping("/trips/{id}")
     ResponseEntity<Trip> deleteOne(@PathVariable int id, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(id).getBody();
 

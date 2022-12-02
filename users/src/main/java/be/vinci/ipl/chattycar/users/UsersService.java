@@ -53,7 +53,6 @@ public class UsersService {
      */
     public boolean updateOne(User user) {
         if (!repository.existsById(user.getId())) return false;
-        repository.delete(user);
         repository.save(user);
         return true;
     }
