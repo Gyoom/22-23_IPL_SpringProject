@@ -15,7 +15,11 @@ public interface TripsProxy {
     ResponseEntity<Trip> createOne(@RequestBody NewTrip newTrip);
 
     @GetMapping("/trips")
-    ResponseEntity<Iterable<Trip>> readAll();
+    Iterable<Trip> readAll(@RequestParam String departure_date,
+        @RequestParam Double originLat,
+        @RequestParam Double originLon,
+        @RequestParam Double destinationLat,
+        @RequestParam Double destinationLon);
 
     @GetMapping("/trips/{id}")
     ResponseEntity<Trip> readOne(@PathVariable int id);

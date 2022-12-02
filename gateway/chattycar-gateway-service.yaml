@@ -389,8 +389,6 @@ paths:
             example: 38
           description: ID of the trip
       responses:
-        400:
-          description: Status not in accepted values
         401:
           description: Missing authentication
         403:

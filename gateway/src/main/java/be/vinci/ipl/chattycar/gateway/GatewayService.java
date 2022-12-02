@@ -4,6 +4,7 @@ import be.vinci.ipl.chattycar.gateway.data.*;
 import be.vinci.ipl.chattycar.gateway.models.*;
 import be.vinci.ipl.chattycar.gateway.models.Credentials;
 import be.vinci.ipl.chattycar.gateway.models.UserWithCredentials;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +77,14 @@ public class GatewayService {
         return passengersProxy.getPassengerTrips(idUser);
     }
 
+    public List<Notification> getUserNotification(int idUser) {
+        return notificationProxy.getNotifications(idUser);
+    }
+
+    public void deleteAllUserNotification(int idUser) {
+        notificationProxy.deleteNotification(idUser);
+    }
+
     public Trip createTrip(NewTrip trip){
         return tripsProxy.createOne(trip).getBody();
     }
@@ -84,4 +93,20 @@ public class GatewayService {
 
     public ResponseEntity<Trip> deleteOne(int id){ return tripsProxy.deleteOne(id);}
 
+    public Iterable<Trip> readAll(
+        String departure_date,
+        Double originLat,
+        Double originLon,
+        Double destinationLat,
+        Double destinationLon){ return tripsProxy.readAll(departure_date, originLat, originLon, destinationLat, destinationLon);}
+
+    public Passengers getTripPassengers(int id){return passengersProxy.getTripPassengers(id);}
+
+    public ResponseEntity<Void> createPassenger(int tripsId, int userId){return passengersProxy.createPassenger(tripsId, userId);}
+
+    public String getPassengerStatus(int tripsId, int userId){return passengersProxy.getPassengerStatus(tripsId, userId);}
+
+    public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);}
+
+    public void removeAllParticipation(int userId){passengersProxy.removeAllParticipation(userId);}
 }
