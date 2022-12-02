@@ -103,5 +103,5 @@ public class GatewayService {
 
     public void updatePassengerStatus(int tripsId, int userId, String status){passengersProxy.updatePassengerStatus(tripsId, userId, status);}
 
-    public void removeAllParticipation(int userId){passengersProxy.removeAllParticipation(userId);}
+    public void removeOneParticipation(int userId, int tripId){passengersProxy.removeOnePassenger(userId, tripId);}
 }

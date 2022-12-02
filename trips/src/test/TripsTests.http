@@ -29,7 +29,7 @@ GET http://localhost:9001/trips?origin_lat=50.849385&origin_lon=4.451008
 GET http://localhost:9001/trips?destination_lat=50.849375&destination_lon=4.45101
 
 ### Get One trip
-GET http://localhost:9001/trips/2
+GET http://localhost:9001/trips/1
 
 ### Delete a trip
 DELETE http://localhost:9001/trips/2

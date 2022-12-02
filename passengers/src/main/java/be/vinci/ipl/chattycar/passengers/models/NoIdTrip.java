@@ -14,7 +14,7 @@ import lombok.ToString;
 public class NoIdTrip {
   private Position origin;
   private Position destination;
-  private LocalDate departure;
+  private String departure;
   @JsonProperty("driver_id")
   private int driverId;
   @JsonProperty("available_seating")

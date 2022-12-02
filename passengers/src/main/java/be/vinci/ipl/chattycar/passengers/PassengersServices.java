@@ -31,10 +31,11 @@ public class PassengersServices {
    * @return true if the passenger has been created
    */
   public boolean createPassenger(int tripsId, int userId) {
-    NoIdTrip trip = tripsProxy.readTrip(tripsId);
+    /*NoIdTrip trip = tripsProxy.readOne(tripsId).getBody();
+    System.out.println(trip);
     Passenger passenger = repository.findPassengerByTripIdAndUserId(tripsId, userId);
     if (passenger != null || trip == null || trip.getAvailableSeating() == 0) return false;
-
+    System.out.println("service");*/
     repository.save(new Passenger(userId, tripsId));
     return true;
   }
@@ -122,6 +123,20 @@ public class PassengersServices {
   }
 
   /**
+   * Remove One passenger of a trip.
+   *
+   * @param userId The id of the user
+   * @param tripId The id of a trip
+   */
+  public Passenger removeOnePassenger(int userId, int tripId) {
+    Passenger p = repository.findPassengerByTripIdAndUserId(tripId, userId);
+    if (p == null)
+      return null;
+    repository.deleteOneByUserIdAndTripId(userId, tripId);
+    return p;
+  }
+
+  /**
    * Retrieve trips' properties from passenger object.
    *
    * @param passengers A list of passenger
@@ -132,7 +147,7 @@ public class PassengersServices {
     return passengers
         .stream()
         .filter(p -> p.getStatus().equals(status))
-        .map(p -> tripsProxy.readTrip(p.getTripId()))
+        .map(p -> tripsProxy.readOne(p.getTripId()).getBody())
         .toList();
   }
 

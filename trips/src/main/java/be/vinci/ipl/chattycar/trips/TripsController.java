@@ -59,6 +59,7 @@ public class TripsController {
 
   @GetMapping("/trips/{id}")
   public ResponseEntity<Trip> readOne(@PathVariable int id) {
+    System.out.println("trip controller" + id);
     Trip trip = service.readOne(id);
     if (trip == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No trip found with this ID");
     return new ResponseEntity(trip, HttpStatus.OK);

@@ -31,6 +31,9 @@ public interface PassengersProxy {
   @DeleteMapping("/passengers/user/{user_id}")
   void removeAllParticipation(@PathVariable("user_id") int userId);
 
+  @DeleteMapping("/passengers/{trip_id}/{user_id}")
+  void removeOnePassenger(@PathVariable("trip_id") int tripId, @PathVariable("user_id") int userId);
+
   @GetMapping("/passengers/trip/{trip_id}")
   Passengers getTripPassengers(@PathVariable("trip_id") int tripId);
 

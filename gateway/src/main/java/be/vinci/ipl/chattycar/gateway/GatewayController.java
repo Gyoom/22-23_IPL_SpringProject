@@ -257,8 +257,11 @@ public class GatewayController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        service.removeAllParticipation(userId);
-        //TODO modifier la méthode
+        if (tripsId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        service.removeOneParticipation(userId, tripsId);
 
 
     }

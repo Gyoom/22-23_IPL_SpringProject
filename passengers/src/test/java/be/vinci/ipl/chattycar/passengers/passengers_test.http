@@ -31,6 +31,9 @@ GET http://localhost:9003/passengers/trip/1
 ### DELETE TRIPS OF A USER - 200
 DELETE http://localhost:9003/passengers/user/1
 
+### DELETE A USER FROM A TRIP
+DELETE http://localhost:9003/passengers/1/1
+
 ### GET PASSENGERS OF A TRIP - 200 - empty arrays
 GET http://localhost:9003/passengers/trip/1
 

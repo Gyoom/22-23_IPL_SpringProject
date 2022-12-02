@@ -1,5 +1,6 @@
 package be.vinci.ipl.chattycar.passengers;
 
+import be.vinci.ipl.chattycar.passengers.models.Passenger;
 import be.vinci.ipl.chattycar.passengers.models.PassengerTrips;
 import be.vinci.ipl.chattycar.passengers.models.Passengers;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,6 @@ public class PassengersController {
   @PostMapping("/passengers/{trip_id}/{user_id}")
   public ResponseEntity<Void> createPassenger(@PathVariable("trip_id") int tripsId,
       @PathVariable("user_id") int userId) {
-
     if (!service.createPassenger(tripsId, userId))
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(HttpStatus.CREATED);
@@ -110,5 +110,24 @@ public class PassengersController {
   @DeleteMapping("/passengers/trip/{trip_id}")
   public void removeAllPassenger(@PathVariable("trip_id") int tripId) {
     service.removeAllPassenger(tripId);
+  }
+
+  /**
+   * Remove one passenger of a trip.
+   *
+   * @param tripId The id of a trip
+   */
+  @DeleteMapping("/passengers/{trip_id}/{user_id}")
+  public ResponseEntity<Passenger> removeOnePassenger(
+      @PathVariable("trip_id") int tripId,
+      @PathVariable("user_id") int userId
+  ) {
+    if (tripId <= 0 || userId <= 0)
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "the id of trip or user object are always grater as 0");
+
+    Passenger p = service.removeOnePassenger(userId, tripId);
+    if (p == null)
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return new ResponseEntity(p, HttpStatus.OK);
   }
 }
