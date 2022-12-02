@@ -172,7 +172,7 @@ public class GatewayController {
     @GetMapping("/trips/{id}/passengers")
     Passengers getTripsPassengers(@PathVariable int id, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(id).getBody();
 
@@ -190,7 +190,7 @@ public class GatewayController {
     @PostMapping("/trips/{trip_id}/passengers/{user_id}")
     ResponseEntity<Void> addPendingPassengerInTrip(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(tripsId).getBody();
 
@@ -208,7 +208,7 @@ public class GatewayController {
     @GetMapping("/trips/{trips_id}/passengers/{user_id}")
     String getPassengerStatus(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(tripsId).getBody();
 
@@ -227,7 +227,7 @@ public class GatewayController {
     @PutMapping("/trips/{trips_id}/passengers/{user_id}")
     void updatePassengerStatus(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token, @RequestBody String status){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         if (user.getId() != userId){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -245,7 +245,7 @@ public class GatewayController {
     @DeleteMapping("/trips/{trips_id}/passengers/{user_id}")
     void deletePassenger(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         if (user.getId() != userId){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
