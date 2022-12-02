@@ -39,6 +39,8 @@ paths:
               type: string
               example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhdXRoMCIsInBzZXVkbyI6IkNhdDRMaWZlIn0.LqfooEI-I9VTBo-isjm812ttnIPagMCwdhRkW5ngn0_tlLX86LRoxahgskmgIeWDbm4Mu3y3D8Qbhq_71hNQTA
       responses:
+        400:
+          description: Credentials in request are not correct
         401:
           description: Token couldn't be verified
         200:

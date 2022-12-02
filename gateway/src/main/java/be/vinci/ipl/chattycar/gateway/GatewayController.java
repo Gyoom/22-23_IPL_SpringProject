@@ -28,15 +28,15 @@ public class GatewayController {
 
 
     @PostMapping("/users")
-    ResponseEntity<Void> createUser(@RequestBody UserWithCredentials user) {
+    ResponseEntity<User> createUser(@RequestBody UserWithCredentials user) {
         if (user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null || user.getPassword() == null ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        service.createUser(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        User newUser = service.createUser(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/users")
-    UserWithId readUser(@RequestParam(value = "email") String email) {
+    User readUser(@RequestParam String email) {
         return service.readUser(email);
     }
 
@@ -51,13 +51,13 @@ public class GatewayController {
     }
 
     @GetMapping("/users/{id}")
-    UserWithId getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+    User getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
         service.verify(token);
         return service.getUser(id);
     }
 
     @PutMapping("/users/{id}")
-    void updateUser(@PathVariable int id, @RequestBody UserWithId user, @RequestHeader("Authorization") String token) {
+    void updateUser(@PathVariable int id, @RequestBody User user, @RequestHeader("Authorization") String token) {
         if (user.getId() != id || user.getEmail() == null || user.getFirstname() == null || user.getLastname() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         String userEmail = service.verify(token);
@@ -69,10 +69,10 @@ public class GatewayController {
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
         String userEmail = service.verify(token);
-        UserWithId user = service.getUser(id);
+        User user = service.getUser(id);
         if (!userEmail.equals(user.getEmail())) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        service.deleteUser(id);
+        service.deleteUser(user);
     }
 
     @GetMapping("/users/{id_driver}/driver")
@@ -110,7 +110,7 @@ public class GatewayController {
     private void isAuthorized(String token, int idUser) {
         if (token == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         String email = service.verify(token);
-        UserWithId user = service.getUser(idUser);
+        User user = service.getUser(idUser);
         if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if (!user.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
@@ -118,7 +118,7 @@ public class GatewayController {
     @PostMapping("/trips")
     Trip createTrip(@RequestBody NewTrip trip, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         if (user.getId() != trip.getDriver_id()){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -158,7 +158,7 @@ public class GatewayController {
     @DeleteMapping("/trips/{id}")
     ResponseEntity<Trip> deleteOne(@PathVariable int id, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(id).getBody();
 
@@ -172,7 +172,7 @@ public class GatewayController {
     @GetMapping("/trips/{id}/passengers")
     Passengers getTripsPassengers(@PathVariable int id, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(id).getBody();
 
@@ -190,7 +190,7 @@ public class GatewayController {
     @PostMapping("/trips/{trip_id}/passengers/{user_id}")
     ResponseEntity<Void> addPendingPassengerInTrip(@PathVariable("trip_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(tripsId).getBody();
 
@@ -208,7 +208,7 @@ public class GatewayController {
     @GetMapping("/trips/{trips_id}/passengers/{user_id}")
     String getPassengerStatus(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         Trip trip = service.readOne(tripsId).getBody();
 
@@ -227,7 +227,7 @@ public class GatewayController {
     @PutMapping("/trips/{trips_id}/passengers/{user_id}")
     void updatePassengerStatus(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token, @RequestBody String status){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         if (user.getId() != userId){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -245,7 +245,7 @@ public class GatewayController {
     @DeleteMapping("/trips/{trips_id}/passengers/{user_id}")
     void deletePassenger(@PathVariable("trips_id") int tripsId, @PathVariable("user_id") int userId, @RequestHeader("Authorization") String token){
         String userEmail = service.verify(token);
-        UserWithId user = service.readUser(userEmail);
+        User user = service.readUser(userEmail);
 
         if (user.getId() != userId){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);

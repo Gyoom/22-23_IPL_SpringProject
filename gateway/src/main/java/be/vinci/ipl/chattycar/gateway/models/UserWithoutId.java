@@ -7,8 +7,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserWithId {
-    private int id;
+public class UserWithoutId {
     private String email;
     private String firstname;
     private String lastname;

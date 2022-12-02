@@ -18,6 +18,7 @@ public class AuthenticationController {
 
     @PostMapping("/authentication/connect")
     public String connect(@RequestBody InsecureCredentials credentials) {
+        if(credentials.getEmail() == null || credentials.getPassword() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         String token =  service.connect(credentials);
         if (token == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         return token;

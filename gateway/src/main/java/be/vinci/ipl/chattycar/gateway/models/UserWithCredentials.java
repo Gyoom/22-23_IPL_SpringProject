@@ -15,8 +15,8 @@ public class UserWithCredentials {
     private String lastname;
     private String password;
 
-    public User toUser() {
-        return new User(email, firstname, lastname);
+    public UserWithoutId toUser() {
+        return new UserWithoutId(email, firstname, lastname);
     }
     public Credentials toCredentials() {
         return new Credentials(email, password);

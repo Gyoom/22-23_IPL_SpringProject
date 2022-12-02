@@ -1,0 +1,197 @@
+### Create user 201
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregory",
+  "lastname": "Seront",
+  "password": "password123"
+}
+
+### Create a second time the same user 409
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregory",
+  "lastname": "Seront",
+  "password": "password123"
+}
+
+### Create a bad user 400
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "firstname": "Gregory",
+  "lastname": "Seront",
+  "password": "password123"
+}
+
+### Connect user 200
+POST http://localhost:8080/auth
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be",
+  "password": "password123"
+}
+
+> {% client.global.set("token", response.body) %}
+
+### Connect bad user 400
+POST http://localhost:8080/auth
+Content-Type: application/json
+
+{
+  "password": "password123"
+}
+
+### Connect user pirate 401
+POST http://localhost:8080/auth
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be",
+  "password": "password1"
+}
+
+### Find user from its email 200
+GET http://localhost:8080/users?email=gregory.seront@vinci.be
+
+### Find no user 404
+GET http://localhost:8080/users?email=gregory.seront@vinci.b
+
+### Update user password 200
+PUT http://localhost:8080/users
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be",
+  "password": "password12"
+}
+
+### Update no password 400
+PUT http://localhost:8080/users
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be"
+}
+
+### Update nope 401
+PUT http://localhost:8080/users
+Authorization: "ezrzer"
+Content-Type: application/json
+
+{
+  "email": "gregory.seront@vinci.be",
+  "password": "password12"
+}
+
+### Create a second user 201
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "oui.oui@vinci.be",
+  "firstname": "oui",
+  "lastname": "oui",
+  "password": "oui"
+}
+### Update an other user password 403
+PUT http://localhost:8080/users
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "email": "oui.oui@vinci.be",
+  "password": "password12"
+}
+
+### Find user with id 200
+GET http://localhost:8080/users/1
+Authorization: {{token}}
+
+### Find user nope 401
+GET http://localhost:8080/users/1
+Authorization: "azerzer"
+
+### Find user with id 404
+GET http://localhost:8080/users/20
+Authorization: {{token}}
+
+### Update user information 200
+PUT http://localhost:8080/users/1
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregor",
+  "lastname": "Seront"
+}
+
+### Update user information 400
+PUT http://localhost:8080/users/1
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregor"
+}
+
+### Update user information 401
+PUT http://localhost:8080/users/1
+Authorization: "zieruyi"
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gregory.seront@vinci.be",
+  "firstname": "Gregor",
+  "lastname": "Seront"
+}
+
+### Update user information 403
+PUT http://localhost:8080/users/2
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "email": "oui.oui@vinci.be",
+  "firstname": "ouiiii",
+  "lastname": "oui"
+}
+
+### Delete user 401
+DELETE http://localhost:8080/users/1
+Authorization: "iuyiuyi"
+Content-Type: application/json
+
+### Delete user 403
+DELETE http://localhost:8080/users/2
+Authorization: {{token}}
+Content-Type: application/json
+
+### Delete user 404
+DELETE http://localhost:8080/users/3
+Authorization: {{token}}
+Content-Type: application/json
+
+### Delete user 200
+DELETE http://localhost:8080/users/1
+Authorization: {{token}}
+Content-Type: application/json
+
+
+
+

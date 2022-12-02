@@ -1,14 +1,9 @@
 package be.vinci.ipl.chattycar.gateway.data;
 
 import be.vinci.ipl.chattycar.gateway.models.Notification;
-import be.vinci.ipl.chattycar.gateway.models.User;
-import be.vinci.ipl.chattycar.gateway.models.UserWithId;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
